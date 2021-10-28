@@ -9,6 +9,7 @@ import { ReactChild, ReactFragment, ReactPortal } from "react"
 
 type SiteProps= {
     children?: JSX.Element | JSX.Element[]
+    showLogin: boolean
 }
 
 type heightWrapperProps = {
@@ -20,13 +21,13 @@ export const HeightWrapper:React.FC<heightWrapperProps> = ({children}) => (
     </Box>
 )
 
-export const Site:React.FC<SiteProps> = ({children})=> (
+export const Site:React.FC<SiteProps> = ({children, showLogin})=> (
     <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <CssBaseline/>
             <Box sx={{display: "grid", gridTemplateRows: "auto 1fr", height: "100vh"}}>
                 <HeightWrapper>
-                    <DefaultHeader/>
+                    <DefaultHeader showLogin={showLogin}/>
                     {children}
                 </HeightWrapper>
                 

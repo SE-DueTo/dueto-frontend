@@ -2,6 +2,8 @@ import './App.css';
 import React, { useEffect, useState } from 'react';
 import { Site } from './utils';
 import Dashboard from './Dashboard';
+import { Switch, Route } from 'react-router-dom'
+import LoginRegisterStack from './LoginRegisterStack';
 
 function Title():JSX.Element {
     const [count, setCount] = useState(0);
@@ -47,7 +49,10 @@ const Background:React.FC<BackgroundProps> = ({children}) => (
 const App:React.FC<{}> = () => {
     return (
         <Site>
-            <Dashboard/>
+            <Switch>
+                <Route exact path={["/login", "/register"]} component={LoginRegisterStack}/>
+                <Route exact path="/dashboard" component={Dashboard}/>
+            </Switch>
         </Site>
     )
 }

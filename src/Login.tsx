@@ -1,9 +1,10 @@
-import { Button, FormControl, Paper, Stack, TextField, Typography } from "@mui/material";
+import { Button, FormControl, Stack, TextField, Typography } from "@mui/material";
 import Send from '@mui/icons-material/Send';
+import { RegisterLoginWrapper } from "./utils";
 
 export default function Login() {
     return (
-        <Paper sx={{padding: "2em", width: "400px", maxWidth: "calc( 50vw - .5em )"}}>
+        <RegisterLoginWrapper>
             <FormControl sx={{width: "100%"}}>
                 <form>
                     <Stack spacing={2}>
@@ -14,6 +15,6 @@ export default function Login() {
                     </Stack>
                 </form>
             </FormControl>
-        </Paper>
+        </RegisterLoginWrapper>
     )
 }

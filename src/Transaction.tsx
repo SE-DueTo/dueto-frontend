@@ -29,7 +29,7 @@ function Transaction() {
                         <FormControl variant="standard">
                             <InputLabel>Who paid</InputLabel>
                             <Select label="Who paid">
-                                <MenuItem value={0}><User username="Test" avatar_url={demoAvatar} id={198847398}/></MenuItem>
+                                <MenuItem value={0}><UserElement username="Test" avatar_url={demoAvatar} id={198847398}/></MenuItem>
                             </Select>
                         </FormControl>
                         <TextField type="number" label="Amount" variant="standard"/>
@@ -43,7 +43,7 @@ function Transaction() {
                         </FormControl>
                         <TextField label="Purpose" variant="standard"/>
                         
-                        //AUFTEILUNG
+                        {/*TODO AUFTEILUNG*/}
 
                         <DatePicker
                             maxDate={new Date()}
@@ -70,7 +70,7 @@ type User = {
     avatar_url: string,
     id: number
 }
-function User({avatar_url, username}:User) {
+function UserElement({avatar_url, username}:User) {
     return (
         <Box>
             <Stack direction="row" spacing={2}>

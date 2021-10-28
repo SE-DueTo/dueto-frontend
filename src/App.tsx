@@ -1,69 +1,51 @@
 import './App.css';
-import { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 
-type countState = {
-    count: number
-}
-class Title extends Component {
-    interval: NodeJS.Timer;
-    
-    state: countState = {
-        count: 0,
+function Title():JSX.Element {
+    const [count, setCount] = useState(0);
+
+    const increment = ()=>{        
+        setCount((count) => ((count+1) % 20))
     }
-    componentDidMount() {
-        this.interval = setInterval(()=>{
-            this.increment()
+
+    useEffect(()=>{
+        const interval = setInterval(()=>{
+            increment()
         }, 1000)
-    }
 
-    componentWillUnmount() {
-        clearInterval(this.interval)
-    }
-    increment = () => {
-        this.setState((state: countState):countState => (
-            {
-                count: (state.count + 1) % 20,
-            }
-        ))
-    }
-    render() {
-        return (
-            <div onClick={this.increment}>
-                <h1>DueTo</h1>
-                <h3>Coming Soon{".".repeat(this.state.count)}</h3>
-            </div>
-        )
-    }
+        return (()=>{
+            clearInterval(interval)
+        })
+    }, [])
+
+    return (
+        <div onClick={increment}>
+            <h1>DueTo</h1>
+            <h3>Coming Soon{".".repeat(count)}</h3>
+        </div>
+    )
 }
 
 type BackgroundProps = {
-    children: JSX.Element[]
-}
-class Background extends Component {
-
-    constructor(props:BackgroundProps) {
-        super(props)
-    }
-
-    render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    {this.props.children}
-                </header>
-            </div>
-        )
-    }
+    children?: JSX.Element[] | JSX.Element
 }
 
-class App extends Component {
-    render() {
-        return (
-            <Background>
-                    <Title/>
-            </Background>
-        )
-    }
+const Background:React.FC<BackgroundProps> = ({children}) => (
+    
+    <div className="App">
+        <header className="App-header">
+            {children}
+        </header>
+    </div>
+    
+)
+
+const App:React.FC<{}> = () => {
+    return (
+        <Background>
+            <Title/>
+        </Background>
+    )
 }
 
 export default App;

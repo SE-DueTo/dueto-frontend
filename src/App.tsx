@@ -1,5 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
+import { Site } from './utils';
+import Dashboard from './Dashboard';
 
 function Title():JSX.Element {
     const [count, setCount] = useState(0);
@@ -40,11 +42,13 @@ const Background:React.FC<BackgroundProps> = ({children}) => (
     
 )
 
+
+
 const App:React.FC<{}> = () => {
     return (
-        <Background>
-            <Title/>
-        </Background>
+        <Site>
+            <Dashboard/>
+        </Site>
     )
 }
 

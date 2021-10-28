@@ -1,8 +1,14 @@
 import { Button, FormControl, Stack, TextField, Typography } from "@mui/material";
 import Send from '@mui/icons-material/Send';
 import { RegisterLoginWrapper } from "./utils";
+import { Redirect } from "react-router";
+import { useState } from "react";
 
 export default function Login() {
+
+    //TODO this has to be removed if functional code is used
+    const [isRedirect, setRedirect] = useState(false)
+
     return (
         <RegisterLoginWrapper>
             <FormControl sx={{width: "100%"}}>
@@ -11,7 +17,15 @@ export default function Login() {
                         <Typography variant="h5">Login</Typography>
                         <TextField label="Username" variant="standard" />
                         <TextField label="Password" type="password" variant="standard" />
-                        <Button sx={{width: "100%"}} variant="contained" endIcon={<Send/>}>Login</Button>
+                        <Button 
+                            sx={{width: "100%"}} 
+                            variant="contained" 
+                            endIcon={<Send/>} 
+                            onClick={()=>{setRedirect(true)}}
+                        >
+                            Login
+                        </Button>
+                        {isRedirect && <Redirect to="/dashboard"/>}
                     </Stack>
                 </form>
             </FormControl>

@@ -32,26 +32,22 @@ export const DefaultHeader:React.FC<DefaultHeaderProps> = ({showLogin}) => {
                     <Link to="/">DueTo</Link>
                 </Typography>
                 <Box sx={{flexGrow: 1}}/>
-                <Button 
-                    variant="outlined" 
-                    sx={{
+                
+                {
+                    <Box sx={{
                         '& a': {
-                            textDecoration: "none", 
-                            color: theme.palette.primary.main
+                            textDecoration: "none"
                         }
-                    }}
-                >
-                {    
-                    showLogin ? (
-                    <Link to="/login">
-                        Login
-                    </Link>) : (
-                        <Link to="/logout">
-                        Logout
-                    </Link>
-                    )
+                    }}>
+                        <Link to={showLogin ? "/login" : "/logout"}>
+                            <Button 
+                                variant="outlined" 
+                            >
+                                {showLogin ? "Login" : "Logout"}
+                            </Button>
+                        </Link>
+                    </Box>
                 }
-                </Button>
             </Toolbar>
         </AppBar>
     )

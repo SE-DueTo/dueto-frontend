@@ -1,9 +1,10 @@
 import Dashboard from "./Dashboard"
 import LoginRegisterStack from "./LoginRegisterStack"
+import Logout from "./Logout"
 import { Main } from "./Main"
 import { Site } from "./utils"
 
-export const LoginSite = ()=>{
+export const LoginSite = () => {
     return (
         <Site showLogin={true}>
             <LoginRegisterStack/>
@@ -11,7 +12,7 @@ export const LoginSite = ()=>{
     )
 }
 
-export const DashboardSite = ()=>{
+export const DashboardSite = () => {
     return (
         <Site showLogin={false}>
             <Dashboard/>
@@ -19,8 +20,18 @@ export const DashboardSite = ()=>{
     )
 }
 
-export const MainSite = ()=>{
+export const MainSite = () => {
     return (
-        <Main/>
+        <Site showLogin={true}>
+            <Main/>
+        </Site>
+    )
+}
+
+export const LogoutSite = () => {
+    return (
+        <Site showAppBar={false} showLogin={false}>
+            <Logout/>
+        </Site>
     )
 }

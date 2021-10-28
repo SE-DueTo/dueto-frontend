@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { Site } from "./utils";
 
 export const Main = ()=>{
     return (
-        <Site showLogin={true}>
-            <Background>
-                <Title/>
-            </Background>
-        </Site>
+        <Background>
+            <Title/>
+        </Background>
     )
 }
 

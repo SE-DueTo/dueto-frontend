@@ -1,23 +1,43 @@
 import { Save } from "@mui/icons-material";
-import { Avatar, Backdrop, Button, FormControl, InputLabel, MenuItem, Modal, Paper, Select, Stack, TextField, Typography } from "@mui/material";
+import { Avatar, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { DatePicker } from '@mui/lab';
 import { useState } from "react";
+import { ModalBackdrop } from "./utils";
 
 const demoAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hauskatze_langhaar.jpg"
 
 export default function TransactionModal() {
     return (
-        <Backdrop open={true} >
-            <Modal open={true} sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <Transaction/>
-            </Modal>
-        </Backdrop>
+        <ModalBackdrop>
+            <Transaction/>
+        </ModalBackdrop>
     )
 }
 
+const users:User[] = [
+    {
+        "username": "user-1",
+        "id": 1,
+        "avatar_url": demoAvatar
+    }, {
+        "username": "user-2",
+        "id": 2,
+        "avatar_url": demoAvatar
+    }, {
+        "username": "user-3",
+        "id": 3,
+        "avatar_url": undefined
+    }, 
+]
+
+
 function Transaction() {
 
+    const [whoPaid, setWhoPaid] = useState<string>("")
+    const [amount, setAmount] = useState<string>("0")
+    const [paymentMethod, setPaymentMethod] = useState<string>('')
+    const [purpose, setPurpose] = useState("")
     const [date, setDate] = useState(new Date())
 
     return (
@@ -28,25 +48,67 @@ function Transaction() {
                     <Stack direction="column" spacing={2}>
                         <FormControl variant="standard">
                             <InputLabel>Who paid</InputLabel>
-                            <Select label="Who paid">
-                                <MenuItem value={0}><UserElement username="Test" avatar_url={demoAvatar} id={198847398}/></MenuItem>
+                            <Select 
+                                label="Who paid" 
+                                value={whoPaid} 
+                                onChange={(event)=>{
+                                    setWhoPaid(event.target.value as string)
+                                }}
+                            >
+                                {users.map(e=>(
+                                    <MenuItem 
+                                        value={e.id}
+                                        key={e.id}
+                                    >
+                                        <UserElement username={e.username} avatar_url={e.avatar_url} id={e.id}/>
+                                    </MenuItem>
+                                ))}
+                                
                             </Select>
                         </FormControl>
-                        <TextField type="number" label="Amount" variant="standard"/>
+                        <TextField 
+                            type="number" 
+                            label="Amount" 
+                            variant="standard"
+                            value={amount}
+                            onInput={(event)=>{
+                                const target = event.target as HTMLInputElement
+                                try {
+                                    const amount = parseInt(target.value)
+                                    if(isNaN(amount)) setAmount("")
+                                    else setAmount(amount.toString())
+                                } catch (e) {}
+                            }}
+                        />
                         <FormControl variant="standard">
                             <InputLabel>Payment method</InputLabel>
-                            <Select label="Payment method">
+                            <Select 
+                                label="Payment method" 
+                                value={paymentMethod} 
+                                onChange={(event)=>{
+                                    setPaymentMethod(event.target.value as string)
+                                }}
+                            >
                                 <MenuItem value={0}>lorem</MenuItem>
-                                <MenuItem value={0}>ipsum</MenuItem>
-                                <MenuItem value={0}>solor</MenuItem>
+                                <MenuItem value={1}>ipsum</MenuItem>
+                                <MenuItem value={2}>solor</MenuItem>
                             </Select>
                         </FormControl>
-                        <TextField label="Purpose" variant="standard"/>
+                        <TextField 
+                            label="Purpose" 
+                            variant="standard"
+                            value={purpose}
+                            onInput={(event)=>{
+                                const target = event.target as HTMLInputElement
+                                setPurpose(target.value)
+                            }}
+                        />
                         
                         {/*TODO AUFTEILUNG*/}
 
                         <DatePicker
                             maxDate={new Date()}
+                            minDate={new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 30))}
                             value={date}
                             renderInput={(params) => <TextField {...params}/>}
                             onChange={(newValue:(Date | null))=>{
@@ -55,7 +117,7 @@ function Transaction() {
                             }}
                             label="Time of payment"
                             mask={"__.__.____"}
-                            views={['day', 'month', 'year']}
+                            views={['day']}
                         />
                         <Button startIcon={<Save/>} variant="contained">Save</Button>
                     </Stack>
@@ -67,15 +129,15 @@ function Transaction() {
 
 type User = {
     username: string,
-    avatar_url: string,
+    avatar_url?: string,
     id: number
 }
 function UserElement({avatar_url, username}:User) {
     return (
         <Box>
             <Stack direction="row" spacing={2}>
-                <Avatar alt={username} src={avatar_url}/>
-                <Typography sx={{display: "flex", alignItems: "center"}}>username</Typography>
+                <Avatar alt={username} src={avatar_url}>{!avatar_url && username[0]}</Avatar>
+                <Typography sx={{display: "flex", alignItems: "center"}}>{username}</Typography>
             </Stack>
         </Box>
     )

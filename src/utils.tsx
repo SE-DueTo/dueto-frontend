@@ -1,11 +1,12 @@
 import { ThemeProvider } from "@emotion/react"
 import { LocalizationProvider } from "@mui/lab"
-import { CssBaseline, Paper, useMediaQuery } from "@mui/material"
+import { Backdrop, CssBaseline, Modal, Paper, useMediaQuery } from "@mui/material"
 import { Box } from "@mui/system"
 import { theme } from './theme'
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { DefaultHeader } from "./Header"
 import { ReactChild, ReactFragment, ReactPortal } from "react"
+import { de } from "date-fns/locale"
 
 type SiteProps= {
     children?: JSX.Element | JSX.Element[]
@@ -24,7 +25,7 @@ export const HeightWrapper:React.FC<heightWrapperProps> = ({children}) => (
 
 export const Site:React.FC<SiteProps> = ({children, showLogin, showAppBar=true})=> (
     <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={de}>
             <CssBaseline/>
             <Box sx={{display: "grid", gridTemplateRows: "auto 1fr", height: "100vh"}}>
                 <HeightWrapper>
@@ -54,4 +55,24 @@ export const RegisterLoginWrapper:React.FC<RegisterLoginProps> = ({children}) =>
         </Paper>
     )
 
+}
+
+type ModalBackdropProps = {
+    children: JSX.Element
+}
+export const ModalBackdrop:React.FC<ModalBackdropProps> = ({children})=>{
+    return (
+        <Backdrop open={true} >
+            <Modal 
+                open={true}
+                sx={{
+                    display: "flex", 
+                    justifyContent: "center", 
+                    alignItems: "center",
+                }}
+            >
+                {children}
+            </Modal>
+        </Backdrop>
+    )
 }

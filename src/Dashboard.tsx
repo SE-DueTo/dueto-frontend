@@ -5,6 +5,9 @@ import React, { useState } from "react";
 import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/core/ClickAwayListener";
 import TransactionModal from "./Transaction";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddIcon from '@mui/icons-material/Add';
+import SetleDebtsModal from "./SettleDebts";
 
 const groups = ["test_0", "test_1", "test_2"]
 const demoAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hauskatze_langhaar.jpg"
@@ -81,6 +84,7 @@ export default function Dashboard() {
                         }
                         <Button 
                             variant="outlined" 
+                            endIcon={<AddCircleOutlineIcon />}
                             sx={{width: "calc( 100% - 20px )", margin: "10px"}} 
                             onClick={()=>{setAddGroupShown(true)}}
                         >
@@ -107,27 +111,36 @@ function MainSite() {
 
     //TODO remove this code when functional elements are build
     const [isTransactionShown, setTransactionShown] = useState(false)
+    const [isSettleDebtsShown, setSettleDebtsShown] = useState(false)
 
     return (
         <>
         <TabContext value={value.toString()}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-                    <Tab label="Item One" />
-                    <Tab label="Item Two" />
-                    <Tab label="Item Three" />
+                    <Tab label="Transactions" />
+                    <Tab label="Debts" />
                 </Tabs>
             </Box>
             
             <TabPanel value="0">
-                <Button onClick={()=>{setTransactionShown(true)}}>Transaction</Button>
+                <Button 
+                    variant="outlined" 
+                    startIcon={<AddIcon />} 
+                    onClick={()=>{setTransactionShown(true)}}
+                >
+                    Transaction
+                </Button>
                 {isTransactionShown && <TransactionModal/>}
             </TabPanel>
             <TabPanel value="1">
-                Item Two
-            </TabPanel>
-            <TabPanel value="2">
-                Item Three
+            <Button 
+                    variant="outlined" 
+                    onClick={()=>{setSettleDebtsShown(true)}}
+                >
+                    Settle Debts
+                </Button>
+                {isSettleDebtsShown && <SetleDebtsModal/>}
             </TabPanel>
         </TabContext>
         </>

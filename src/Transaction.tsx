@@ -1,8 +1,8 @@
 import { Save } from "@mui/icons-material";
-import { Avatar, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Checkbox, FormControl, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { DatePicker } from '@mui/lab';
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { ModalBackdrop } from "./utils";
 
 const demoAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hauskatze_langhaar.jpg"
@@ -39,6 +39,22 @@ function Transaction() {
     const [paymentMethod, setPaymentMethod] = useState<string>('')
     const [purpose, setPurpose] = useState("")
     const [date, setDate] = useState(new Date())
+
+    const [checked, setChecked] = useState([0]);
+
+    const handleToggle = (value: number) => () => {
+      const currentIndex = checked.indexOf(value);
+      const newChecked = [...checked];
+  
+      if (currentIndex === -1) {
+        newChecked.push(value);
+      } else {
+        newChecked.splice(currentIndex, 1);
+      }
+  
+      setChecked(newChecked);
+    };
+
 
     return (
         <Paper sx={{padding: "2em", width: "700px", maxWidth: "100%", overflow: "auto", maxHeight: "100vh"}}>
@@ -107,6 +123,59 @@ function Transaction() {
                         />
                         
                         {/*TODO AUFTEILUNG*/}
+                        
+                        <List sx={{ width: '100%' }}>
+                            {users.map((members) => {
+                                const labelId = `checkbox-list-label-${members}`;
+
+                                return (
+                                <ListItem
+                                    key={members.id}
+                                    secondaryAction={
+                                    <IconButton edge="end" aria-label="comments">
+                                    </IconButton>
+                                    }
+                                    disablePadding
+                                >
+                                    <ListItemButton role={undefined} onClick={handleToggle(members.id)} dense>
+                                        <ListItemIcon>
+                                            <Checkbox
+                                                defaultChecked
+                                                edge="start"
+                                                checked={checked.indexOf(members.id) !== -1}
+                                                tabIndex={-1}
+                                                inputProps={{ 'aria-labelledby': labelId }}
+                                            />
+                                        </ListItemIcon>
+                                        
+                                        <ListItemText id={labelId} 
+                                            primary={
+                                                <UserElement username={members.username} avatar_url={members.avatar_url} id={members.id}/>
+                                            } 
+                                        />
+
+                                        <TextField 
+                                            type="number" 
+                                            label="Amount" 
+                                            variant="standard"
+                                            value={(parseFloat(amount)/users.length)}
+                                            onInput={(event)=>{
+                                                const target = event.target as HTMLInputElement
+                                                try {
+                                                    const input = target.value
+                                                    const amount = parseFloat(input)
+                                                    if(((amount * 100 ) % 1) > 0) return;
+                                                    if(isNaN(amount)) setAmount("")
+                                                    else setAmount(input)
+                                                } catch (e) {}
+                                            }}
+                                        />
+                                    </ListItemButton>
+                                </ListItem>
+                                );
+                            })}
+                        </List>
+                     
 
                         <DatePicker
                             maxDate={new Date()}

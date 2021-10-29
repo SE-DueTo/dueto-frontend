@@ -1,6 +1,10 @@
-import { Avatar, Button, Divider, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Menu, MenuItem, Paper } from "@mui/material";
+import { TabContext, TabPanel } from "@mui/lab";
+import { Avatar, Button, Divider, FormControl, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import React, { useState } from "react";
+import { ModalBackdrop } from "./utils";
+import ClickAwayListener from "@mui/core/ClickAwayListener";
+import TransactionModal from "./Transaction";
 
 const groups = ["test_0", "test_1", "test_2"]
 const demoAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hauskatze_langhaar.jpg"
@@ -66,10 +70,10 @@ export default function Dashboard() {
                         }
                     >
                         {
-                            groups.map(e=>(
-                                <ListItemButton>
+                            groups.map((e, index)=>(
+                                <ListItemButton key={index}>
                                     <ListItemIcon>
-                                        <Avatar>{e.substring(0, 1)}</Avatar>
+                                        <Avatar>{e[0]}</Avatar>
                                     </ListItemIcon>
                                     <ListItemText primary={e} />
                                 </ListItemButton>
@@ -83,19 +87,77 @@ export default function Dashboard() {
                             New Group
                         </Button>
                         
-                        {isAddGroupShown && <AddGroup />}
+                        {isAddGroupShown && <AddGroup setAddGroupShown={setAddGroupShown}/>}
                     </List>
                 </List>
             </Paper>
             <Box>
-                SITE
+                <MainSite/>
             </Box>
         </Box>
     )
 }
 
-function AddGroup() {
+function MainSite() {
+
+    const [value, setValue] = useState(0)
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };    
+
+    //TODO remove this code when functional elements are build
+    const [isTransactionShown, setTransactionShown] = useState(false)
+
     return (
-        <></>
+        <>
+        <TabContext value={value.toString()}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
+                    <Tab label="Item One" />
+                    <Tab label="Item Two" />
+                    <Tab label="Item Three" />
+                </Tabs>
+            </Box>
+            
+            <TabPanel value="0">
+                <Button onClick={()=>{setTransactionShown(true)}}>Transaction</Button>
+                {isTransactionShown && <TransactionModal/>}
+            </TabPanel>
+            <TabPanel value="1">
+                Item Two
+            </TabPanel>
+            <TabPanel value="2">
+                Item Three
+            </TabPanel>
+        </TabContext>
+        </>
+    )
+}
+
+type AddGroupProps = {
+    setAddGroupShown: React.Dispatch<React.SetStateAction<boolean>>
+}
+const AddGroup:React.FC<AddGroupProps> = ({setAddGroupShown}) => {
+
+    const handleClose = ()=>{
+        setAddGroupShown(false)
+    }
+
+    return (
+        <ModalBackdrop>
+            <ClickAwayListener onClickAway={handleClose}>
+                <Paper sx={{padding: "2em", width: "700px", maxWidth: "100%", overflow: "auto", maxHeight: "100vh"}}>
+                    <Typography variant="h5">New Group</Typography>
+                    <FormControl sx={{width: "100%"}}>
+                        <form>
+                            <Stack spacing={2}>
+                                <TextField label="Group name" variant="standard"/>
+                                <Button variant="contained" sx={{width: "100%"}}>Create</Button>
+                            </Stack>
+                        </form>
+                    </FormControl>
+                </Paper>
+            </ClickAwayListener>
+        </ModalBackdrop>
     )
 }

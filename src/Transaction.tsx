@@ -74,9 +74,11 @@ function Transaction() {
                             onInput={(event)=>{
                                 const target = event.target as HTMLInputElement
                                 try {
-                                    const amount = parseInt(target.value)
+                                    const input = target.value
+                                    const amount = parseFloat(input)
+                                    if(((amount * 100 ) % 1) > 0) return;
                                     if(isNaN(amount)) setAmount("")
-                                    else setAmount(amount.toString())
+                                    else setAmount(input)
                                 } catch (e) {}
                             }}
                         />

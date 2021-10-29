@@ -1,3 +1,5 @@
+import { Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 
 export const Main = ()=>{
@@ -26,10 +28,10 @@ function Title():JSX.Element {
     }, [])
 
     return (
-        <div onClick={increment}>
-            <h1>DueTo</h1>
-            <h3>Coming Soon{".".repeat(count)}</h3>
-        </div>
+        <Box onClick={increment} sx={{textAlign: "center"}}>
+            <Typography variant="h3">DueTo</Typography>
+            <Typography variant="h4">Coming Soon{".".repeat(count)}</Typography>
+        </Box>
     )
 }
 
@@ -38,11 +40,8 @@ type BackgroundProps = {
 }
 
 const Background:React.FC<BackgroundProps> = ({children}) => (
-    
-    <div className="App">
-        <header className="App-header">
-            {children}
-        </header>
-    </div>
+    <Box sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+        {children}
+    </Box>
     
 )

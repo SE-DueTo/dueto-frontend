@@ -3,7 +3,7 @@ Feature: Test adding a transaction
     I want adding a transaction
 
     Scenario: open transaction pop-up
-        Given on browser on url ../dashboard
+        Given the website-url is "/dashboard"
         And on tab "Transactions"
         When I click on "+ Transaction"
         Then Transaction pop-up opened

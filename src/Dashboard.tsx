@@ -8,6 +8,7 @@ import TransactionModal from "./Transaction";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddIcon from '@mui/icons-material/Add';
 import SetleDebtsModal from "./SettleDebts";
+import PaymentIcon from '@mui/icons-material/Payment';
 
 const groups = ["test_0", "test_1", "test_2"]
 const demoAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hauskatze_langhaar.jpg"
@@ -131,16 +132,17 @@ function MainSite() {
                 >
                     Transaction
                 </Button>
-                {isTransactionShown && <TransactionModal/>}
+                {isTransactionShown && <TransactionModal close={()=>{setTransactionShown(false)}}/>}
             </TabPanel>
             <TabPanel value="1">
             <Button 
                     variant="outlined" 
+                    startIcon={<PaymentIcon/>}
                     onClick={()=>{setSettleDebtsShown(true)}}
                 >
                     Settle Debts
                 </Button>
-                {isSettleDebtsShown && <SetleDebtsModal/>}
+                {isSettleDebtsShown && <SetleDebtsModal close={()=>setSettleDebtsShown(false)}/>}
             </TabPanel>
         </TabContext>
         </>

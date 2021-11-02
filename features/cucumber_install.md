@@ -4,7 +4,7 @@
 `npm install`
 
 ### Step 2
-`Windows search` -> `Systemumgebungsvariablen bearbeiten` -> `Umgebungsvariablen` -> `Path` -> `Neu` -> `C:\path\to\dueto-frontend\`
+`Windows search` -> `Systemumgebungsvariablen bearbeiten` -> `Umgebungsvariablen` -> `Path` -> `Neu` -> `C:\path\to\dueto-frontend\tests\`
 
 ## Run
 `npm run cucumber`

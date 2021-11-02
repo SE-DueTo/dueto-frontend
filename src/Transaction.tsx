@@ -40,7 +40,7 @@ function Transaction() {
     const [purpose, setPurpose] = useState("")
     const [date, setDate] = useState(new Date())
 
-    const [checked, setChecked] = useState([0]);
+    const [checked, setChecked] = useState(users.map(e=>(e.id)));
 
     const handleToggle = (value: number) => () => {
       const currentIndex = checked.indexOf(value);
@@ -140,7 +140,6 @@ function Transaction() {
                                     <ListItemButton role={undefined} onClick={handleToggle(members.id)} dense>
                                         <ListItemIcon>
                                             <Checkbox
-                                                defaultChecked
                                                 edge="start"
                                                 checked={checked.indexOf(members.id) !== -1}
                                                 tabIndex={-1}

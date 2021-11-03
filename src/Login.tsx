@@ -22,6 +22,7 @@ export default function Login() {
                             variant="contained" 
                             endIcon={<Send/>} 
                             onClick={()=>{setRedirect(true)}}
+                            id="login-button"
                         >
                             Login
                         </Button>

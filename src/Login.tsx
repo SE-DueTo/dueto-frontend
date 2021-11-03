@@ -15,8 +15,8 @@ export default function Login() {
                 <form>
                     <Stack spacing={2}>
                         <Typography variant="h5">Login</Typography>
-                        <TextField label="Username" variant="standard" />
-                        <TextField label="Password" type="password" variant="standard" />
+                        <TextField label="Username" variant="standard" id="login-username-input" />
+                        <TextField label="Password" type="password" variant="standard" id="login-password-input" />
                         <Button 
                             sx={{width: "100%"}} 
                             variant="contained" 

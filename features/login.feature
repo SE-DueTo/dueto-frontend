@@ -3,23 +3,19 @@ Feature: Login
     The user logs into the website
 
     Background:
-        Given the browser loads
-        And the website is "/login"
+        Given the website-url is "/login"
 
     Scenario: User logs in with correct login data
-        And The user is not logged in
-            | username | password | dashboard_url |
-            | admin    | admin    | /dashboard    |
-        When the user types <username> into the username input field
-        And the user types <password> into the password input field
-        And The user clicks the login button
-        Then The website will redirect to <dashboard_url>
+        Given The user is not logged in
+        When The user logs in
+            | username | password |
+            | admin    | admin    |
+        Then The website-url is now to "/dashboard"
 
     Scenario: User logs in with wrong login data
-        And The user is not logged in
+        Given The user is not logged in
+        When The user logs in
             | username | password |
             | admin    | nimda    |
-        When the user types <username> into the username input field
-        And the user types <password> into the password input field
-        And The user clicks the login button
+        Then The website-url is now to "/login"
         Then The website will show an error message

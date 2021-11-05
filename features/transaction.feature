@@ -1,70 +1,63 @@
 Feature: Test adding a transaction
-    As a user
-    I want adding a transaction
+
+    The user wants to add a transaction
 
     Scenario: open transaction pop-up
-        Given the website-url is "/dashboard"
-        And on tab "Transactions"
-        When I click on "+ Transaction"
+        Given The website-url is "/dashboard"
+        And The tab "Transactions" is shown
+        When The user clicks on "+ Transaction"
         Then Transaction pop-up opened
 
     Scenario: with distribute debts equally
-        Given transaction pop-up is open
-        When I choose a date
-        And add amount
-        And add intended use
-        And add Creditor
-        And add payment method
-        And click on "Save"
-        Then transaction added to List of transactions
+        Given Transaction pop-up is open
+        When The user chooses a date
+        And The user adds an amount
+        And The user adds an intended use
+        And The user adds a Creditor
+        And The user adds a payment method
+        And The user clicks on "Save" button
+        Then The transaction is added to List of transactions
 
     Scenario: with personalized Amount per Member
-        Given transaction pop-up is open
-        When I choose a date
-        And add amount
-        And add intended use
-        And add Creditor
-        And add payment method
-        And add amount per member
-        And click on "Save"
-        Then Transaction added to List of Transactions
+        Given Transaction pop-up is open
+        When The user chooses a date
+        And The user adds an amount
+        And The user adds an intended use
+        And The user adds a Creditor
+        And The user adds a payment method
+        And The user adds a amount per member
+        And The user clicks on "Save" button
+        Then THe transaction is added to List of transactions
 
     Scenario: with personalized percentage Amount per Member
-        Given transaction pop-up is open
-        When I choose a date
-        And add amount
-        And add intended use
-        And add Creditor
-        And add payment method
-        And add percentage amount per member
-        And click on "Save"
-        Then Transaction added to List of Transactions
+        Given Transaction pop-up is open
+        When The user chooses a date
+        And The user adds an amount
+        And The user adds an intended use
+        And The user adds a Creditor
+        And The user adds a payment method
+        And The user adds a percentage amount per member
+        And The user clicks on "Save" button
+        Then The transaction added to List of transactions
 
     Scenario: with repeating settle debt
-        Given transaction pop-up is open
-        When I choose a date
-        And add amount
-        And add intended use
-        And add Creditor
-        And add payment method
-        And choose repeating settle debt
-        And add interval
-        And click on "Save"
-        Then Transaction added to List of Transactions
+        Given Transaction pop-up is open
+        When The user chooses a date
+        And The user adds an amount
+        And The user adds an intended use
+        And The user adds a Creditor
+        And The user adds a payment method
+        And The user chooses repeating settle debt
+        And The user adda an interval
+        And The user clicks on "Save" button
+        Then Transaction is added to List of transactions
 
     Scenario: cancel the adding prozess with button
-        Given transaction pop-up is open
-        When I click on "Exit"
-        Then transactionpop-up close
-        And transaction will not be saved
+        Given Transaction pop-up is open
+        When The user clicks on "Exit"
+        Then The transaction pop-up closes
 
     Scenario: cancel the adding prozess without button
-        Given transaction pop-up is open
-        When I click outsite of the pop-up
-        Then transactionpop-up close
-        And transaction will not be saved
-
-
-
-
-
+        Given Transaction pop-up is open
+        When The user clicks outsite of the pop-up
+        Then The transaction pop-up closes

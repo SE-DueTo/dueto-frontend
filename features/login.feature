@@ -3,7 +3,7 @@ Feature: Login
     The user logs into the website
 
     Background:
-        Given the website-url is "/login"
+        Given The website-url is "/login"
 
     Scenario: User logs in with correct login data
         Given The user is not logged in

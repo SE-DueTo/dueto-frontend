@@ -24,7 +24,7 @@ Before(async ()=>{
         .build();
 })
 
-Given("the website-url is {string}", async (url) => {
+Given("The website-url is {string}", async (url) => {
     return await driver.get(rootURL + url)
 })
 

@@ -16,7 +16,7 @@ When("The user logs in", async (data)=>{
 
     const inputPassword = await driver.findElement(By.id("login-password-input"))
     await inputPassword.sendKeys(password)
-    
+
     const button = await driver.findElement(By.id("login-button"))
     await button.click()
 

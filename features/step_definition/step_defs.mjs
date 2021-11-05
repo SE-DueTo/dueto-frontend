@@ -20,6 +20,7 @@ export let driver;
 
 BeforeAll(()=>{
     dotenv.config()
+    console.log(process.env)
 })
 
 Before(async ()=>{
@@ -40,7 +41,7 @@ Then("The website-url is now {string}", async (url) => {
 
 Given("The user is logged in", async ()=>{
     await driver.get(rootURL + "/login")
-    const username = process.env.CUCUMBER_USER
+    const username = process.env.CUCUMBER_USERNAME
     const password = process.env.CUCUMBER_PASSWORD
 
     if(!username || !password) {
@@ -65,4 +66,7 @@ async function login(username, password) {
     await button.click()
 
     await driver.sleep(1000)
+
+    const currentUrl = await driver.getCurrentUrl()
+    assert.equal(currentUrl, `${rootURL}/dashboard`)
 }

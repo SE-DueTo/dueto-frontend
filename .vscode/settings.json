@@ -1,0 +1,9 @@
+{
+    "editor.quickSuggestions": true,
+    "cucumberautocomplete.steps": [
+        "features/step_definition/*.mjs",
+    ],
+    "cucumberautocomplete.strictGherkinCompletion": true,
+    "cucumberautocomplete.strictGherkinValidation": true,
+    "cucumberautocomplete.smartSnippets": true,
+}

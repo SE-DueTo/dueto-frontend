@@ -1,7 +1,7 @@
 import React from 'react'
 import { Save } from "@mui/icons-material";
 import ClickAwayListener from "@mui/core/ClickAwayListener";
-import { Avatar, Button, Checkbox, FormControl, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Select, Stack, Switch, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { DatePicker } from '@mui/lab';
 import { useState } from "react";
@@ -47,6 +47,7 @@ function Transaction({close}:TransactionModalProps) {
     const [paymentMethod, setPaymentMethod] = useState<string>('')
     const [purpose, setPurpose] = useState("")
     const [date, setDate] = useState(new Date())
+    const [percentage, setPercentage] = useState(false)
 
     const [checked, setChecked] = useState(users.map(e=>(e.id)));
 
@@ -62,6 +63,16 @@ function Transaction({close}:TransactionModalProps) {
   
       setChecked(newChecked);
     };
+
+    const handleSwitchAmounPercentage = () => {
+        //TODO
+        if(percentage){
+            setPercentage(false)
+
+        }
+
+        setPercentage(true)
+    }
 
 
     return (
@@ -101,6 +112,9 @@ function Transaction({close}:TransactionModalProps) {
                                 label="Amount" 
                                 variant="standard"
                                 value={amount}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                                }}
                                 onInput={(event)=>{
                                     const target = event.target as HTMLInputElement
                                     try {
@@ -136,8 +150,11 @@ function Transaction({close}:TransactionModalProps) {
                                 }}
                             />
                             
-                            {/*TODO AUFTEILUNG*/}
-                            
+                            <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+                                <Typography fontWeight="light" fontSize="small">partial amount</Typography>
+                                    <Switch size="small" onChange={handleSwitchAmounPercentage}/>
+                                <Typography fontWeight="light" fontSize="small">percentage</Typography>
+                            </Stack>
                             <List sx={{ width: '100%' }}>
                                 {users.map((members) => {
                                     const labelId = `checkbox-list-label-${members}`;
@@ -166,12 +183,15 @@ function Transaction({close}:TransactionModalProps) {
                                                     <UserElement username={members.username} avatar_url={members.avatar_url} id={members.id}/>
                                                 } 
                                             />
-
-                                            <TextField 
+                                        </ListItemButton>
+                                        <TextField 
                                                 type="number" 
-                                                label="Amount" 
+                                                label="partial amount" 
                                                 variant="standard"
                                                 value={(parseFloat(amount)/users.length)}
+                                                InputProps={{
+                                                    endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                                                }}
                                                 onInput={(event)=>{
                                                     const target = event.target as HTMLInputElement
                                                     try {
@@ -182,14 +202,13 @@ function Transaction({close}:TransactionModalProps) {
                                                         
                                                     } catch (e) {}
                                                 }}
-                                            />
-                                        </ListItemButton>
+                                        />
                                     </ListItem>
                                     );
                                 })}
                             </List>
-                        
-
+ 
+                            
                             <DatePicker
                                 maxDate={new Date()}
                                 minDate={new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 30))}

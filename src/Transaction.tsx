@@ -146,7 +146,7 @@ function Transaction({close}:TransactionModalProps) {
                             
                             <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
                                 <Typography fontWeight="light" fontSize="small">partial amount</Typography>
-                                    <Switch size="small" onChange={handleSwitchAmounPercentage}/>
+                                    <Switch size="small" onChange={handleSwitchAmounPercentage} color="default"/>
                                 <Typography fontWeight="light" fontSize="small">percentage</Typography>
                             </Stack>
                             <List sx={{ width: '100%' }}>

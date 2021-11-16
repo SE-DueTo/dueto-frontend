@@ -65,13 +65,7 @@ function Transaction({close}:TransactionModalProps) {
     };
 
     const handleSwitchAmounPercentage = () => {
-        //TODO
-        if(percentage){
-            setPercentage(false)
-
-        }
-
-        setPercentage(true)
+       setPercentage(!percentage)
     }
 
 
@@ -157,7 +151,8 @@ function Transaction({close}:TransactionModalProps) {
                             </Stack>
                             <List sx={{ width: '100%' }}>
                                 {users.map((members) => {
-                                    const labelId = `checkbox-list-label-${members}`;
+                                    const labelId = `checkbox-list-label-${members}`
+                                    const textfieldId = `textfield-${members}`
 
                                     return (
                                     <ListItem
@@ -185,12 +180,13 @@ function Transaction({close}:TransactionModalProps) {
                                             />
                                         </ListItemButton>
                                         <TextField 
+                                                id={textfieldId}
                                                 type="number" 
-                                                label="partial amount" 
+                                                label={percentage ? "percentage" : "partial amount"}
                                                 variant="standard"
                                                 value={(parseFloat(amount)/users.length)}
                                                 InputProps={{
-                                                    endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                                                    endAdornment: <InputAdornment position="end" sx={{width:"10px"}}>{percentage ? "%" : "€"}</InputAdornment>,
                                                 }}
                                                 onInput={(event)=>{
                                                     const target = event.target as HTMLInputElement

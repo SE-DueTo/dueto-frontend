@@ -119,8 +119,6 @@ function Transaction({close, users}:TransactionModalProps) {
 
             user.isChecked = !user.isChecked
 
-            console.log("sum", sum(users.map(u=>u.amount)))
-
             return JSON.parse(JSON.stringify(users))
         })
     }
@@ -198,8 +196,6 @@ function Transaction({close, users}:TransactionModalProps) {
 
             user.wasEdited = true
             user.amount = newAmount
-
-            console.log("sum", sum(users.map(u=>u.amount)))
 
             return JSON.parse(JSON.stringify(users))
 

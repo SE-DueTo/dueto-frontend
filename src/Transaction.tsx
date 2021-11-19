@@ -89,7 +89,7 @@ function Transaction({close, users}:TransactionModalProps) {
                 notEditedUsers.forEach(u1 => { amount += u1.amount })
                 notEditedUsers.forEach((u1, index) => {
                     const editAmount = index === (notEditedUsers.length - 1) ? amount - acc :  roundToIntTo2Decimals(amount / notEditedUsers.length)
-                    u1.amount = editAmount
+                    u1.amount = roundToIntTo2Decimals(editAmount)
                     acc += editAmount
                 })
             } else {
@@ -97,7 +97,7 @@ function Transaction({close, users}:TransactionModalProps) {
                 let amount = user.amount
                 let notEditedUsers = users.filter( u1 => u1.isChecked && !u1.wasEdited && u1 !== user)
                 if(notEditedUsers.length === 0) {
-                    notEditedUsers = users.filter(u1 => u1 !== user)
+                    notEditedUsers = users.filter(u1 => u1 !== user && u1.isChecked)
                 }
                 let acc = 0;
                 for(let i = 0; i<notEditedUsers.length; i++) {

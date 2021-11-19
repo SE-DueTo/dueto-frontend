@@ -81,6 +81,12 @@ function Transaction({close, users}:TransactionModalProps) {
 
     const toggleCheckbox = (user: TransactionUser) => () => {
         setTransactionUsers((users):TransactionUser[] => {
+
+            if(user.isChecked) {
+                const amountChecked = users.filter(u => u.isChecked && u !== user).length;
+                if(amountChecked === 0) return users;
+            }
+
             if(!user.isChecked) {
                 //user is now checked in
                 let amount = 0
@@ -105,7 +111,6 @@ function Transaction({close, users}:TransactionModalProps) {
                     let editAmount = (i===(notEditedUsers.length - 1 )) ? amount - acc : amount / notEditedUsers.length
                     editAmount = roundToIntTo2Decimals(editAmount)
                     acc += editAmount
-                    console.log(acc)
                     notEditedUser.amount += editAmount
                     notEditedUser.amount = roundToIntTo2Decimals(notEditedUser.amount)
                 }
@@ -113,6 +118,8 @@ function Transaction({close, users}:TransactionModalProps) {
             }
 
             user.isChecked = !user.isChecked
+
+            console.log("sum", sum(users.map(u=>u.amount)))
 
             return JSON.parse(JSON.stringify(users))
         })
@@ -155,27 +162,44 @@ function Transaction({close, users}:TransactionModalProps) {
 
     const setInput = (user: TransactionUser, newAmount: number) => {
         setTransactionUsers((users):TransactionUser[] => {
-            newAmount = Math.min(newAmount, amount)
+            newAmount = Math.max(0, Math.min(newAmount, amount))
 
             const difference = roundToIntTo2Decimals(user.amount - newAmount)
 
             let uneditedUsers = users.filter( u => !u.wasEdited && u.isChecked && u.user.id!==user.user.id)
             let unediteusersAmount = sum(uneditedUsers.map(u => u.amount))
-            if(uneditedUsers.length === 0 || unediteusersAmount < difference) {
-                uneditedUsers = users.filter( u => u.user.id!==user.user.id && u.amount>0)
+
+            if(uneditedUsers.length === 0 || unediteusersAmount < -difference) {
+                uneditedUsers = users.filter( u => u.user.id!==user.user.id)
             }
 
             let acc = 0
             for(let i = 0; i<uneditedUsers.length; i++) {
                 const u = uneditedUsers[i]
-                const editAmount = (i === (uneditedUsers.length -1)) ? difference - acc : roundToIntTo2Decimals(difference / uneditedUsers.length)
+                let editAmount = (i === (uneditedUsers.length -1)) ? difference - acc : roundToIntTo2Decimals(difference / uneditedUsers.length)
+                if(u.amount + editAmount < 0) {
+                    editAmount = -u.amount
+                }
                 acc += editAmount
                 u.amount += editAmount
                 u.amount = roundToIntTo2Decimals(u.amount)
             }
+            if(acc !== difference) {
+                const editAmount = roundToIntTo2Decimals(difference-acc)
+                for(let i = 0; i < uneditedUsers.length; i++) {
+                    if(uneditedUsers[i].amount+editAmount >= 0) {
+                        uneditedUsers[i].amount += editAmount;
+                        uneditedUsers[i].amount = roundToIntTo2Decimals(uneditedUsers[i].amount)
+                        break;
+                    }
+                }
+            }
+
 
             user.wasEdited = true
             user.amount = newAmount
+
+            console.log("sum", sum(users.map(u=>u.amount)))
 
             return JSON.parse(JSON.stringify(users))
 
@@ -331,24 +355,15 @@ function Transaction({close, users}:TransactionModalProps) {
                                                             if(input.length - input.indexOf(",") > 3) return;
                                                         }
 
-                                                        //console.log(input)
                                                         const inputAmount = parseFloat(input)
-                                                        /*console.log(inputAmount)
-                                                        console.log(inputAmount * 100)
-                                                        console.log((inputAmount * 100) % 1)
-                                                        if(((inputAmount * 100 ) % 1) > 0) return;*/
 
                                                         if(isNaN(inputAmount)) {
                                                             setInput(user, 0)
                                                             return;
                                                         }
-
-                                                        console.log(inputAmount)
                                                         setInput(user, percentage ? ((inputAmount/100)*amount) : inputAmount)
                                                         
-                                                    } catch (e) {
-                                                        console.log(e)
-                                                    }
+                                                    } catch (e) {}
                                                 }}
                                         />
                                     </ListItem>

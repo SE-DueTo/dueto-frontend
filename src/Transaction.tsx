@@ -79,102 +79,173 @@ function Transaction({close, users}:TransactionModalProps) {
      * ]
      */
 
-    const toggleCheckbox = (user: TransactionUser) => () => {
+    /**
+     * Toggles the checkbox for a specific user and redistributes their amount to all other users
+     * 
+     * @param user The user to toggle the checkbox for
+     */
+    const toggleCheckbox = (user: TransactionUser) => ():void => {
         setTransactionUsers((users):TransactionUser[] => {
 
+            //if user tries to disable the checkbox
             if(user.isChecked) {
+                //if no other user is checked in, this users checkout is disabled because no money could be distributed
                 const amountChecked = users.filter(u => u.isChecked && u !== user).length;
                 if(amountChecked === 0) return users;
             }
 
+            //user is now checked in
             if(!user.isChecked) {
-                //user is now checked in
-                let amount = 0
-                let acc = 0;
+                //list of users who are not yet edited to get money from to distribute equally
                 const notEditedUsers = users.filter( u1 => (u1.isChecked && !u1.wasEdited) || u1 === user)
+                
+                //accumulate their amount
+                let amount = 0
                 notEditedUsers.forEach(u1 => { amount += u1.amount })
+
+                //distribute this amount equally.
+                //the last user gets the difference of the amount and accumulated value to prevent cents from being lost
+                let acc = 0;
                 notEditedUsers.forEach((u1, index) => {
                     const editAmount = index === (notEditedUsers.length - 1) ? amount - acc :  roundToIntTo2Decimals(amount / notEditedUsers.length)
                     u1.amount = roundToIntTo2Decimals(editAmount)
                     acc += editAmount
                 })
-            } else {
-                //user is now checked out
+            } else { //user is now checked out
+                
+                //the amount of the user to now distribute
                 let amount = user.amount
+
+                //get list of not edited users to distribute to
                 let notEditedUsers = users.filter( u1 => u1.isChecked && !u1.wasEdited && u1 !== user)
+
+                //no not edited users -> distribute to everyone
                 if(notEditedUsers.length === 0) {
                     notEditedUsers = users.filter(u1 => u1 !== user && u1.isChecked)
                 }
+
+                //give money to everyone in equal amounts
+                //the last user gets the difference of the amount and accumulated value to prevent cents from being lost
                 let acc = 0;
                 for(let i = 0; i<notEditedUsers.length; i++) {
                     const notEditedUser = notEditedUsers[i]
+                    //give everyone the same value. if is the last one, use the rest (difference between amount and accumulated amount)
                     let editAmount = (i===(notEditedUsers.length - 1 )) ? amount - acc : amount / notEditedUsers.length
                     editAmount = roundToIntTo2Decimals(editAmount)
                     acc += editAmount
                     notEditedUser.amount += editAmount
                     notEditedUser.amount = roundToIntTo2Decimals(notEditedUser.amount)
                 }
+
+                //remove amount from user who is now checked out, as they shouldn't have any money distributed to
                 user.amount = 0
             }
 
+            //toggle the checkbox
             user.isChecked = !user.isChecked
 
+            //set new state
+            //has to be converted to new object for react to aknowledge the change
             return JSON.parse(JSON.stringify(users))
         })
     }
 
    
+    /**
+     * Switches the input from or to percentage
+     */
     const handleSwitchAmounPercentage = () => {
        setPercentage(!percentage)
     }
 
+    /**
+     * Parse to two decimals (no rounding, just cutting away)
+     * @param input the number to cut
+     * @returns the cut number
+     */
     const parseToIntTo2Decimals = (input: number):number => {
         return parseInt((input*100).toString()) / 100
     }
 
+    /**
+     * Round to two decimals (mathematical rounding)
+     * @param input the number to round
+     * @returns the rounded number
+     */
     const roundToIntTo2Decimals = (input: number):number => {
         return Math.round((input*100)) / 100
     }
 
+    /**
+     * Sets a new global amount and resets the users to equal amounts
+     * @param newAmount The new amount for this transaction
+     */
     const setAmount = (newAmount : number) => {
 
-        const amountChecked = transactionUsers.filter(u => u.isChecked).length;
-
+        //set user amounts
         setTransactionUsers((users) => {
+
+            //checked users
+            const amountChecked = users.filter(u => u.isChecked).length;
+
             let acc:number = 0;
             return users.map((u, index) => {
-                let amount = parseToIntTo2Decimals(newAmount / amountChecked)
+                //amount to add to user
+                //0 if user is not checked in
+                let amount = u.isChecked ? parseToIntTo2Decimals(newAmount / amountChecked) : 0
                 if(index === users.length - 1) {
+                    //if is last user -> use difference between real amount and accumulated value
+                    //-> lost cents are prevented
                     amount = parseToIntTo2Decimals(newAmount - acc)
                 }
-                u.amount = u.isChecked ? amount : 0
-                if(u.isChecked) {
-                    acc += amount
-                }
+                //set user amount
+                u.amount = amount
+                acc += amount
+
+                //reset edited flag for all users
                 u.wasEdited = false
                 return u
             })
         })
+
+        //set global amount
         setNewAmount(newAmount)
     }
 
+    /**
+     * Set the amount for a specific user
+     * @param user The user to set the amount for
+     * @param newAmount The new amount for this specific user
+     */
     const setInput = (user: TransactionUser, newAmount: number) => {
         setTransactionUsers((users):TransactionUser[] => {
+            //set amount between 0 and max amount
             newAmount = Math.max(0, Math.min(newAmount, amount))
 
+            //the difference between the old and new amount
             const difference = roundToIntTo2Decimals(user.amount - newAmount)
 
+            //get all users who are not yet edited
             let uneditedUsers = users.filter( u => !u.wasEdited && u.isChecked && u.user.id!==user.user.id)
+
+            //get the amount of money these have
             let unediteusersAmount = sum(uneditedUsers.map(u => u.amount))
 
+            //if there are no users or the amount is not enough to get the difference from 
+            // -> use all users
             if(uneditedUsers.length === 0 || unediteusersAmount < -difference) {
                 uneditedUsers = users.filter( u => u.user.id!==user.user.id)
             }
 
             let acc = 0
+            //add or subtract amount from users
+            //the last user gets the difference of the amount and accumulated value to prevent cents from being lost
             for(let i = 0; i<uneditedUsers.length; i++) {
                 const u = uneditedUsers[i]
                 let editAmount = (i === (uneditedUsers.length -1)) ? difference - acc : roundToIntTo2Decimals(difference / uneditedUsers.length)
+                
+                //if amount would be negative
+                //-> stop at 0
                 if(u.amount + editAmount < 0) {
                     editAmount = -u.amount
                 }
@@ -182,7 +253,11 @@ function Transaction({close, users}:TransactionModalProps) {
                 u.amount += editAmount
                 u.amount = roundToIntTo2Decimals(u.amount)
             }
+
+            //if at some point a user did not have enough money left to account for the amount, there will be a difference between the real value and the accumulation
             if(acc !== difference) {
+
+                //try every user to subtract this from
                 const editAmount = roundToIntTo2Decimals(difference-acc)
                 for(let i = 0; i < uneditedUsers.length; i++) {
                     if(uneditedUsers[i].amount+editAmount >= 0) {
@@ -193,21 +268,21 @@ function Transaction({close, users}:TransactionModalProps) {
                 }
             }
 
-
+            //set the edited flag for this user and the new amount
             user.wasEdited = true
             user.amount = newAmount
 
+            //set new state
+            //has to be converted to new object for react to aknowledge the change
             return JSON.parse(JSON.stringify(users))
-
-
-            //get amount added or subtracted
-            //get number of unedited amounts
-            //>0
-                //divide on this number
-            //divide on all
         })
     }
 
+    /**
+     * Calculates the sum of the given number array
+     * @param arr Array consisting of the numbers to sum up
+     * @returns the sum of the array
+     */
     const sum = (arr: number[]) : number => {
         let amount = 0
         for(const number of arr) {

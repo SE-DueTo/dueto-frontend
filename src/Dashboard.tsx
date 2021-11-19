@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/core/ClickAwayListener";
-import TransactionModal from "./Transaction";
+import TransactionModal, {users} from "./Transaction";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import AddIcon from '@mui/icons-material/Add';
 import SetleDebtsModal from "./SettleDebts";
@@ -132,7 +132,7 @@ function MainSite() {
                 >
                     Transaction
                 </Button>
-                {isTransactionShown && <TransactionModal close={()=>{setTransactionShown(false)}}/>}
+                {isTransactionShown && <TransactionModal close={()=>{setTransactionShown(false)}} users={users}/>}
             </TabPanel>
             <TabPanel value="1">
             <Button 

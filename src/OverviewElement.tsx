@@ -1,25 +1,33 @@
 import { AddCircleOutline } from "@mui/icons-material";
 import { Avatar, Button, Divider, FormControl, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Paper, Stack, TextField, Typography } from "@mui/material"
-import React, { useState } from "react";
-import { Group, GroupType, User } from "./Types";
+import React, { useContext, useState } from "react";
+import { GroupType } from "./Types";
 import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/core/ClickAwayListener";
 import { Link } from "react-router-dom";
 import { useTheme } from "@emotion/react";
+import { GroupUserdataContext } from "./contexts";
 
 type OverviewProps = {
-    user: User,
-    groups: Group[]
 }
-const OverviewElement:React.FC<OverviewProps> = ({user, groups}:OverviewProps) => {
+const OverviewElement:React.FC<OverviewProps> = () => {
 
     const [isAddGroupShown, setAddGroupShown] = useState(false)
     const theme:any = useTheme()
-    
+    const url = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
+    const groupUserdata = useContext(GroupUserdataContext)
+
     return (
         <Paper 
                 sx={{
-                    borderRight: "1px solid rgba(255, 255, 255, 0.12)"
+                    borderRight: "1px solid rgba(255, 255, 255, 0.12)",
+                    maxWidth: "300px",
+                    minWidth: "200px",
+                    '& span': {
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        maxWidth: "100%"
+                    }
                 }}
             >
                 <List sx={{padding: 0}}>
@@ -35,11 +43,11 @@ const OverviewElement:React.FC<OverviewProps> = ({user, groups}:OverviewProps) =
                         }}}
                     >
                         <Link to="/dashboard">
-                            <ListItemButton>
+                            <ListItemButton selected={url==="dashboard"}>
                                 <ListItemIcon>
-                                    <Avatar src={user.avatar_url ?? undefined}>{user.username[0]}</Avatar>
+                                    <Avatar src={groupUserdata.user?.avatar_url ?? undefined}>{groupUserdata.user?.username[0]}</Avatar>
                                 </ListItemIcon>
-                                <ListItemText primary={user.username} />
+                                <ListItemText primary={groupUserdata.user?.username ?? "Loading..."} />
                             </ListItemButton>
                         </Link>
                     </List>
@@ -56,13 +64,13 @@ const OverviewElement:React.FC<OverviewProps> = ({user, groups}:OverviewProps) =
                         }}}
                     >
                         {
-                            groups.filter(e=>e.type===GroupType.SPONTANEOUS).map((e, index)=>{
+                            groupUserdata.groups.filter(e=>e.type===GroupType.SPONTANEOUS).map((e, index)=>{
 
-                                const otherUser = e.users.filter(e => e.userId !== user.userId)[0]
+                                const otherUser = e.users.filter(e => e.userId !== groupUserdata.user?.userId)[0]
 
                                 return (
                                     <Link to={`/group/${e.groupId}`}>
-                                        <ListItemButton key={index}>
+                                        <ListItemButton key={index} selected={url===`${e.groupId}`}>
                                             <ListItemIcon>
                                                 <Avatar src={otherUser.avatar_url ?? undefined}>{otherUser.username[0]}</Avatar>
                                             </ListItemIcon>
@@ -85,9 +93,9 @@ const OverviewElement:React.FC<OverviewProps> = ({user, groups}:OverviewProps) =
                         }}}
                     >
                         {
-                            groups.filter(e=>e.type===GroupType.NORMAL).map((e, index)=>(
+                            groupUserdata.groups.filter(e=>e.type===GroupType.NORMAL).map((e, index)=>(
                                 <Link to={`/group/${e.groupId}`}>
-                                    <ListItemButton key={index}>
+                                    <ListItemButton key={index} selected={url===`${e.groupId}`}>
                                         <ListItemIcon>
                                             <Avatar>{e.groupname[0]}</Avatar>
                                         </ListItemIcon>

@@ -6,8 +6,7 @@ import { Box } from "@mui/system";
 import { DatePicker } from '@mui/lab';
 import { useState } from "react";
 import { ModalBackdrop } from "./utils";
-
-const demoAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hauskatze_langhaar.jpg"
+import { User } from './Types';
 
 type TransactionModalProps = {
     close: ()=>void,
@@ -22,23 +21,6 @@ const TransactionModal:React.FC<TransactionModalProps> = ({close, users}) => {
     )
 }
 export default TransactionModal
-
-
-export const users:User[] = [
-    {
-        "username": "user-1",
-        "id": 1,
-        "avatar_url": demoAvatar
-    }, {
-        "username": "user-2",
-        "id": 2,
-        "avatar_url": demoAvatar
-    }, {
-        "username": "user-3",
-        "id": 3,
-        "avatar_url": undefined
-    }, 
-]
 
 
 type TransactionUser= {
@@ -226,7 +208,7 @@ function Transaction({close, users}:TransactionModalProps) {
             const difference = roundToIntTo2Decimals(user.amount - newAmount)
 
             //get all users who are not yet edited
-            let uneditedUsers = users.filter( u => !u.wasEdited && u.isChecked && u.user.id!==user.user.id)
+            let uneditedUsers = users.filter( u => !u.wasEdited && u.isChecked && u.user.userId!==user.user.userId)
 
             //get the amount of money these have
             let unediteusersAmount = sum(uneditedUsers.map(u => u.amount))
@@ -234,7 +216,7 @@ function Transaction({close, users}:TransactionModalProps) {
             //if there are no users or the amount is not enough to get the difference from 
             // -> use all users
             if(uneditedUsers.length === 0 || unediteusersAmount < -difference) {
-                uneditedUsers = users.filter( u => u.user.id!==user.user.id)
+                uneditedUsers = users.filter( u => u.user.userId!==user.user.userId)
             }
 
             let acc = 0
@@ -315,10 +297,10 @@ function Transaction({close, users}:TransactionModalProps) {
                                 >
                                     {users.map(e=>(
                                         <MenuItem 
-                                            value={e.id}
-                                            key={e.id}
+                                            value={e.userId}
+                                            key={e.userId}
                                         >
-                                            <UserElement username={e.username} avatar_url={e.avatar_url} id={e.id}/>
+                                            <UserElement {...e}/>
                                         </MenuItem>
                                     ))}
                                     
@@ -379,7 +361,7 @@ function Transaction({close, users}:TransactionModalProps) {
 
                                     return (
                                     <ListItem
-                                        key={user.user.id}
+                                        key={user.user.userId}
                                         secondaryAction={
                                         <IconButton edge="end" aria-label="comments">
                                         </IconButton>
@@ -398,7 +380,7 @@ function Transaction({close, users}:TransactionModalProps) {
                                             
                                             <ListItemText id={labelId} 
                                                 primary={
-                                                    <UserElement username={user.user.username} avatar_url={user.user.avatar_url} id={user.user.id}/>
+                                                    <UserElement {...user.user}/>
                                                 } 
                                             />
                                         </ListItemButton>
@@ -407,7 +389,7 @@ function Transaction({close, users}:TransactionModalProps) {
                                                 type="number" 
                                                 label={percentage ? "percentage" : "partial amount"}
                                                 variant="standard"
-                                                value={(percentage ? (user.amount / amount)*100 : user.amount).toString()}
+                                                value={roundToIntTo2Decimals(percentage ? (user.amount / amount)*100 : user.amount).toString()}
                                                 InputProps={{
                                                     endAdornment: <InputAdornment position="end" sx={{width:"10px"}}>{percentage ? "%" : "€"}</InputAdornment>,
                                                 }}
@@ -465,16 +447,11 @@ function Transaction({close, users}:TransactionModalProps) {
     )
 }
 
-type User = {
-    username: string,
-    avatar_url?: string,
-    id: number
-}
 function UserElement({avatar_url, username}:User) {
     return (
         <Box>
             <Stack direction="row" spacing={2}>
-                <Avatar alt={username} src={avatar_url}>{!avatar_url && username[0]}</Avatar>
+                <Avatar alt={username} src={avatar_url ?? undefined}>{!avatar_url && username[0]}</Avatar>
                 <Typography sx={{display: "flex", alignItems: "center"}}>{username}</Typography>
             </Stack>
         </Box>

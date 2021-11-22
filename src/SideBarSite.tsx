@@ -1,4 +1,5 @@
 import { Box } from "@mui/system"
+import { GroupUserdataContext } from "./contexts"
 import OverviewElement from "./OverviewElement"
 import { Group, GroupType, User } from "./Types"
 
@@ -34,17 +35,19 @@ const SideBarSite:React.FC<SideBarSiteProps> = ({children}:SideBarSiteProps) => 
     ]
 
     return (
-        <Box 
-            sx={{
-                display: "grid", 
-                gridTemplateColumns: "auto 1fr",
-            }}
-        >
-            <OverviewElement user={user} groups={groups}/>
-            <Box>
-                {children}
+        <GroupUserdataContext.Provider value={{"user": user, "groups": groups}}>
+            <Box 
+                sx={{
+                    display: "grid", 
+                    gridTemplateColumns: "auto 1fr",
+                }}
+            >
+                <OverviewElement/>
+                <Box>
+                    {children}
+                </Box>
             </Box>
-        </Box>
+        </GroupUserdataContext.Provider>
     )
 }
 

@@ -1,8 +1,10 @@
-import Dashboard from "./Dashboard"
+import GroupDashboard from "./GroupDashboard"
+import UserDashboard from "./UserDashboard"
 import LoginRegisterStack from "./LoginRegisterStack"
 import Logout from "./Logout"
 import { Main } from "./Main"
 import { Site } from "./utils"
+import SideBarSite from "./SideBarSite"
 
 export const LoginSite = () => {
     return (
@@ -12,10 +14,22 @@ export const LoginSite = () => {
     )
 }
 
-export const DashboardSite = () => {
+export const UserDashboardSite = () => {
     return (
         <Site showLogin={false}>
-            <Dashboard/>
+            <SideBarSite>
+                <UserDashboard/>
+            </SideBarSite>
+        </Site>
+    )
+}
+
+export const GroupDashboardSite = () => {
+    return (
+        <Site showLogin={false}>
+            <SideBarSite>
+                <GroupDashboard/>
+            </SideBarSite>
         </Site>
     )
 }

@@ -39,12 +39,16 @@ export const DefaultHeader:React.FC<DefaultHeaderProps> = ({showLogin}) => {
                             textDecoration: "none"
                         }
                     }}>
+                        {!showLogin &&
+                            <Button variant="outlined" sx={{marginRight: "5px"}}>Profile</Button>
+                        }
                         <Link to={showLogin ? "/login" : "/logout"}>
                             <Button 
                                 variant="outlined" 
                             >
                                 {showLogin ? "Login" : "Logout"}
                             </Button>
+                            
                         </Link>
                     </Box>
                 }

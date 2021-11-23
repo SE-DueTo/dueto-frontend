@@ -5,38 +5,21 @@ import { Box } from "@mui/system";
 import { DatePicker } from '@mui/lab';
 import { ModalBackdrop } from "./utils";
 import { useState } from "react";
-
-const demoAvatar = "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hauskatze_langhaar.jpg"
+import { User } from "./Types";
 
 type SettleDebtsModalProps = {
-    close: ()=>void
+    close: ()=>void,
+    users: User[]
 }
-export default function SetleDebtsModal({close}:SettleDebtsModalProps) {
+export default function SetleDebtsModal(props:SettleDebtsModalProps) {
     return (
         <ModalBackdrop>
-            <SettleDebts close={close}/>
+            <SettleDebts {...props}/>
         </ModalBackdrop>
     )
 }
 
-const users:User[] = [
-    {
-        "username": "user-1",
-        "id": 1,
-        "avatar_url": demoAvatar
-    }, {
-        "username": "user-2",
-        "id": 2,
-        "avatar_url": demoAvatar
-    }, {
-        "username": "user-3",
-        "id": 3,
-        "avatar_url": undefined
-    }, 
-]
-
-
-function SettleDebts({close}:SettleDebtsModalProps) {
+function SettleDebts({close, users}:SettleDebtsModalProps) {
 
     const [whoSettleDebt, setWhoSettleDebt] = useState<string>("")
     const [amount, setAmount] = useState<string>("0")
@@ -66,10 +49,10 @@ function SettleDebts({close}:SettleDebtsModalProps) {
                                 >
                                     {users.map(e=>(
                                         <MenuItem 
-                                            value={e.id}
-                                            key={e.id}
+                                            value={e.userId}
+                                            key={e.userId}
                                         >
-                                            <UserElement username={e.username} avatar_url={e.avatar_url} id={e.id}/>
+                                            <UserElement {...e}/>
                                         </MenuItem>
                                     ))}
                                     
@@ -102,10 +85,10 @@ function SettleDebts({close}:SettleDebtsModalProps) {
                                 >
                                     {users.map(e=>(
                                         <MenuItem 
-                                            value={e.id}
-                                            key={e.id}
+                                            value={e.userId}
+                                            key={e.userId}
                                         >
-                                            <UserElement username={e.username} avatar_url={e.avatar_url} id={e.id}/>
+                                            <UserElement {...e}/>
                                         </MenuItem>
                                     ))}
                                     
@@ -152,16 +135,11 @@ function SettleDebts({close}:SettleDebtsModalProps) {
     )
 }
 
-type User = {
-    username: string,
-    avatar_url?: string,
-    id: number
-}
 function UserElement({avatar_url, username}:User) {
     return (
         <Box>
             <Stack direction="row" spacing={2}>
-                <Avatar alt={username} src={avatar_url}>{!avatar_url && username[0]}</Avatar>
+                <Avatar alt={username} src={avatar_url ?? undefined}>{username[0]}</Avatar>
                 <Typography sx={{display: "flex", alignItems: "center"}}>{username}</Typography>
             </Stack>
         </Box>

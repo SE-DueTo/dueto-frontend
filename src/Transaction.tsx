@@ -48,20 +48,6 @@ function Transaction({close, users}:TransactionModalProps) {
     })))
 
     /**
-     * Amount und wasEdited wird bei jedem Wechsel partial/percentage zurückgesetzt
-     * [
-     *  {
-     *      "user": {
-     *          ...
-     *      },
-     *      "amount": <amount>,
-     *      "wasEdited": <boolean>,
-     *      "isChecked": <boolean>
-     *  }
-     * ]
-     */
-
-    /**
      * Toggles the checkbox for a specific user and redistributes their amount to all other users
      * 
      * @param user The user to toggle the checkbox for

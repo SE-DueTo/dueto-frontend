@@ -45,7 +45,7 @@ const OverviewElement:React.FC<OverviewProps> = () => {
                         <Link to="/dashboard">
                             <ListItemButton selected={url==="dashboard"}>
                                 <ListItemIcon>
-                                    <Avatar src={groupUserdata.user?.avatar_url ?? undefined}>{groupUserdata.user?.username[0]}</Avatar>
+                                    <Avatar src={groupUserdata.user?.avatarUrl ?? undefined}>{groupUserdata.user?.username[0]}</Avatar>
                                 </ListItemIcon>
                                 <ListItemText primary={groupUserdata.user?.username ?? "Loading..."} />
                             </ListItemButton>
@@ -72,7 +72,7 @@ const OverviewElement:React.FC<OverviewProps> = () => {
                                     <Link to={`/group/${e.groupId}`}>
                                         <ListItemButton key={index} selected={url===`${e.groupId}`}>
                                             <ListItemIcon>
-                                                <Avatar src={otherUser.avatar_url ?? undefined}>{otherUser.username[0]}</Avatar>
+                                                <Avatar src={otherUser.avatarUrl ?? undefined}>{otherUser.username[0]}</Avatar>
                                             </ListItemIcon>
                                             <ListItemText primary={otherUser.username} />
                                         </ListItemButton>

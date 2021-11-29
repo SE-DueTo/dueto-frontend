@@ -11,13 +11,13 @@ const SideBarSite:React.FC<SideBarSiteProps> = ({children}:SideBarSiteProps) => 
         userId: 0,
         username: "Username",
         email: "user@example.com",
-        avatar_url: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hauskatze_langhaar.jpg"
+        avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Hauskatze_langhaar.jpg"
     }
     const user2:User = {
         userId: 1,
         username: "Username2",
         email: "user2@example.com",
-        avatar_url: null
+        avatarUrl: null
     }
 
     const groups:Group[] = [

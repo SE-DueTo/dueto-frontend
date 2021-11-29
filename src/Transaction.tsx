@@ -433,11 +433,11 @@ function Transaction({close, users}:TransactionModalProps) {
     )
 }
 
-function UserElement({avatar_url, username}:User) {
+function UserElement({avatarUrl, username}:User) {
     return (
         <Box>
             <Stack direction="row" spacing={2}>
-                <Avatar alt={username} src={avatar_url ?? undefined}>{!avatar_url && username[0]}</Avatar>
+                <Avatar alt={username} src={avatarUrl ?? undefined}>{!avatarUrl && username[0]}</Avatar>
                 <Typography sx={{display: "flex", alignItems: "center"}}>{username}</Typography>
             </Stack>
         </Box>

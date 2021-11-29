@@ -135,11 +135,11 @@ function SettleDebts({close, users}:SettleDebtsModalProps) {
     )
 }
 
-function UserElement({avatar_url, username}:User) {
+function UserElement({avatarUrl, username}:User) {
     return (
         <Box>
             <Stack direction="row" spacing={2}>
-                <Avatar alt={username} src={avatar_url ?? undefined}>{username[0]}</Avatar>
+                <Avatar alt={username} src={avatarUrl ?? undefined}>{username[0]}</Avatar>
                 <Typography sx={{display: "flex", alignItems: "center"}}>{username}</Typography>
             </Stack>
         </Box>

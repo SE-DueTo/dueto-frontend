@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import { useContext, useState } from "react";
 import { GroupUserdataContext } from "./contexts";
 import { ModalBackdrop } from "./utils";
-import ClickAwayListener from "@mui/core/ClickAwayListener";
+import ClickAwayListener from "@mui/base/ClickAwayListener";
 
 export default function UserDashboard() {
 

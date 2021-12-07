@@ -1,6 +1,6 @@
 import { Backdrop, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Redirect } from "react-router";
+import { Navigate } from "react-router";
 
 export default function Logout() {
 
@@ -12,7 +12,7 @@ export default function Logout() {
     }, [])
 
     return isRedirect ? (
-        <Redirect to="/"/>
+        <Navigate to="/"/>
     ) : (
         <Backdrop open={true}>
             <CircularProgress/>

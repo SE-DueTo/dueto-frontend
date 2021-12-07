@@ -1,5 +1,5 @@
 import { Save } from "@mui/icons-material";
-import ClickAwayListener from "@mui/core/ClickAwayListener";
+import ClickAwayListener from "@mui/base/ClickAwayListener";
 import { Avatar, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { DatePicker } from '@mui/lab';

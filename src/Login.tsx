@@ -1,7 +1,7 @@
 import { Button, FormControl, Stack, TextField, Typography } from "@mui/material";
 import Send from '@mui/icons-material/Send';
 import { RegisterLoginWrapper } from "./utils";
-import { Redirect } from "react-router";
+import { Navigate } from "react-router";
 import { useState } from "react";
 
 export default function Login() {
@@ -26,7 +26,7 @@ export default function Login() {
                         >
                             Login
                         </Button>
-                        {isRedirect && <Redirect to="/dashboard"/>}
+                        {isRedirect && <Navigate to="/dashboard"/>}
                     </Stack>
                 </form>
             </FormControl>

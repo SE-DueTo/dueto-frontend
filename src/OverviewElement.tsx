@@ -3,7 +3,7 @@ import { Avatar, Button, Divider, FormControl, List, ListItemButton, ListItemIco
 import React, { useContext, useState } from "react";
 import { GroupType } from "./Types";
 import { ModalBackdrop } from "./utils";
-import ClickAwayListener from "@mui/core/ClickAwayListener";
+import ClickAwayListener from "@mui/base/ClickAwayListener";
 import { Link } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { GroupUserdataContext } from "./contexts";

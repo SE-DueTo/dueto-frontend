@@ -54,7 +54,10 @@ export default function GroupDashboard() {
                         Transaction
                     </Button>
                 </Box>
-                <Typography variant="h6" >Your and {groupname} Transactions:</Typography>
+                {group.type===GroupType.SPONTANEOUS? 
+                    <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Your and {groupname} transactions:</Typography> 
+                    : 
+                    <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Transactions in Group {groupname}: </Typography> }
                 <TransactionTable></TransactionTable>
                 {isTransactionShown && <TransactionModal close={()=>{setTransactionShown(false)}} users={group.users}/>}
             </TabPanel>

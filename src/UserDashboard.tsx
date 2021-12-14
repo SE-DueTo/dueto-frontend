@@ -28,8 +28,8 @@ export default function UserDashboard() {
                 {isSearchOpen && <SearchUserPopup setSearchOpen={setSearchOpen}/>}
             </Box>
             <Divider sx={{margin: "20px 0px"}}/>
-            <Box>
-                <Typography variant="h5" sx={{textAlign: "left", marginBottom: '1em'}}>Your Transactions</Typography>
+            <Box sx={{margin: '1em'}}>
+                <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Your Transactions:</Typography>
                 <TransactionTable></TransactionTable>
             </Box>
         </Box>

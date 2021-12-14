@@ -419,7 +419,7 @@ function Transaction({close, users}:TransactionModalProps) {
                                     if(newValue == null) newValue = new Date();
                                     setDate(newValue)
                                 }}
-                                label="Time of payment"
+                                label="Date of payment"
                                 mask={"__.__.____"}
                                 views={['day']}
                             />

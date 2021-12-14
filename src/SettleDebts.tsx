@@ -1,6 +1,6 @@
 import { Save } from "@mui/icons-material";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
-import { Avatar, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
+import { Avatar, Button, FormControl, InputAdornment, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { DatePicker } from '@mui/lab';
 import { ModalBackdrop } from "./utils";
@@ -22,7 +22,7 @@ export default function SetleDebtsModal(props:SettleDebtsModalProps) {
 function SettleDebts({close, users}:SettleDebtsModalProps) {
 
     const [whoSettleDebt, setWhoSettleDebt] = useState<string>("")
-    const [amount, setAmount] = useState<string>("0")
+    const [amount, setAmount] = useState<number>(0)
     const [paymentMethod, setPaymentMethod] = useState<string>('')
     const [whoReceived, setWhoReceived] = useState<string>("")
     const [date, setDate] = useState(new Date())
@@ -62,15 +62,18 @@ function SettleDebts({close, users}:SettleDebtsModalProps) {
                                 type="number" 
                                 label="Amount" 
                                 variant="standard"
-                                value={amount}
+                                value={amount.toString()}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                                }}
                                 onInput={(event)=>{
                                     const target = event.target as HTMLInputElement
                                     try {
                                         const input = target.value
                                         const amount = parseFloat(input)
                                         if(((amount * 100 ) % 1) > 0) return;
-                                        if(isNaN(amount)) setAmount("")
-                                        else setAmount(input)
+                                        if(isNaN(amount)) setAmount(0)
+                                        else setAmount(amount)
                                     } catch (e) {}
                                 }}
                             />
@@ -108,10 +111,6 @@ function SettleDebts({close, users}:SettleDebtsModalProps) {
                                     <MenuItem value={2}>solor</MenuItem>
                                 </Select>
                             </FormControl>
-                        
-                            
-                            {/*TODO AUFTEILUNG*/}
-
 
                             <DatePicker
                                 maxDate={new Date()}
@@ -122,7 +121,7 @@ function SettleDebts({close, users}:SettleDebtsModalProps) {
                                     if(newValue == null) newValue = new Date();
                                     setDate(newValue)
                                 }}
-                                label="Time of settle debt"
+                                label="Date of settle debt"
                                 mask={"__.__.____"}
                                 views={['day']}
                             />

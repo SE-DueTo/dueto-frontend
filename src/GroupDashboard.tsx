@@ -8,6 +8,7 @@ import SetleDebtsModal from "./SettleDebts";
 import PaymentIcon from '@mui/icons-material/Payment';
 import { GroupType } from "./Types";
 import { GroupUserdataContext } from "./contexts";
+import TransactionTable from "./TransactionTable";
 
 export default function GroupDashboard() {
 
@@ -44,13 +45,17 @@ export default function GroupDashboard() {
             </Box>
             
             <TabPanel value="0">
-                <Button 
-                    variant="outlined" 
-                    startIcon={<AddIcon />} 
-                    onClick={()=>{setTransactionShown(true)}}
-                >
-                    Transaction
-                </Button>
+                <Box sx={{textAlign: "center", marginBottom: "1em"}}>
+                    <Button 
+                        variant="outlined" 
+                        startIcon={<AddIcon />} 
+                        onClick={()=>{setTransactionShown(true)}}
+                    >
+                        Transaction
+                    </Button>
+                </Box>
+                <Typography variant="h6" >Your and {groupname} Transactions:</Typography>
+                <TransactionTable></TransactionTable>
                 {isTransactionShown && <TransactionModal close={()=>{setTransactionShown(false)}} users={group.users}/>}
             </TabPanel>
             <TabPanel value="1">

@@ -1,4 +1,4 @@
-import { Box, IconButton, Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, useTheme } from '@mui/material'
+import { Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow } from '@mui/material'
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -32,9 +32,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     return { avatarUrl, name, amount, purpose, paymentMethod, dateOfPayment };
   }
   
-  const rows = [
-    createData('Hallo', 'Hans', 159, '6.0', '24', '4.0'),
-    createData('Test', 'Gruppe', 237, '9.0', '37', '4.3')
+  const rows = [ 
+    createData('Hallo', 'Hans', 29.99, 'Essen gehen', 'Bar', '14.12.2021'),
+    createData('Test', 'Gruppe', 237, 'Urlaub in Mexico City', 'Card', '08.12.2021')
   ];
 
 export default function TransactionTable() {
@@ -57,7 +57,7 @@ export default function TransactionTable() {
                   <StyledTableCell component="th" scope="row">
                     {row.avatarUrl + ' ' + row.name}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{row.amount}</StyledTableCell>
+                  <StyledTableCell align="right">{row.amount} €</StyledTableCell>
                   <StyledTableCell align="right">{row.purpose}</StyledTableCell>
                   <StyledTableCell align="right">{row.paymentMethod}</StyledTableCell>
                   <StyledTableCell align="right">{row.dateOfPayment}</StyledTableCell>

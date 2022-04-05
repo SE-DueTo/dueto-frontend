@@ -8,6 +8,7 @@ import SetleDebtsModal from "./SettleDebts";
 import PaymentIcon from '@mui/icons-material/Payment';
 import { GroupType } from "./Types";
 import { GroupUserdataContext } from "./contexts";
+import { Navigate } from "react-router-dom";
 
 export default function GroupDashboard() {
 
@@ -24,6 +25,12 @@ export default function GroupDashboard() {
     const groupId = parseInt(window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1))
 
     const group = groupUserdata.groups.filter(e => e.groupId === groupId)[0]
+
+    if(!group) {
+        return (
+            <Navigate to="/dashboard"/>
+        )
+    }
 
     const groupname = group.type === GroupType.NORMAL ? 
         group.groupname 

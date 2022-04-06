@@ -10,7 +10,7 @@
     "@mui/base": "^5.0.0-alpha.74",
     "@mui/icons-material": "^5.5.1",
     "@mui/lab": "^5.0.0-alpha.75",
-    "@mui/material": "^5.2.3",
+    "@mui/material": "^5.6.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^14.0.4",

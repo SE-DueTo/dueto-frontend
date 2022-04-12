@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cucumber/cucumber": "^8.0.0-rc.1",
+    "@cucumber/cucumber": "^8.0.0",
     "@date-io/date-fns": "^2.11.0",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -12,7 +12,7 @@
     "@mui/lab": "^5.0.0-alpha.75",
     "@mui/material": "^5.2.3",
     "@testing-library/jest-dom": "^5.15.0",
-    "@testing-library/react": "^12.1.2",
+    "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.0.4",
     "@types/jest": "^27.0.3",
     "@types/node": "^17.0.5",

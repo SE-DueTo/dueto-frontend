@@ -1,10 +1,10 @@
 import { AddCircleOutline } from "@mui/icons-material";
 import { Avatar, Button, Divider, FormControl, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Paper, Stack, TextField, Typography } from "@mui/material"
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GroupType } from "./Types";
 import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { GroupUserdataContext } from "./contexts";
 
@@ -14,8 +14,14 @@ const OverviewElement:React.FC<OverviewProps> = () => {
 
     const [isAddGroupShown, setAddGroupShown] = useState(false)
     const theme:any = useTheme()
-    const url = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
+    const [url, setUrl] = useState("")
+    //const url = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
     const groupUserdata = useContext(GroupUserdataContext)
+    const location = useLocation()
+
+    useEffect(()=>{
+        setUrl(location.pathname.substring(location.pathname.lastIndexOf("/")+1))
+    }, [location])
 
     return (
         <Paper 

@@ -1,30 +1,48 @@
 import { TabContext, TabPanel } from "@mui/lab";
 import { Button, Tab, Tabs, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TransactionModal from "./Transaction";
 import AddIcon from '@mui/icons-material/Add';
 import SetleDebtsModal from "./SettleDebts";
 import PaymentIcon from '@mui/icons-material/Payment';
-import { GroupType } from "./Types";
+import { Group, GroupType } from "./Types";
 import { GroupUserdataContext } from "./contexts";
-import TransactionTable from "./TransactionTable";
+import { Navigate, useLocation } from "react-router-dom";
 
 export default function GroupDashboard() {
 
     const [value, setValue] = useState(0)
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
-    };    
+    }
 
+    const defaultGroup:Group = {groupId: -1, groupname: "Loading...", type: GroupType.NORMAL, users: []}
+    
     //TODO remove this code when functional elements are build
     const [isTransactionShown, setTransactionShown] = useState(false)
     const [isSettleDebtsShown, setSettleDebtsShown] = useState(false)
+    const [group, setGroup] = useState<Group | null>(defaultGroup);
 
     const groupUserdata = useContext(GroupUserdataContext)
-    const groupId = parseInt(window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1))
+    const location = useLocation()
 
-    const group = groupUserdata.groups.filter(e => e.groupId === groupId)[0]
+
+    useEffect(()=>{
+        const groupId = parseInt(location.pathname.substring(location.pathname.lastIndexOf("/")+1))
+        const g = groupUserdata.groups.filter(e => e.groupId === groupId)[0] || null
+
+        setGroup(g || defaultGroup)
+
+    }, [location, groupUserdata])
+
+    if(group===null) {
+        return (
+            <Navigate to="/dashboard"/>
+        )
+    }
+
+    
 
     const groupname = group.type === GroupType.NORMAL ? 
         group.groupname 

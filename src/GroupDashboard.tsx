@@ -9,6 +9,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import { Group, GroupType } from "./Types";
 import { GroupUserdataContext } from "./contexts";
 import { Navigate, useLocation } from "react-router-dom";
+import TransactionTable from "./TransactionTable";
 
 export default function GroupDashboard() {
 
@@ -51,7 +52,7 @@ export default function GroupDashboard() {
 
     return (
         <>
-        <Box sx={{textAlign: "center"}}>
+        <Box sx={{textAlign: "center", mt: "20px", mb: "5px"}}>
             <Typography variant="h5" >{groupname}</Typography>
         </Box>
         <TabContext value={value.toString()}>

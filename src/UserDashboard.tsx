@@ -14,7 +14,7 @@ export default function UserDashboard() {
     const groupUserdata = useContext(GroupUserdataContext)
 
     return (
-        <Box sx={{textAlign: "center"}}>
+        <Box sx={{textAlign: "center", mt: "20px"}}>
             <Typography variant="h5">Hallo {groupUserdata.user?.username}</Typography>
             <Typography variant="h2">0€</Typography>
             <Box sx={{marginTop: "10px"}}>

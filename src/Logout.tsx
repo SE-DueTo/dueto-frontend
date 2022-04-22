@@ -1,15 +1,17 @@
 import { Backdrop, CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router";
+import { LoginContext } from "./context/LoginProvider";
 
 export default function Logout() {
 
+    const loginContext = useContext(LoginContext)
     const [isRedirect, setRedirect] = useState(false)
+
     useEffect(()=>{
-        setTimeout(()=>{
-            setRedirect(true)
-        }, 2000);
-    }, [])
+        loginContext.logout()
+            .finally(() => setRedirect(true))
+    }, [loginContext])
 
     return isRedirect ? (
         <Navigate to="/"/>

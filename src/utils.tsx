@@ -5,8 +5,10 @@ import { Box } from "@mui/system"
 import { theme } from './theme'
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { DefaultHeader } from "./Header"
-import { ReactChild, ReactFragment, ReactPortal } from "react"
+import { ReactChild, ReactFragment, ReactPortal, useContext } from "react"
 import { de } from "date-fns/locale"
+import LoginProvider, { LoginContext } from "./context/LoginProvider";
+import { Navigate } from "react-router-dom"
 
 type SiteProps= {
     children?: JSX.Element | JSX.Element[]
@@ -23,20 +25,37 @@ export const HeightWrapper:React.FC<heightWrapperProps> = ({children}) => (
     </Box>
 )
 
-export const Site:React.FC<SiteProps> = ({children, showLogin, showAppBar=true})=> (
-    <ThemeProvider theme={theme}>
+export function Site({children, showLogin, showAppBar=true}:SiteProps) {
+
+    return (
+        <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={de}>
             <CssBaseline/>
-            <Box sx={{display: "grid", gridTemplateRows: "auto 1fr", height: "100vh"}}>
-                <HeightWrapper>
-                    {showAppBar && <DefaultHeader showLogin={showLogin}/>}
-                    {children}
-                </HeightWrapper>
-                
-            </Box>
+            <LoginProvider>
+                <CheckSiteLogin check={!showLogin}>
+                    <Box sx={{display: "grid", gridTemplateRows: "auto 1fr", height: "100vh"}}>
+                        <HeightWrapper>
+                            {showAppBar && <DefaultHeader showLogin={showLogin}/>}
+                            {children}
+                        </HeightWrapper>
+                    </Box>
+                </CheckSiteLogin>
+            </LoginProvider>
         </LocalizationProvider>
     </ThemeProvider>
-)
+    )
+}
+
+type CheckSiteLoginType = {
+    children: JSX.Element,
+    check: boolean,
+}
+function CheckSiteLogin({children, check}: CheckSiteLoginType) {
+
+    const loginContext = useContext(LoginContext)
+    return (check && !loginContext.isLoggedIn) ? <Navigate to="/login"/> : children
+
+}
 
 type RegisterLoginProps = {
     children?: JSX.Element | JSX.Element[]

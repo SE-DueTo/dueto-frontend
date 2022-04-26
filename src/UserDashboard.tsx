@@ -1,10 +1,12 @@
 import { Add } from "@mui/icons-material";
-import {  Button, Divider,  FormControl,  Paper,  Stack,  TextField, Typography } from "@mui/material";
+import { Button, Divider,  FormControl,  Paper,  Stack,  TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useContext, useState } from "react";
 import { GroupUserdataContext } from "./contexts";
 import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
+import TransactionModal from "./Transaction";
+import TransactionTable from "./TransactionTable";
 
 export default function UserDashboard() {
 
@@ -12,7 +14,7 @@ export default function UserDashboard() {
     const groupUserdata = useContext(GroupUserdataContext)
 
     return (
-        <Box sx={{textAlign: "center"}}>
+        <Box sx={{textAlign: "center", mt: "20px"}}>
             <Typography variant="h5">Hallo {groupUserdata.user?.username}</Typography>
             <Typography variant="h2">0€</Typography>
             <Box sx={{marginTop: "10px"}}>
@@ -26,12 +28,10 @@ export default function UserDashboard() {
                 {isSearchOpen && <SearchUserPopup setSearchOpen={setSearchOpen}/>}
             </Box>
             <Divider sx={{margin: "20px 0px"}}/>
-            <Box>
-            liste mit transationen und settle depths
+            <Box sx={{margin: '1em'}}>
+                <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Your Transactions:</Typography>
+                <TransactionTable></TransactionTable>
             </Box>
-            
-
-            Hier kommt dann die Tabelle hin
         </Box>
     )
 }
@@ -44,6 +44,10 @@ function SearchUserPopup({setSearchOpen}:SearchUserPopupProps) {
     const handleClose = ()=>{
         setSearchOpen(false)
     }
+
+    
+    //TODO remove this code when functional elements are build
+    const [isTransactionShown, setTransactionShown] = useState(false)
 
     return (
         <ModalBackdrop>
@@ -58,7 +62,8 @@ function SearchUserPopup({setSearchOpen}:SearchUserPopupProps) {
                         <form>
                             <Stack spacing={2}>
                                 <TextField label="Username" variant="standard"/>
-                                <Button variant="contained" sx={{width: "100%"}}>New Transaction</Button>
+                                <Button variant="contained" sx={{width: "100%"}} onClick={()=>{setTransactionShown(true)}}>New Transaction</Button>
+                                {isTransactionShown && <TransactionModal close={() => {setTransactionShown(false); } } users={[]}/>}
                             </Stack>
                         </form>
                     </FormControl>

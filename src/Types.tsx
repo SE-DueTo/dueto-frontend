@@ -12,7 +12,22 @@ export type Group = {
     type: GroupType
 }
 
+export type Transaction = {
+    transactor: User,
+    group: Group,
+    amount: number,
+    paymentMethod: PaymentMethods,
+    purpose: string,
+    date: string
+}
+
 export enum GroupType {
     NORMAL,
     SPONTANEOUS
+}
+
+export enum PaymentMethods {
+    CASH,
+    CREDITCARD,
+    OTHERS
 }

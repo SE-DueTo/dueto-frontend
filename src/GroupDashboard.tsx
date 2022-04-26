@@ -9,6 +9,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import { Group, GroupType } from "./Types";
 import { GroupUserdataContext } from "./contexts";
 import { Navigate, useLocation } from "react-router-dom";
+import TransactionTable from "./TransactionTable";
 
 export default function GroupDashboard() {
 
@@ -51,7 +52,7 @@ export default function GroupDashboard() {
 
     return (
         <>
-        <Box sx={{textAlign: "center"}}>
+        <Box sx={{textAlign: "center", mt: "20px", mb: "5px"}}>
             <Typography variant="h5" >{groupname}</Typography>
         </Box>
         <TabContext value={value.toString()}>
@@ -63,13 +64,20 @@ export default function GroupDashboard() {
             </Box>
             
             <TabPanel value="0">
-                <Button 
-                    variant="outlined" 
-                    startIcon={<AddIcon />} 
-                    onClick={()=>{setTransactionShown(true)}}
-                >
-                    Transaction
-                </Button>
+                <Box sx={{textAlign: "center", marginBottom: "1em"}}>
+                    <Button 
+                        variant="outlined" 
+                        startIcon={<AddIcon />} 
+                        onClick={()=>{setTransactionShown(true)}}
+                    >
+                        Transaction
+                    </Button>
+                </Box>
+                {group.type===GroupType.SPONTANEOUS? 
+                    <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Your and {groupname} transactions:</Typography> 
+                    : 
+                    <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Transactions in Group {groupname}: </Typography> }
+                <TransactionTable></TransactionTable>
                 {isTransactionShown && <TransactionModal close={()=>{setTransactionShown(false)}} users={group.users}/>}
             </TabPanel>
             <TabPanel value="1">

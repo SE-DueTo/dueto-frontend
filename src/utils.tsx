@@ -9,6 +9,7 @@ import { ReactChild, ReactFragment, ReactPortal, useContext } from "react"
 import { de } from "date-fns/locale"
 import LoginProvider, { LoginContext } from "./context/LoginProvider";
 import { Navigate } from "react-router-dom"
+import DataProvider from "./context/DataProvider"
 
 type SiteProps= {
     children?: JSX.Element | JSX.Element[]
@@ -32,14 +33,16 @@ export function Site({children, showLogin, showAppBar=true}:SiteProps) {
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={de}>
             <CssBaseline/>
             <LoginProvider>
-                <CheckSiteLogin check={!showLogin}>
-                    <Box sx={{display: "grid", gridTemplateRows: "auto 1fr", height: "100vh"}}>
-                        <HeightWrapper>
-                            {showAppBar && <DefaultHeader showLogin={showLogin}/>}
-                            {children}
-                        </HeightWrapper>
-                    </Box>
-                </CheckSiteLogin>
+                <DataProvider>
+                    <CheckSiteLogin check={!showLogin}>
+                        <Box sx={{display: "grid", gridTemplateRows: "auto 1fr", height: "100vh"}}>
+                            <HeightWrapper>
+                                {showAppBar && <DefaultHeader showLogin={showLogin}/>}
+                                {children}
+                            </HeightWrapper>
+                        </Box>
+                    </CheckSiteLogin>
+                </DataProvider>
             </LoginProvider>
         </LocalizationProvider>
     </ThemeProvider>

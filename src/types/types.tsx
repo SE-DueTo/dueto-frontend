@@ -64,6 +64,15 @@ export const defaultDebt:Debt = {
     paymentMethod: "",
 }
 
+export type SettleDebtAddDTO = {
+    amount: number,
+    creditorId: number,
+    date: string,
+    debtorId: number,
+    groupId: number,
+    paymentMethod: string,
+}
+
 export type Transaction = {
     amount: number,
     date: string,

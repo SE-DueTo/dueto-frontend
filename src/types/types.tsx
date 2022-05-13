@@ -36,6 +36,12 @@ export const defaultGroupInfo:GroupInfo = {
     group: defaultGroup
 }
 
+export type GroupAddNormalDTO = {
+    groupname: string,
+    password: string,
+    users: number[]
+}
+
 export type Debt = {
     amount: number,
     creditor: User,

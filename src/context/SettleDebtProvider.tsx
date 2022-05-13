@@ -12,7 +12,7 @@ const defaultValues:SettleDebtContextType = {
     addDebt: async () => true
 }
 
-const SettleDebtContext = createContext<SettleDebtContextType>(defaultValues)
+export const SettleDebtContext = createContext<SettleDebtContextType>(defaultValues)
 
 function SettleDebtProvider({children}:ProviderType) {
     

@@ -22,7 +22,7 @@ const defaultValues:GroupProviderType = {
     addSpontaneousGroup: async () => 0,
 }
 
-const GroupContext = createContext<GroupProviderType>(defaultValues)
+export const GroupContext = createContext<GroupProviderType>(defaultValues)
 
 function GroupProvider({children}:ProviderType) {
 
@@ -112,3 +112,5 @@ function GroupProvider({children}:ProviderType) {
         </GroupContext.Provider>
     )
 }
+
+export default GroupProvider

@@ -14,7 +14,7 @@ const defaultValues:TransactionContextType = {
     }
 }
 
-const SettleDebtContext = createContext<TransactionContextType>(defaultValues)
+export const SettleDebtContext = createContext<TransactionContextType>(defaultValues)
 
 function TransactionProvider({children}:ProviderType) {
 

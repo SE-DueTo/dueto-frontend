@@ -12,69 +12,48 @@ type DashboardDataContextType = {
 }
 
 const defaultValues:DashboardDataContextType = {
-    getDashboard: () => {
-        return new Promise((res) => res(defaultDashboard))
-    },
-    getDashboardDebts: () => {
-        return new Promise((res) => res([defaultDebt]))
-    },
-    getDashboardTransactions: () => {
-        return new Promise((res) => res([defaultTransaction]))
-    }
+    getDashboard: async () => defaultDashboard,
+    getDashboardDebts: async () => [defaultDebt],
+    getDashboardTransactions: async () => [defaultTransaction]
 }
 
-const DataContext = createContext<DashboardDataContextType>(defaultValues)
+export const DataContext = createContext<DashboardDataContextType>(defaultValues)
 
 function DashboardDataProvider({children}:ProviderType) {
 
     const { token } = useContext(LoginContext)
 
-    const getDashboard = ():Promise<Dashboard> => {
-        return new Promise(async (res, rej) => {
-            const data = await fetch(`${get("url")}/v1/dashboard/`, {
-                headers: {
-                    Authorization: token || ""
-                }
-            })
-            if(data.status !== 200) {
-                rej()
-                return
+    const getDashboard = async () => {
+        const data = await fetch(`${get("url")}/v1/dashboard/`, {
+            headers: {
+                Authorization: token || ""
             }
-            const json = await data.json()
-            res(json)
         })
+        if(data.status !== 200) return Promise.reject()
+        const json = await data.json()
+        return json
     }
 
-    const getDashboardDebts = ():Promise<Debt[]> => {
-        return new Promise(async (res, rej) => {
-            const data = await fetch(`${get("url")}/v1/dashboard/debts`, {
-                headers: {
-                    Authorization: token || ""
-                }
-            })
-            if(data.status !== 200) {
-                rej()
-                return
+    const getDashboardDebts = async () => {
+        const data = await fetch(`${get("url")}/v1/dashboard/debts`, {
+            headers: {
+                Authorization: token || ""
             }
-            const json = await data.json()
-            res(json)
         })
+        if(data.status !== 200) return Promise.reject()
+        const json = await data.json()
+        return json
     }
 
-    const getDashboardTransactions = ():Promise<Transaction[]> => {
-        return new Promise(async (res, rej) => {
-            const data = await fetch(`${get("url")}/v1/dashboard/transactions`, {
-                headers: {
-                    Authorization: token || ""
-                }
-            })
-            if(data.status !== 200) {
-                rej()
-                return
+    const getDashboardTransactions = async () => {
+        const data = await fetch(`${get("url")}/v1/dashboard/transactions`, {
+            headers: {
+                Authorization: token || ""
             }
-            const json = await data.json()
-            res(json)
         })
+        if(data.status !== 200) return Promise.reject()
+        const json = await data.json()
+        return json
     }
 
 

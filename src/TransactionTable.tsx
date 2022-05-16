@@ -1,7 +1,6 @@
 import { Avatar, Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow } from '@mui/material'
-import { type } from 'os';
 import { useContext } from 'react';
-import { GroupUserdataContext } from './contexts';
+import { DashboardDataContext } from './context/DashboardDataProvider';
 import { Group, GroupType, PaymentMethods, Transaction, User } from './Types';
 
 const user:User = {
@@ -94,7 +93,7 @@ const TransactionTable:React.FC<TransactionTableProps> = () => {
      createData('Test', 'Gruppe', 237, 'Urlaub in Mexico City', PaymentMethods.CREDITCARD, '08.12.2021'),
   ];
   
-  const groupUserdata = useContext(GroupUserdataContext)
+  const groupUserdata = useContext(DashboardDataContext)
 
     return (
         <TableContainer component={Paper}>

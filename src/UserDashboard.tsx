@@ -2,16 +2,16 @@ import { Add } from "@mui/icons-material";
 import { Button, Divider,  FormControl,  Paper,  Stack,  TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useContext, useState } from "react";
-import { GroupUserdataContext } from "./contexts";
 import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import TransactionModal from "./Transaction";
 import TransactionTable from "./TransactionTable";
+import { DashboardDataContext } from "./context/DashboardDataProvider";
 
 export default function UserDashboard() {
 
     const [isSearchOpen, setSearchOpen] = useState(false)
-    const groupUserdata = useContext(GroupUserdataContext)
+    const groupUserdata = useContext(DashboardDataContext)
 
     return (
         <Box sx={{textAlign: "center", mt: "20px"}}>

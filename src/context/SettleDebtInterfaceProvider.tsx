@@ -1,20 +1,20 @@
 import { createContext, useContext } from "react";
 import { get } from "../config/config";
 import { SettleDebtAddDTO } from "../types/types";
-import { ProviderType } from "./DataProvider";
+import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
 
-type SettleDebtContextType = {
+type SettleDebtInterfaceContextType = {
     addDebt: (settleDebtAddDTO: SettleDebtAddDTO) => Promise<boolean>
 }
 
-const defaultValues:SettleDebtContextType = {
+const defaultValues:SettleDebtInterfaceContextType = {
     addDebt: async () => true
 }
 
-export const SettleDebtContext = createContext<SettleDebtContextType>(defaultValues)
+export const SettleDebtInterfaceContext = createContext<SettleDebtInterfaceContextType>(defaultValues)
 
-function SettleDebtProvider({children}:ProviderType) {
+function SettleDebtInterfaceProvider({children}:ProviderType) {
     
     const { token } = useContext(LoginContext)
 
@@ -32,12 +32,12 @@ function SettleDebtProvider({children}:ProviderType) {
     }
     
     return (
-        <SettleDebtContext.Provider value={{
+        <SettleDebtInterfaceContext.Provider value={{
             addDebt
         }}>
             { children }
-        </SettleDebtContext.Provider>
+        </SettleDebtInterfaceContext.Provider>
     )
 }
 
-export default SettleDebtProvider
+export default SettleDebtInterfaceProvider

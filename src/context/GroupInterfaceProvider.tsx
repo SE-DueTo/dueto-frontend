@@ -1,10 +1,10 @@
 import { createContext, useContext } from "react";
 import { get } from "../config/config";
 import { Debt, defaultDebt, defaultGroupInfo, defaultTransaction, GroupAddNormalDTO, GroupInfo, Transaction } from "../types/types";
-import { ProviderType } from "./DataProvider";
+import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
 
-type GroupProviderType = {
+type GroupInterfaceProviderType = {
     getGroupInfo: (groupId: number) => Promise<GroupInfo>,
     getDebts: (groupId:number) => Promise<Debt[]>,
     getTransactions: (groupId:number) => Promise<Transaction[]>,
@@ -13,7 +13,7 @@ type GroupProviderType = {
     addSpontaneousGroup: (groupId:number) => Promise<number>,
 }
 
-const defaultValues:GroupProviderType = {
+const defaultValues:GroupInterfaceProviderType = {
     getGroupInfo: async () => defaultGroupInfo,
     getDebts: async() => [defaultDebt],
     getTransactions: async() => [defaultTransaction],
@@ -22,9 +22,9 @@ const defaultValues:GroupProviderType = {
     addSpontaneousGroup: async () => 0,
 }
 
-export const GroupContext = createContext<GroupProviderType>(defaultValues)
+export const GroupInterfaceContext = createContext<GroupInterfaceProviderType>(defaultValues)
 
-function GroupProvider({children}:ProviderType) {
+function GroupInterfaceProvider({children}:ProviderType) {
 
     const { token } = useContext(LoginContext)
 
@@ -100,7 +100,7 @@ function GroupProvider({children}:ProviderType) {
     }
 
     return (
-        <GroupContext.Provider value={{
+        <GroupInterfaceContext.Provider value={{
             getGroupInfo,
             getDebts,
             getTransactions,
@@ -109,8 +109,8 @@ function GroupProvider({children}:ProviderType) {
             addSpontaneousGroup,
         }}>
             { children }
-        </GroupContext.Provider>
+        </GroupInterfaceContext.Provider>
     )
 }
 
-export default GroupProvider
+export default GroupInterfaceProvider

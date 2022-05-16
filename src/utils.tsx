@@ -9,7 +9,7 @@ import { ReactChild, ReactFragment, ReactPortal, useContext } from "react"
 import { de } from "date-fns/locale"
 import LoginProvider, { LoginContext } from "./context/LoginProvider";
 import { Navigate } from "react-router-dom"
-import DataProvider from "./context/DataProvider"
+import DataProvider from "./context/DataInterfaceProvider"
 
 type SiteProps= {
     children?: JSX.Element | JSX.Element[]

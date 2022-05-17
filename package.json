@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@cucumber/cucumber": "^8.2.1",
-    "@date-io/date-fns": "^2.11.0",
+    "@date-io/date-fns": "^2.14.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/base": "^5.0.0-alpha.78",

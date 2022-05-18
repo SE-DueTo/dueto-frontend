@@ -1,22 +1,22 @@
 import { createContext, useContext } from "react";
 import { get } from "../config/config";
 import { TransactionAddDTO } from "../types/types";
-import { ProviderType } from "./DataProvider";
+import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
 
-type TransactionContextType = {
+type TransactionInterfaceContextType = {
     addTransaction: (transaction:TransactionAddDTO) => Promise<void>
 }
 
-const defaultValues:TransactionContextType = {
+const defaultValues:TransactionInterfaceContextType = {
     addTransaction: (_:TransactionAddDTO) => {
         return new Promise(res => res())
     }
 }
 
-export const SettleDebtContext = createContext<TransactionContextType>(defaultValues)
+export const TransactionInterfaceContext = createContext<TransactionInterfaceContextType>(defaultValues)
 
-function TransactionProvider({children}:ProviderType) {
+function TransactionInterfaceProvider({children}:ProviderType) {
 
     const { token } = useContext(LoginContext)
 
@@ -39,10 +39,10 @@ function TransactionProvider({children}:ProviderType) {
 
 
     return (
-        <SettleDebtContext.Provider value={{addTransaction}}>
+        <TransactionInterfaceContext.Provider value={{addTransaction}}>
             {children}
-        </SettleDebtContext.Provider>
+        </TransactionInterfaceContext.Provider>
     )
 }
 
-export default TransactionProvider
+export default TransactionInterfaceProvider

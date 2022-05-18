@@ -1,70 +1,52 @@
-import { createContext, useContext } from "react"
-import { get } from "../config/config"
-import { Dashboard, Debt, defaultDashboard, defaultDebt, defaultTransaction, Transaction } from "../types/types"
-import { ProviderType } from "./DataProvider"
-import { LoginContext } from "./LoginProvider"
+import { createContext, useContext, useEffect, useState } from "react";
+import { Group, User } from "../types/types";
+import { DashboardInterfaceContext } from "./DashboardInterfaceProvider";
+import { ProviderType } from "./DataInterfaceProvider";
 
-
-type DashboardDataContextType = {
-    getDashboard: () => Promise<Dashboard>,
-    getDashboardDebts: () => Promise<Debt[]>,
-    getDashboardTransactions: () => Promise<Transaction[]>
+type DashboardDataProviderContextType = {
+    user: User | null,
+    groups: Group[] | null,
+    balance: number,
+    update: () => Promise<void>
 }
-
-const defaultValues:DashboardDataContextType = {
-    getDashboard: async () => defaultDashboard,
-    getDashboardDebts: async () => [defaultDebt],
-    getDashboardTransactions: async () => [defaultTransaction]
-}
-
-export const DataContext = createContext<DashboardDataContextType>(defaultValues)
+export const DashboardDataContext = createContext<DashboardDataProviderContextType>({
+    user: null,
+    groups: null,
+    balance: 0,
+    update: async () => {}
+})
 
 function DashboardDataProvider({children}:ProviderType) {
 
-    const { token } = useContext(LoginContext)
+    const [groups, setGroups] = useState<Group[] | null>(null)
+    const [user, setUser] = useState<User | null>(null)
+    const [balance, setBalance] = useState(0)
 
-    const getDashboard = async () => {
-        const data = await fetch(`${get("url")}/v1/dashboard/`, {
-            headers: {
-                Authorization: token || ""
-            }
-        })
-        if(data.status !== 200) return Promise.reject()
-        const json = await data.json()
-        return json
+    const dashboard = useContext(DashboardInterfaceContext)
+
+    const update = async () => {
+        const dashboardData = await dashboard.getDashboard()
+        setGroups(dashboardData.groups)
+        setUser(dashboardData.user)
+        setBalance(dashboardData.balance)
     }
 
-    const getDashboardDebts = async () => {
-        const data = await fetch(`${get("url")}/v1/dashboard/debts`, {
-            headers: {
-                Authorization: token || ""
-            }
-        })
-        if(data.status !== 200) return Promise.reject()
-        const json = await data.json()
-        return json
-    }
+//const { groups, user, balance, update } = useContext(DashboardDataProviderContext)
 
-    const getDashboardTransactions = async () => {
-        const data = await fetch(`${get("url")}/v1/dashboard/transactions`, {
-            headers: {
-                Authorization: token || ""
-            }
-        })
-        if(data.status !== 200) return Promise.reject()
-        const json = await data.json()
-        return json
-    }
-
-
+    useEffect(() => {
+        update()
+    // eslint-disable-next-line
+    }, [])
+    
     return (
-        <DataContext.Provider value={{
-            getDashboard,
-            getDashboardDebts,
-            getDashboardTransactions,
+        <DashboardDataContext.Provider value={{
+            user, 
+            groups, 
+            balance, 
+            update
         }}>
-            {children}
-        </DataContext.Provider>
+            { children }
+        </DashboardDataContext.Provider>        
     )
 }
 

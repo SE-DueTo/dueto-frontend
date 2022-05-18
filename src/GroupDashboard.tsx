@@ -6,34 +6,32 @@ import TransactionModal from "./Transaction";
 import AddIcon from '@mui/icons-material/Add';
 import SetleDebtsModal from "./SettleDebts";
 import PaymentIcon from '@mui/icons-material/Payment';
-import { Group, GroupType } from "./Types";
-import { GroupUserdataContext } from "./contexts";
 import { Navigate, useLocation } from "react-router-dom";
 import TransactionTable from "./TransactionTable";
+import { Group } from "./types/types";
+import { DashboardDataContext } from "./context/DashboardDataProvider";
 
 export default function GroupDashboard() {
 
     const [value, setValue] = useState(0)
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    const handleChange = (_: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     }
-
-    const defaultGroup:Group = {groupId: -1, groupname: "Loading...", type: GroupType.NORMAL, users: []}
     
     //TODO remove this code when functional elements are build
     const [isTransactionShown, setTransactionShown] = useState(false)
     const [isSettleDebtsShown, setSettleDebtsShown] = useState(false)
-    const [group, setGroup] = useState<Group | null>(defaultGroup);
+    const [group, setGroup] = useState<Group | null>(null);
 
-    const groupUserdata = useContext(GroupUserdataContext)
+    const groupUserdata = useContext(DashboardDataContext)
     const location = useLocation()
 
 
     useEffect(()=>{
         const groupId = parseInt(location.pathname.substring(location.pathname.lastIndexOf("/")+1))
-        const g = groupUserdata.groups.filter(e => e.groupId === groupId)[0] || null
-
-        setGroup(g || defaultGroup)
+        
+        const g = groupUserdata?.groups?.filter(e => e.groupId === groupId)[0] || null
+        setGroup(g)
 
     }, [location, groupUserdata])
 
@@ -45,8 +43,8 @@ export default function GroupDashboard() {
 
     
 
-    const groupname = group.type === GroupType.NORMAL ? 
-        group.groupname 
+    const groupname = group.groupType === "NORMAL" ? 
+        group.groupName 
         : 
         group.users.filter(e => e.userId !== groupUserdata.user?.userId)[0]?.username
 
@@ -73,7 +71,7 @@ export default function GroupDashboard() {
                         Transaction
                     </Button>
                 </Box>
-                {group.type===GroupType.SPONTANEOUS? 
+                {group.groupType==="SPONTANEOUS" ? 
                     <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Your and {groupname} transactions:</Typography> 
                     : 
                     <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Transactions in Group {groupname}: </Typography> }

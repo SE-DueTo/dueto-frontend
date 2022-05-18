@@ -1,12 +1,11 @@
 import { AddCircleOutline } from "@mui/icons-material";
-import { Avatar, Button, Divider, FormControl, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Paper, Stack, TextField, Typography } from "@mui/material"
+import { Avatar, Box, Button, CircularProgress, Divider, FormControl, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Paper, Stack, TextField, Typography } from "@mui/material"
 import React, { useContext, useEffect, useState } from "react";
-import { GroupType } from "./Types";
 import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@emotion/react";
-import { GroupUserdataContext } from "./contexts";
+import { DashboardDataContext } from "./context/DashboardDataProvider";
 
 type OverviewProps = {
 }
@@ -16,113 +15,134 @@ const OverviewElement:React.FC<OverviewProps> = () => {
     const theme:any = useTheme()
     const [url, setUrl] = useState("")
     //const url = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
-    const groupUserdata = useContext(GroupUserdataContext)
+    const groupUserdata = useContext(DashboardDataContext)
     const location = useLocation()
 
     useEffect(()=>{
         setUrl(location.pathname.substring(location.pathname.lastIndexOf("/")+1))
     }, [location])
 
-    return (
-        <Paper 
-                sx={{
-                    borderRight: "1px solid rgba(255, 255, 255, 0.12)",
-                    maxWidth: "300px",
-                    minWidth: "200px",
-                    '& span': {
-                        textOverflow: "ellipsis",
-                        overflow: "hidden",
-                        maxWidth: "100%"
-                    }
-                }}
+    const peopleElements = groupUserdata.groups?.filter(e=>e.groupType==="SPONTANEOUS").map((e, index)=>{
+
+        const otherUser = e.users.filter(e => e.userId !== groupUserdata.user?.userId)[0]
+
+        return (
+            <Link to={`/group/${e.groupId}`}>
+                <ListItemButton key={index} selected={url===`${e.groupId}`}>
+                    <ListItemIcon>
+                        <Avatar src={otherUser.avatarUrl ?? undefined}>{otherUser.username[0]}</Avatar>
+                    </ListItemIcon>
+                    <ListItemText primary={otherUser.username} />
+                </ListItemButton>
+            </Link>
+        )
+    })
+
+    const groupElements = groupUserdata.groups?.filter(e=>e.groupType==="NORMAL").map((e, index)=>(
+        <Link to={`/group/${e.groupId}`}>
+            <ListItemButton key={index} selected={url===`${e.groupId}`}>
+                <ListItemIcon>
+                    <Avatar>{e.groupName[0]}</Avatar>
+                </ListItemIcon>
+                <ListItemText primary={e.groupName} />
+            </ListItemButton>
+        </Link>
+    ))
+
+    const list = (
+        <List sx={{padding: 0}}>
+            <List
+                subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        You
+                    </ListSubheader>
+                }
+                sx={{'& a': {
+                    color: theme.palette.text.primary,
+                    textDecoration: "none"
+                }}}
             >
-                <List sx={{padding: 0}}>
-                    <List
-                        subheader={
-                            <ListSubheader component="div" id="nested-list-subheader">
-                                You
-                            </ListSubheader>
-                        }
-                        sx={{'& a': {
-                            color: theme.palette.text.primary,
-                            textDecoration: "none"
-                        }}}
-                    >
-                        <Link to="/dashboard">
-                            <ListItemButton selected={url==="dashboard"}>
-                                <ListItemIcon>
-                                    <Avatar src={groupUserdata.user?.avatarUrl ?? undefined}>{groupUserdata.user?.username[0]}</Avatar>
-                                </ListItemIcon>
-                                <ListItemText primary={groupUserdata.user?.username ?? "Loading..."} />
-                            </ListItemButton>
-                        </Link>
-                    </List>
-                    <Divider/>
-                    <List
-                        subheader={
-                            <ListSubheader component="div" id="nested-list-subheader">
-                                People
-                            </ListSubheader>
-                        }
-                        sx={{'& a': {
-                            color: theme.palette.text.primary,
-                            textDecoration: "none"
-                        }}}
-                    >
-                        {
-                            groupUserdata.groups.filter(e=>e.type===GroupType.SPONTANEOUS).map((e, index)=>{
+                <Link to="/dashboard">
+                    <ListItemButton selected={url==="dashboard"}>
+                        <ListItemIcon>
+                            <Avatar src={groupUserdata.user?.avatarUrl ?? undefined}>{groupUserdata.user?.username[0]}</Avatar>
+                        </ListItemIcon>
+                        <ListItemText primary={groupUserdata.user?.username ?? "Loading..."} />
+                    </ListItemButton>
+                </Link>
+            </List>
+            <Divider/>
+            <List
+                subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        People
+                    </ListSubheader>
+                }
+                sx={{'& a': {
+                    color: theme.palette.text.primary,
+                    textDecoration: "none"
+                }}}
+            >
+                {
+                    (peopleElements || []).length > 0 ? peopleElements : <Typography sx={{p: 2}}>None</Typography>
+                }
+            </List>
+            <List
+                subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        Your Groups
+                    </ListSubheader>
+                }
+                sx={{'& a': {
+                    color: theme.palette.text.primary,
+                    textDecoration: "none"
+                }}}
+            >
+                {
+                    (groupElements || []).length > 0 ?  groupElements :<Typography sx={{p: 2}}>None</Typography>
+                }
+                <Button 
+                    variant="outlined" 
+                    endIcon={<AddCircleOutline />}
+                    sx={{width: "calc( 100% - 20px )", margin: "10px"}} 
+                    onClick={()=>{setAddGroupShown(true)}}
+                >
+                    New Group
+                </Button>
+                
+                {isAddGroupShown && <AddGroup setAddGroupShown={setAddGroupShown}/>}
+            </List>
+        </List>
+    )
 
-                                const otherUser = e.users.filter(e => e.userId !== groupUserdata.user?.userId)[0]
+    return (
 
-                                return (
-                                    <Link to={`/group/${e.groupId}`}>
-                                        <ListItemButton key={index} selected={url===`${e.groupId}`}>
-                                            <ListItemIcon>
-                                                <Avatar src={otherUser.avatarUrl ?? undefined}>{otherUser.username[0]}</Avatar>
-                                            </ListItemIcon>
-                                            <ListItemText primary={otherUser.username} />
-                                        </ListItemButton>
-                                    </Link>
-                                )
-                            })
-                        }
-                    </List>
-                    <List
-                        subheader={
-                            <ListSubheader component="div" id="nested-list-subheader">
-                                Your Groups
-                            </ListSubheader>
-                        }
-                        sx={{'& a': {
-                            color: theme.palette.text.primary,
-                            textDecoration: "none"
-                        }}}
-                    >
-                        {
-                            groupUserdata.groups.filter(e=>e.type===GroupType.NORMAL).map((e, index)=>(
-                                <Link to={`/group/${e.groupId}`}>
-                                    <ListItemButton key={index} selected={url===`${e.groupId}`}>
-                                        <ListItemIcon>
-                                            <Avatar>{e.groupname[0]}</Avatar>
-                                        </ListItemIcon>
-                                        <ListItemText primary={e.groupname} />
-                                    </ListItemButton>
-                                </Link>
-                            ))
-                        }
-                        <Button 
-                            variant="outlined" 
-                            endIcon={<AddCircleOutline />}
-                            sx={{width: "calc( 100% - 20px )", margin: "10px"}} 
-                            onClick={()=>{setAddGroupShown(true)}}
-                        >
-                            New Group
-                        </Button>
-                        
-                        {isAddGroupShown && <AddGroup setAddGroupShown={setAddGroupShown}/>}
-                    </List>
-                </List>
-            </Paper>
+        
+
+        <Paper 
+            sx={{
+                borderRight: "1px solid rgba(255, 255, 255, 0.12)",
+                maxWidth: "300px",
+                minWidth: "200px",
+                '& span': {
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    maxWidth: "100%"
+                }
+            }}
+        >
+            { groupUserdata.groups !== null ? 
+                list
+                : 
+                <Box sx={{
+                    display: "flex",
+                    width: "100%",
+                    justifyContent: "center",
+                }}>
+                    <CircularProgress />
+                </Box> 
+            }
+        </Paper>
     )
 }
 

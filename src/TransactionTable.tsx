@@ -1,4 +1,6 @@
 import { Avatar, Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { useContext } from 'react';
+import { DashboardDataContext } from './context/DashboardDataProvider';
 import { Transaction } from './types/types';
 
 
@@ -30,6 +32,8 @@ type TransactionTableProps ={
 }
 function TransactionTable({data}:TransactionTableProps) {
 
+    const groupUserdata = useContext(DashboardDataContext)
+    
     if(!data) {
         return (
             <Typography>No Transactions</Typography>
@@ -49,18 +53,31 @@ function TransactionTable({data}:TransactionTableProps) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((row, i) => (
-                        <StyledTableRow key={`row.${i}`}>
-                            <StyledTableCell component="th" scope="row">
-                                <Avatar src={undefined}>{row.groupId}</Avatar>
-                                {row.groupId}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.amount} €</StyledTableCell>
-                            <StyledTableCell align="right">{row.purpose}</StyledTableCell>
-                            <StyledTableCell align="right">{row.paymentMethod}</StyledTableCell>
-                            <StyledTableCell align="right">{row.date}</StyledTableCell>
-                        </StyledTableRow>
-                    ))}
+                    {data.map((row, i) => {
+
+                        const isSpontaneous = row.group.groupType === "SPONTANEOUS"
+                        let otherUser;
+                        let url;
+                        let groupName;
+                        if(isSpontaneous) {
+                            otherUser = row.group.users.filter(e => e.userId !== groupUserdata.user?.userId)[0]
+                            url = otherUser.avatarUrl
+                            groupName = otherUser.username                
+                        }
+
+                        return (
+                            <StyledTableRow key={`row.${i}`}>
+                                <StyledTableCell component="th" scope="row">
+                                    <Avatar src={url ?? undefined}>{groupName}</Avatar>
+                                    {groupName}
+                                </StyledTableCell>
+                                <StyledTableCell align="right">{row.amount} €</StyledTableCell>
+                                <StyledTableCell align="right">{row.purpose}</StyledTableCell>
+                                <StyledTableCell align="right">{row.paymentMethod}</StyledTableCell>
+                                <StyledTableCell align="right">{row.date}</StyledTableCell>
+                            </StyledTableRow>
+                        )
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>

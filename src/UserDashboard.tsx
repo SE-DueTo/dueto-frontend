@@ -16,7 +16,7 @@ export default function UserDashboard() {
     return (
         <Box sx={{textAlign: "center", mt: "20px"}}>
             <Typography variant="h5">Hallo {groupUserdata.user?.username}</Typography>
-            <Typography variant="h2">0€</Typography>
+            <Typography variant="h2">{groupUserdata.balance}€</Typography>
             <Box sx={{marginTop: "10px"}}>
                 <Button 
                     variant="outlined" 

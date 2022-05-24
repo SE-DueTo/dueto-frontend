@@ -76,7 +76,7 @@ export type SettleDebtAddDTO = {
 export type Transaction = {
     amount: number,
     date: string,
-    groupId: number,
+    group: Group,
     paymentMethod: string,
     purpose: string,
     repeatingInterval: number,
@@ -97,7 +97,7 @@ export type TransactionAddDTO = {
 export const defaultTransaction:Transaction= {
     amount: 0,
     date: "",
-    groupId: 0,
+    group: defaultGroup,
     paymentMethod: "",
     purpose: "",
     repeatingInterval: -1,

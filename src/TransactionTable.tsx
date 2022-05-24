@@ -34,7 +34,7 @@ function TransactionTable({data}:TransactionTableProps) {
 
     const groupUserdata = useContext(DashboardDataContext)
     
-    if(!data) {
+    if(!data || data.length === 0) {
         return (
             <Typography>No Transactions</Typography>
         )

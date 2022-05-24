@@ -6,12 +6,15 @@ import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import TransactionModal from "./Transaction";
 import TransactionTable from "./TransactionTable";
-import { DashboardDataContext } from "./context/DashboardDataProvider";
+import { DashboardDataContext, DEFAULT_LIMIT } from "./context/DashboardDataProvider";
 
 export default function UserDashboard() {
 
     const [isSearchOpen, setSearchOpen] = useState(false)
     const groupUserdata = useContext(DashboardDataContext)
+    const arrayLength = (groupUserdata.transactions || []).length;
+    const arrayEmpty = arrayLength === 0;
+    const arrayFull = arrayLength % DEFAULT_LIMIT === 0;
 
     return (
         <Box sx={{textAlign: "center", mt: "20px"}}>
@@ -30,7 +33,8 @@ export default function UserDashboard() {
             <Divider sx={{margin: "20px 0px"}}/>
             <Box sx={{margin: '1em'}}>
                 <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Your Transactions:</Typography>
-                <TransactionTable></TransactionTable>
+                <TransactionTable data={groupUserdata.transactions}/>
+                {(!arrayEmpty && arrayFull) && <Button onClick={()=>{groupUserdata.loadMoreTransactions()}}>Load more</Button>}
             </Box>
         </Box>
     )

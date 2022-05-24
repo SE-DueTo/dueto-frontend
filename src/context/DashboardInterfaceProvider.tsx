@@ -7,14 +7,14 @@ import { LoginContext } from "./LoginProvider"
 
 type DashboardInterfaceContextType = {
     getDashboard: () => Promise<Dashboard>,
-    getDashboardDebts: () => Promise<Debt[]>,
-    getDashboardTransactions: () => Promise<Transaction[]>
+    getDashboardDebts: (from: number, limit: number) => Promise<Debt[]>,
+    getDashboardTransactions: (from: number, limit: number) => Promise<Transaction[]>
 }
 
 const defaultValues:DashboardInterfaceContextType = {
     getDashboard: async () => defaultDashboard,
-    getDashboardDebts: async () => [defaultDebt],
-    getDashboardTransactions: async () => [defaultTransaction]
+    getDashboardDebts: async (_, __) => [defaultDebt],
+    getDashboardTransactions: async (_, __) => [defaultTransaction]
 }
 
 export const DashboardInterfaceContext = createContext<DashboardInterfaceContextType>(defaultValues)
@@ -34,8 +34,8 @@ function DashboardInterfaceProvider({children}:ProviderType) {
         return json
     }
 
-    const getDashboardDebts = async () => {
-        const data = await fetch(`${get("url")}/v1/dashboard/debts`, {
+    const getDashboardDebts = async (from: number, limit: number) => {
+        const data = await fetch(`${get("url")}/v1/dashboard/debts?from=${from}&limit=${limit}`, {
             headers: {
                 Authorization: token || ""
             }
@@ -45,8 +45,8 @@ function DashboardInterfaceProvider({children}:ProviderType) {
         return json
     }
 
-    const getDashboardTransactions = async () => {
-        const data = await fetch(`${get("url")}/v1/dashboard/transactions`, {
+    const getDashboardTransactions = async (from:number, limit:number) => {
+        const data = await fetch(`${get("url")}/v1/dashboard/transactions?from=${from}&limit=${limit}`, {
             headers: {
                 Authorization: token || ""
             }

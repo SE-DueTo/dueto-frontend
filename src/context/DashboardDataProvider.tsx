@@ -9,7 +9,9 @@ type DashboardDataProviderContextType = {
     balance: number,
     transactions: Transaction[] | null,
     debts: Debt[] | null
-    update: () => Promise<void>
+    update: () => Promise<void>,
+    loadMoreDebts: () => Promise<void>,
+    loadMoreTransactions: () => Promise<void>,
 }
 export const DashboardDataContext = createContext<DashboardDataProviderContextType>({
     user: null,
@@ -17,8 +19,12 @@ export const DashboardDataContext = createContext<DashboardDataProviderContextTy
     balance: 0,
     transactions: null,
     debts: null,
-    update: async () => {}
+    update: async () => {},
+    loadMoreDebts: async () => {},
+    loadMoreTransactions: async () => {},
 })
+
+export const DEFAULT_LIMIT = 10;
 
 function DashboardDataProvider({children}:ProviderType) {
 
@@ -36,10 +42,28 @@ function DashboardDataProvider({children}:ProviderType) {
         setUser(dashboardData.user)
         setBalance(dashboardData.balance)
 
-        const d = await dashboard.getDashboardDebts()
-        setDebts(d)
-        const t = await dashboard.getDashboardTransactions()
-        setTransactions(t)
+        await loadMoreDebts()
+        await loadMoreTransactions()
+    }
+
+    const loadMoreTransactions = async () => {
+        const from = (transactions || []).length
+        const t = await dashboard.getDashboardTransactions(from, DEFAULT_LIMIT);
+        setTransactions(transactions => {
+            const tempTransactions = (transactions || [])
+            tempTransactions.push(...t);
+            return tempTransactions;
+        })
+    }
+
+    const loadMoreDebts = async () => {
+        const from = (debts || []).length
+        const d = await dashboard.getDashboardDebts(from, DEFAULT_LIMIT);
+        setDebts(debts => {
+            const tempDebts = (debts || [])
+            tempDebts.push(...d);
+            return tempDebts;
+        })
     }
 
 //const { groups, user, balance, update } = useContext(DashboardDataProviderContext)
@@ -56,7 +80,9 @@ function DashboardDataProvider({children}:ProviderType) {
             balance,
             transactions,
             debts,
-            update
+            update,
+            loadMoreDebts,
+            loadMoreTransactions
         }}>
             { children }
         </DashboardDataContext.Provider>        

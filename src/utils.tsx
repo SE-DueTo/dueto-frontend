@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@emotion/react"
-import { LocalizationProvider } from "@mui/lab"
+import { LocalizationProvider } from "@mui/x-date-pickers"
 import { Backdrop, CssBaseline, Modal, Paper, useMediaQuery } from "@mui/material"
 import { Box } from "@mui/system"
 import { theme } from './theme'
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DefaultHeader } from "./Header"
 import { ReactChild, ReactFragment, ReactPortal, useContext } from "react"
 import { de } from "date-fns/locale"

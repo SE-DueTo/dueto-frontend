@@ -1,5 +1,4 @@
 import { createContext, useContext } from "react";
-import { get } from "../config/config";
 import { TransactionAddDTO } from "../types/types";
 import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
@@ -20,9 +19,11 @@ function TransactionInterfaceProvider({children}:ProviderType) {
 
     const { token } = useContext(LoginContext)
 
+    const url = process.env.REACT_APP_URL;
+    
     const addTransaction = (transaction:TransactionAddDTO):Promise<void> => {
         return new Promise(async (res, rej) => {
-            const data = await fetch(`${get("url")}/v1/transaction/add/`, {
+            const data = await fetch(`${url}/v1/transaction/add/`, {
                 headers: {
                     Authorization: token || ""
                 },

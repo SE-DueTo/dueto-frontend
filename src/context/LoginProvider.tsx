@@ -1,5 +1,4 @@
 import {createContext, useState} from "react";
-import { get } from "../config/config";
 
 type LoginProviderType = {
     children: JSX.Element,
@@ -52,9 +51,11 @@ function LoginProvider({children}:LoginProviderType) {
         setTokenCookie(token)
     }
 
+    const url = process.env.REACT_APP_URL;
+
     const login = (username:string, password:string):Promise<void> => {
         return new Promise((resolve, reject) => {
-            fetch(`${get("url")}/login`, {
+            fetch(`${url}/login`, {
                 method: "POST",
                 body: JSON.stringify({username, password}),
             })
@@ -80,7 +81,7 @@ function LoginProvider({children}:LoginProviderType) {
                 return
             }
 
-            fetch(`${get("url")}/v1/user/logout`, {
+            fetch(`${url}/v1/user/logout`, {
                 headers: {
                     Authorization: token
                 },

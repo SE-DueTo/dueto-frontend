@@ -1,5 +1,4 @@
 import { createContext, useContext } from "react";
-import { get } from "../config/config";
 import { Debt, defaultDebt, defaultGroupInfo, defaultTransaction, GroupAddNormalDTO, GroupInfo, Transaction } from "../types/types";
 import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
@@ -28,8 +27,10 @@ function GroupInterfaceProvider({children}:ProviderType) {
 
     const { token } = useContext(LoginContext)
 
+    const url = process.env.REACT_APP_URL;
+
     const getGroupInfo = async (groupId:number):Promise<GroupInfo> => {
-        const data = await fetch(`${get("url")}/v1/group/${groupId}`, {
+        const data = await fetch(`${url}/v1/group/${groupId}`, {
             headers: {
                 Authorization: token || ""
             }
@@ -40,7 +41,7 @@ function GroupInterfaceProvider({children}:ProviderType) {
     }
 
     const getDebts = async (groupId:number):Promise<Debt[]> => {
-        const data = await fetch(`${get("url")}/v1/group/${groupId}/debts`, {
+        const data = await fetch(`${url}/v1/group/${groupId}/debts`, {
             headers: {
                 Authorization: token || ""
             }
@@ -51,7 +52,7 @@ function GroupInterfaceProvider({children}:ProviderType) {
     }
 
     const getTransactions = async (groupId:number):Promise<Transaction[]> => {
-        const data = await fetch(`${get("url")}/v1/group/${groupId}/transactions`, {
+        const data = await fetch(`${url}/v1/group/${groupId}/transactions`, {
             headers: {
                 Authorization: token || ""
             }
@@ -62,7 +63,7 @@ function GroupInterfaceProvider({children}:ProviderType) {
     }
 
     const addNormalGroup = async (groupAddDTO:GroupAddNormalDTO) => {
-        const data = await fetch(`${get("url")}/v1/group/normal/add`, {
+        const data = await fetch(`${url}/v1/group/normal/add`, {
             headers: {
                 Authorization: token || ""
             },
@@ -75,7 +76,7 @@ function GroupInterfaceProvider({children}:ProviderType) {
     }
 
     const removeSpontaneousGroup = async (groupId:number) => {
-        const data = await fetch(`${get("url")}/v1/group/normal/remove/${groupId}`, {
+        const data = await fetch(`${url}/v1/group/normal/remove/${groupId}`, {
             headers: {
                 Authorization: token || ""
             },
@@ -87,7 +88,7 @@ function GroupInterfaceProvider({children}:ProviderType) {
     }
 
     const addSpontaneousGroup = async (userId:number) => {
-        const data = await fetch(`${get("url")}/v1/group/spontaneous/add`, {
+        const data = await fetch(`${url}/v1/group/spontaneous/add`, {
             headers: {
                 Authorization: token || ""
             },

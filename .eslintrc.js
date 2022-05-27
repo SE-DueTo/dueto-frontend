@@ -20,4 +20,7 @@ module.exports = {
         "react",
         "@typescript-eslint"
     ],
+    "rules": {
+        "react/react-in-jsx-scope": "off"
+    }
 };

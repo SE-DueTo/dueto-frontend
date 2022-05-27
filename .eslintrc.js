@@ -22,5 +22,9 @@ module.exports = {
     ],
     "rules": {
         "react/react-in-jsx-scope": "off"
-    }
+    },
+    "globals": {
+        "window": true,
+        "document": true
+    },
 };

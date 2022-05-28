@@ -27,7 +27,7 @@ const OverviewElement:React.FC<OverviewProps> = () => {
         const otherUser = e.users.filter(e => e.userId !== groupUserdata.user?.userId)[0]
 
         return (
-            <Link to={`/group/${e.groupId}`}>
+            <Link to={`/group/${e.groupId}`} key={`pe.${index}`}>
                 <ListItemButton key={index} selected={url===`${e.groupId}`}>
                     <ListItemIcon>
                         <Avatar src={otherUser.avatarUrl ?? undefined}>{otherUser.username[0]}</Avatar>
@@ -39,7 +39,7 @@ const OverviewElement:React.FC<OverviewProps> = () => {
     })
 
     const groupElements = groupUserdata.groups?.filter(e=>e.groupType==="NORMAL").map((e, index)=>(
-        <Link to={`/group/${e.groupId}`}>
+        <Link to={`/group/${e.groupId}`} key={`ge.${index}`}>
             <ListItemButton key={index} selected={url===`${e.groupId}`}>
                 <ListItemIcon>
                     <Avatar>{e.groupName[0]}</Avatar>

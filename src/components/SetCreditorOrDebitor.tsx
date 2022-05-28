@@ -4,6 +4,7 @@ import UserElement from "./UserElement";
 
 type SetCreditorOrDebitorType = {
     label: string,
+    // eslint-disable-next-line
     onChange: ((event: SelectChangeEvent<any>, child: React.ReactNode) => void) | undefined,
     users: User[],
     who: string

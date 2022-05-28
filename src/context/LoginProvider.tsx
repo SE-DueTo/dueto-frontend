@@ -14,7 +14,7 @@ type LoginContextType = {
 export const LoginContext = createContext<LoginContextType>({
     isLoggedIn: false, 
     token: null, 
-    login: (_, __) => new Promise((_, rej) => rej()),
+    login: () => new Promise((_, rej) => rej()),
     logout: () => new Promise((_, rej) => rej()),
 })
 

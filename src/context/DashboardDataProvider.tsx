@@ -19,9 +19,9 @@ export const DashboardDataContext = createContext<DashboardDataProviderContextTy
     balance: 0,
     transactions: null,
     debts: null,
-    update: async () => {},
-    loadMoreDebts: async () => {},
-    loadMoreTransactions: async () => {},
+    update: async () => {/*overwritten by provider*/},
+    loadMoreDebts: async () => {/*overwritten by provider*/},
+    loadMoreTransactions: async () => {/*overwritten by provider*/},
 })
 
 export const DEFAULT_LIMIT = 10;

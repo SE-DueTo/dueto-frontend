@@ -8,7 +8,7 @@ type TransactionInterfaceContextType = {
 }
 
 const defaultValues:TransactionInterfaceContextType = {
-    addTransaction: async () => {}
+    addTransaction: async () => {/*overwritten by provider*/}
 }
 
 export const TransactionInterfaceContext = createContext<TransactionInterfaceContextType>(defaultValues)
@@ -29,7 +29,6 @@ function TransactionInterfaceProvider({children}:ProviderType) {
         })
         if(data.status !== 200) {
             Promise.reject()
-            return
         }
     }
 

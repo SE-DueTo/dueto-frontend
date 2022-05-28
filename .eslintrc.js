@@ -21,7 +21,8 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "no-empty-function": "off",
     },
     "globals": {
         "window": true,

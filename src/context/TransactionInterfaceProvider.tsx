@@ -8,7 +8,6 @@ type TransactionInterfaceContextType = {
 }
 
 const defaultValues:TransactionInterfaceContextType = {
-    // eslint-disable-next-line
     addTransaction: async () => {}
 }
 

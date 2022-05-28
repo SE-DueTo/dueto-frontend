@@ -17,14 +17,16 @@ type SiteProps= {
     showAppBar?: boolean
 }
 
-type heightWrapperProps = {
-    children?: JSX.Element | JSX.Element[] | boolean | ReactChild | ReactFragment | ReactPortal
+type HeightWrapperProps = {
+    children?: JSX.Element | JSX.Element[] | boolean | ReactFragment | ReactPortal
 }
-export const HeightWrapper:React.FC<heightWrapperProps> = ({children}) => (
-    <Box sx={{display: "grid", gridTemplateRows: "auto 1fr", height: "100vh"}}>
-        {children}
-    </Box>
-)
+export function HeightWrapper({children}:HeightWrapperProps) {
+    return (
+        <Box sx={{display: "grid", gridTemplateRows: "auto 1fr", height: "100vh"}}>
+            {children}
+        </Box>
+    )
+}
 
 export function Site({children, showLogin, showAppBar=true}:SiteProps) {
 
@@ -63,7 +65,7 @@ function CheckSiteLogin({children, check}: CheckSiteLoginType) {
 type RegisterLoginProps = {
     children?: JSX.Element | JSX.Element[]
 }
-export const RegisterLoginWrapper:React.FC<RegisterLoginProps> = ({children}) => {
+export function RegisterLoginWrapper({children}:RegisterLoginProps) {
     const isMobile = useMediaQuery('(max-width:800px)');
     return (
         <Paper 
@@ -76,13 +78,12 @@ export const RegisterLoginWrapper:React.FC<RegisterLoginProps> = ({children}) =>
             {children}
         </Paper>
     )
-
 }
 
 type ModalBackdropProps = {
     children: JSX.Element
 }
-export const ModalBackdrop:React.FC<ModalBackdropProps> = ({children})=>{
+export function ModalBackdrop({children}:ModalBackdropProps) {
     return (
         <Backdrop open={true} >
             <Modal 

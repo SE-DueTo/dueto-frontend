@@ -1,16 +1,15 @@
 import { AddCircleOutline } from "@mui/icons-material";
-import { Avatar, Box, Button, CircularProgress, Divider, FormControl, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Paper, Stack, TextField, Typography } from "@mui/material"
+import { Avatar, Box, Button, CircularProgress, Divider, FormControl, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Paper, Stack, TextField, Theme, Typography, useTheme } from "@mui/material"
 import React, { useContext, useEffect, useState } from "react";
 import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
 import { Link, useLocation } from "react-router-dom";
-import { useTheme } from "@emotion/react";
 import { DashboardDataContext } from "./context/DashboardDataProvider";
 
 const OverviewElement:React.FC = () => {
 
     const [isAddGroupShown, setAddGroupShown] = useState(false)
-    const theme:any = useTheme()
+    const theme:Theme = useTheme()
     const [url, setUrl] = useState("")
     //const url = window.location.pathname.substring(window.location.pathname.lastIndexOf("/")+1);
     const groupUserdata = useContext(DashboardDataContext)

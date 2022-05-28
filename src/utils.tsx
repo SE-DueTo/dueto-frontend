@@ -5,7 +5,7 @@ import { Box } from "@mui/system"
 import { theme } from './theme'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DefaultHeader } from "./Header"
-import { ReactChild, ReactFragment, ReactPortal, useContext } from "react"
+import { ReactFragment, ReactPortal, useContext } from "react"
 import { de } from "date-fns/locale"
 import LoginProvider, { LoginContext } from "./context/LoginProvider";
 import { Navigate } from "react-router-dom"

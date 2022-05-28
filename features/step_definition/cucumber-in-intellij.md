@@ -1,5 +1,5 @@
 # How to use Cucumber in Intellij
-## Documentation:
+## Documentation
 https://www.jetbrains.com/help/idea/cucumber-support.html#js
 
 ## Plugins to be installed

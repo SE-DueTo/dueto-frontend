@@ -19,10 +19,10 @@ function MoneyTextField({amount, setAmount}:MoneyTextFieldType) {
                 const target = event.target as HTMLInputElement
                 try {
                     const input = target.value
-                    const amount = parseFloat(input)
-                    if(((amount * 100 ) % 1) > 0) return;
-                    if(isNaN(amount)) setAmount(0)
-                    else setAmount(amount)
+                    const inputAmount = parseFloat(input)
+                    if(((inputAmount * 100 ) % 1) > 0) return;
+                    if(isNaN(inputAmount)) setAmount(0)
+                    else setAmount(inputAmount)
                 } catch (e) {
                     setAmount(0)
                 }

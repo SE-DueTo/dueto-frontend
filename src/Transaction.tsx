@@ -155,7 +155,7 @@ function Transaction({close, users}:TransactionModalProps) {
             //checked users
             const amountChecked = users.filter(u => u.isChecked).length;
 
-            let acc:number = 0;
+            let acc = 0;
             return users.map((u, index) => {
                 //amount to add to user
                 //0 if user is not checked in

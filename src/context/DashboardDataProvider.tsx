@@ -19,8 +19,11 @@ export const DashboardDataContext = createContext<DashboardDataProviderContextTy
     balance: 0,
     transactions: null,
     debts: null,
+    // eslint-disable-next-line
     update: async () => {},
+    // eslint-disable-next-line
     loadMoreDebts: async () => {},
+    // eslint-disable-next-line
     loadMoreTransactions: async () => {},
 })
 

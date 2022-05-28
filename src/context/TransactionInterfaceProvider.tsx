@@ -8,9 +8,8 @@ type TransactionInterfaceContextType = {
 }
 
 const defaultValues:TransactionInterfaceContextType = {
-    addTransaction: (_:TransactionAddDTO) => {
-        return new Promise(res => res())
-    }
+    // eslint-disable-next-line
+    addTransaction: async () => {}
 }
 
 export const TransactionInterfaceContext = createContext<TransactionInterfaceContextType>(defaultValues)

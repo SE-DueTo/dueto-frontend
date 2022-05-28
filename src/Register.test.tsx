@@ -1,7 +1,5 @@
-import * as React from 'react';
 import { render, screen} from '@testing-library/react'
 import Register from './Register';
-import userEvent from '@testing-library/user-event'
 
 test('renders the correct content', () => {
     const { getAllByText } = render(<Register/>);

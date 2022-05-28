@@ -1,11 +1,13 @@
 import { Save } from "@mui/icons-material";
-import { Avatar, Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { ModalBackdrop } from "./utils";
 import { useState } from "react";
 import { User } from "./Types";
 import DateComponent from "./components/DateComponent";
 import UserInteractionWrapper from "./components/UserInteractionWrapper";
+import SetCreditorOrDebitor from "./components/SetCreditorOrDebitor";
+import UserElement from "./components/UserElement";
+import MoneyTextField from "./components/MoneyTextField";
 
 type SettleDebtsModalProps = {
     close: ()=>void,
@@ -29,47 +31,16 @@ function SettleDebts({close, users}:SettleDebtsModalProps) {
 
     return (
         <UserInteractionWrapper onClickAway={close} title={"Settle Debts"}>
-            <FormControl variant="standard">
-                <InputLabel>Who gave</InputLabel>
-                <Select 
-                    label="Who gave" 
-                    value={whoSettleDebt} 
-                    onChange={(event)=>{
-                        setWhoSettleDebt(event.target.value as string)
-                    }}
-                >
-                    {users.map(e=>(
-                        <MenuItem 
-                            value={e.userId}
-                            key={e.userId}
-                        >
-                            <UserElement {...e}/>
-                        </MenuItem>
-                    ))}
-                    
-                </Select>
-            </FormControl>
-            <TextField 
-                type="number" 
-                label="Amount" 
-                variant="standard"
-                value={amount.toString()}
-                InputProps={{
-                    endAdornment: <InputAdornment position="end">€</InputAdornment>,
-                }}
-                onInput={(event)=>{
-                    const target = event.target as HTMLInputElement
-                    try {
-                        const input = target.value
-                        const amount = parseFloat(input)
-                        if(((amount * 100 ) % 1) > 0) return;
-                        if(isNaN(amount)) setAmount(0)
-                        else setAmount(amount)
-                    } catch (e) {
-                        setAmount(0)
-                    }
-                }}
-            />
+            <SetCreditorOrDebitor 
+                label="Who gave" 
+                who={whoSettleDebt}
+                users={users}
+                onChange={(event)=>{
+                    setWhoSettleDebt(event.target.value as string)
+                }} />
+            <MoneyTextField
+                amount={amount}
+                setAmount={setAmount}/>
             <FormControl variant="standard">
                 <InputLabel>Who received</InputLabel>
                 <Select 
@@ -114,16 +85,5 @@ function SettleDebts({close, users}:SettleDebtsModalProps) {
                 }}/>
             <Button startIcon={<Save/>} variant="contained">Save</Button>
         </UserInteractionWrapper>
-    )
-}
-
-function UserElement({avatarUrl, username}:User) {
-    return (
-        <Box>
-            <Stack direction="row" spacing={2}>
-                <Avatar alt={username} src={avatarUrl ?? undefined}>{username[0]}</Avatar>
-                <Typography sx={{display: "flex", alignItems: "center"}}>{username}</Typography>
-            </Stack>
-        </Box>
     )
 }

@@ -1,11 +1,14 @@
 import React from 'react'
 import { Save } from "@mui/icons-material";
-import { Avatar, Box, Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, Switch, TextField, Typography } from "@mui/material";
+import { Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, Switch, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { ModalBackdrop } from "./utils";
 import { User } from './Types';
 import DateComponent from './components/DateComponent';
 import UserInteractionWrapper from './components/UserInteractionWrapper';
+import SetCreditorOrDebitor from './components/SetCreditorOrDebitor';
+import UserElement from './components/UserElement';
+import MoneyTextField from './components/MoneyTextField';
 
 type TransactionModalProps = {
     close: ()=>void,
@@ -261,47 +264,16 @@ function Transaction({close, users}:TransactionModalProps) {
 
     return (
         <UserInteractionWrapper onClickAway={close} title="Transaction">
-            <FormControl variant="standard">
-                <InputLabel>Who paid</InputLabel>
-                <Select 
-                    label="Who paid" 
-                    value={whoPaid} 
-                    onChange={(event)=>{
-                        setWhoPaid(event.target.value as string)
-                    }}
-                >
-                    {users.map(e=>(
-                        <MenuItem 
-                            value={e.userId}
-                            key={e.userId}
-                        >
-                            <UserElement {...e}/>
-                        </MenuItem>
-                    ))}
-                    
-                </Select>
-            </FormControl>
-            <TextField 
-                type="number" 
-                label="Amount" 
-                variant="standard"
-                value={amount.toString()}
-                InputProps={{
-                    endAdornment: <InputAdornment position="end">€</InputAdornment>,
-                }}
-                onInput={(event)=>{
-                    const target = event.target as HTMLInputElement
-                    try {
-                        const input = target.value
-                        const amount = parseFloat(input)
-                        if(((amount * 100 ) % 1) > 0) return;
-                        if(isNaN(amount)) setAmount(0)
-                        else setAmount(amount)
-                    } catch (e) {
-                        setAmount(0)
-                    }
-                }}
-            />
+            <SetCreditorOrDebitor 
+                label="Who paid" 
+                who={whoPaid}
+                users={users}
+                onChange={(event)=>{
+                    setWhoPaid(event.target.value as string)
+                }} />
+            <MoneyTextField
+                amount={amount}
+                setAmount={setAmount}/>
             <FormControl variant="standard">
                 <InputLabel>Payment method</InputLabel>
                 <Select 
@@ -412,16 +384,5 @@ function Transaction({close, users}:TransactionModalProps) {
                 }}/>
             <Button startIcon={<Save/>} variant="contained" disabled={amount===0}>Save</Button>
         </UserInteractionWrapper>
-    )
-}
-
-function UserElement({avatarUrl, username}:User) {
-    return (
-        <Box>
-            <Stack direction="row" spacing={2}>
-                <Avatar alt={username} src={avatarUrl ?? undefined}>{!avatarUrl && username[0]}</Avatar>
-                <Typography sx={{display: "flex", alignItems: "center"}}>{username}</Typography>
-            </Stack>
-        </Box>
     )
 }

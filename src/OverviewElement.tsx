@@ -7,9 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { DashboardDataContext } from "./context/DashboardDataProvider";
 
-type OverviewProps = {
-}
-const OverviewElement:React.FC<OverviewProps> = () => {
+const OverviewElement:React.FC = () => {
 
     const [isAddGroupShown, setAddGroupShown] = useState(false)
     const theme:any = useTheme()

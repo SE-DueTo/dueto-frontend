@@ -307,7 +307,9 @@ function Transaction({close, users}:TransactionModalProps) {
                                         if(((amount * 100 ) % 1) > 0) return;
                                         if(isNaN(amount)) setAmount(0)
                                         else setAmount(amount)
-                                    } catch (e) {}
+                                    } catch (e) {
+                                        setAmount(0)
+                                    }
                                 }}
                             />
                             <FormControl variant="standard">
@@ -401,7 +403,9 @@ function Transaction({close, users}:TransactionModalProps) {
                                                         }
                                                         setInput(user, percentage ? ((inputAmount/100)*amount) : inputAmount)
                                                         
-                                                    } catch (e) {}
+                                                    } catch (e) {
+                                                        setInput(user, 0)
+                                                    }
                                                 }}
                                         />
                                     </ListItem>

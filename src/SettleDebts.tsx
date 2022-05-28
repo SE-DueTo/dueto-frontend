@@ -74,7 +74,9 @@ function SettleDebts({close, users}:SettleDebtsModalProps) {
                                         if(((amount * 100 ) % 1) > 0) return;
                                         if(isNaN(amount)) setAmount(0)
                                         else setAmount(amount)
-                                    } catch (e) {}
+                                    } catch (e) {
+                                        setAmount(0)
+                                    }
                                 }}
                             />
                             <FormControl variant="standard">

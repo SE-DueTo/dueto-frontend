@@ -81,7 +81,7 @@ function Transaction({close, users}:TransactionModalProps) {
             } else { //user is now checked out
                 
                 //the amount of the user to now distribute
-                let amount = user.amount
+                const amount = user.amount
 
                 //get list of not edited users to distribute to
                 let notEditedUsers = users.filter( u1 => u1.isChecked && !u1.wasEdited && u1 !== user)
@@ -196,7 +196,7 @@ function Transaction({close, users}:TransactionModalProps) {
             let uneditedUsers = users.filter( u => !u.wasEdited && u.isChecked && u.user.userId!==user.user.userId)
 
             //get the amount of money these have
-            let unediteusersAmount = sum(uneditedUsers.map(u => u.amount))
+            const unediteusersAmount = sum(uneditedUsers.map(u => u.amount))
 
             //if there are no users or the amount is not enough to get the difference from 
             // -> use all users

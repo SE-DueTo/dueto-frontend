@@ -20,9 +20,9 @@ export const LoginContext = createContext<LoginContextType>({
 
 function getCookie(key:string):(string|null) {
     const cookie = document.cookie.split("; ").map(e => {
-        var split = e.split("=");
-        var key = split[0]
-        var value = e.substring(e.indexOf("=")+1)
+        const split = e.split("=");
+        const key = split[0]
+        const value = e.substring(e.indexOf("=")+1)
         return [key, value]
     }).filter(e=>(
         e[0] === key

@@ -1,8 +1,6 @@
 import React from 'react'
 import { Save } from "@mui/icons-material";
-import ClickAwayListener from "@mui/base/ClickAwayListener";
-import { Avatar, Box, Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Select, Stack, Switch, TextField, Typography } from "@mui/material";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Avatar, Box, Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, Switch, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { ModalBackdrop } from "./utils";
 import { User } from './Types';
@@ -83,7 +81,7 @@ function Transaction({close, users}:TransactionModalProps) {
             } else { //user is now checked out
                 
                 //the amount of the user to now distribute
-                const amount = user.amount
+                const userAmount = user.amount
 
                 //get list of not edited users to distribute to
                 let notEditedUsers = users.filter( u1 => u1.isChecked && !u1.wasEdited && u1 !== user)
@@ -99,7 +97,7 @@ function Transaction({close, users}:TransactionModalProps) {
                 for(let i = 0; i<notEditedUsers.length; i++) {
                     const notEditedUser = notEditedUsers[i]
                     //give everyone the same value. if is the last one, use the rest (difference between amount and accumulated amount)
-                    let editAmount = (i===(notEditedUsers.length - 1 )) ? amount - acc : amount / notEditedUsers.length
+                    let editAmount = (i===(notEditedUsers.length - 1 )) ? userAmount - acc : userAmount / notEditedUsers.length
                     editAmount = roundToIntTo2Decimals(editAmount)
                     acc += editAmount
                     notEditedUser.amount += editAmount

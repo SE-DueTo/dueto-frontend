@@ -13,7 +13,7 @@ type SettleDebtsModalProps = {
     close: ()=>void,
     users: User[]
 }
-export default function SetleDebtsModal(props:SettleDebtsModalProps) {
+export default function SettleDebtsModal(props:SettleDebtsModalProps) {
     return (
         <ModalBackdrop>
             <SettleDebts {...props}/>

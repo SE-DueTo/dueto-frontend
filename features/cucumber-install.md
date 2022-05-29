@@ -1,4 +1,4 @@
-# How to use cucumber?
+# How to use cucumber
 ## Installation
 ### Step 1
 `npm install`

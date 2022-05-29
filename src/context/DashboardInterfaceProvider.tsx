@@ -12,8 +12,8 @@ type DashboardInterfaceContextType = {
 
 const defaultValues:DashboardInterfaceContextType = {
     getDashboard: async () => defaultDashboard,
-    getDashboardDebts: async (_, __) => [defaultDebt],
-    getDashboardTransactions: async (_, __) => [defaultTransaction]
+    getDashboardDebts: async () => [defaultDebt],
+    getDashboardTransactions: async () => [defaultTransaction]
 }
 
 export const DashboardInterfaceContext = createContext<DashboardInterfaceContextType>(defaultValues)

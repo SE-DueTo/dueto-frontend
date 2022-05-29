@@ -1,6 +1,5 @@
-import { useTheme } from "@emotion/react"
 import { LocalAtm } from "@mui/icons-material"
-import { AppBar, Button, Toolbar, Typography } from "@mui/material"
+import { AppBar, Button, Theme, Toolbar, Typography, useTheme } from "@mui/material"
 import { Box } from "@mui/system"
 import React from "react"
 import { Link } from "react-router-dom"
@@ -10,7 +9,7 @@ type DefaultHeaderProps = {
 }
 export const DefaultHeader:React.FC<DefaultHeaderProps> = ({showLogin}) => {
 
-    const theme:any = useTheme()
+    const theme:Theme = useTheme()
 
     return (
         <AppBar position="static">

@@ -1,6 +1,5 @@
 import { Given, When, Then } from '@cucumber/cucumber'
-import assert from 'assert'
-import { By, until } from 'selenium-webdriver'
+import { By } from 'selenium-webdriver'
 import { driver } from './step_defs.mjs'
 
 Given("The user is not logged in", ()=>{

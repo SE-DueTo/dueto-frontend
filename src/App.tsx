@@ -4,7 +4,7 @@ import { GroupDashboardSite, LoginSite, LogoutSite, MainSite, UserDashboardSite 
 
 
 
-const App:React.FC<{}> = () => {
+const App:React.FC = () => {
     return (
         <Routes>
             <Route path="/" element={<MainSite/>}/>

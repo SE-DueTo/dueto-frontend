@@ -1,11 +1,14 @@
 import React from 'react'
 import { Save } from "@mui/icons-material";
-import ClickAwayListener from "@mui/base/ClickAwayListener";
-import { Avatar, Box, Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Paper, Select, Stack, Switch, TextField, Typography } from "@mui/material";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, Switch, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { ModalBackdrop } from "./utils";
 import { User } from './Types';
+import DateComponent from './components/DateComponent';
+import UserInteractionWrapper from './components/UserInteractionWrapper';
+import SetCreditorOrDebitor from './components/SetCreditorOrDebitor';
+import UserElement from './components/UserElement';
+import MoneyTextField from './components/MoneyTextField';
 
 type TransactionModalProps = {
     close: ()=>void,
@@ -81,7 +84,7 @@ function Transaction({close, users}:TransactionModalProps) {
             } else { //user is now checked out
                 
                 //the amount of the user to now distribute
-                let amount = user.amount
+                const userAmount = user.amount
 
                 //get list of not edited users to distribute to
                 let notEditedUsers = users.filter( u1 => u1.isChecked && !u1.wasEdited && u1 !== user)
@@ -97,7 +100,7 @@ function Transaction({close, users}:TransactionModalProps) {
                 for(let i = 0; i<notEditedUsers.length; i++) {
                     const notEditedUser = notEditedUsers[i]
                     //give everyone the same value. if is the last one, use the rest (difference between amount and accumulated amount)
-                    let editAmount = (i===(notEditedUsers.length - 1 )) ? amount - acc : amount / notEditedUsers.length
+                    let editAmount = (i===(notEditedUsers.length - 1 )) ? userAmount - acc : userAmount / notEditedUsers.length
                     editAmount = roundToIntTo2Decimals(editAmount)
                     acc += editAmount
                     notEditedUser.amount += editAmount
@@ -155,7 +158,7 @@ function Transaction({close, users}:TransactionModalProps) {
             //checked users
             const amountChecked = users.filter(u => u.isChecked).length;
 
-            let acc:number = 0;
+            let acc = 0;
             return users.map((u, index) => {
                 //amount to add to user
                 //0 if user is not checked in
@@ -196,7 +199,7 @@ function Transaction({close, users}:TransactionModalProps) {
             let uneditedUsers = users.filter( u => !u.wasEdited && u.isChecked && u.user.userId!==user.user.userId)
 
             //get the amount of money these have
-            let unediteusersAmount = sum(uneditedUsers.map(u => u.amount))
+            const unediteusersAmount = sum(uneditedUsers.map(u => u.amount))
 
             //if there are no users or the amount is not enough to get the difference from 
             // -> use all users
@@ -260,185 +263,126 @@ function Transaction({close, users}:TransactionModalProps) {
 
 
     return (
-        <ClickAwayListener 
-            onClickAway={close}
-            mouseEvent="onMouseDown"
-            touchEvent="onTouchStart"
-        >
-            <Paper sx={{padding: "2em", width: "700px", maxWidth: "100%", overflow: "auto", maxHeight: "100vh"}}>
-                
-                <Typography variant="h5">Transaction</Typography>
-                <FormControl sx={{width: "100%"}}>
-                    <form>
-                        <Stack direction="column" spacing={2}>
-                            <FormControl variant="standard">
-                                <InputLabel>Who paid</InputLabel>
-                                <Select 
-                                    label="Who paid" 
-                                    value={whoPaid} 
-                                    onChange={(event)=>{
-                                        setWhoPaid(event.target.value as string)
-                                    }}
-                                >
-                                    {users.map(e=>(
-                                        <MenuItem 
-                                            value={e.userId}
-                                            key={e.userId}
-                                        >
-                                            <UserElement {...e}/>
-                                        </MenuItem>
-                                    ))}
-                                    
-                                </Select>
-                            </FormControl>
-                            <TextField 
+        <UserInteractionWrapper onClickAway={close} title="Transaction">
+            <SetCreditorOrDebitor 
+                label="Who paid" 
+                who={whoPaid}
+                users={users}
+                onChange={(event)=>{
+                    setWhoPaid(event.target.value as string)
+                }} />
+            <MoneyTextField
+                amount={amount}
+                setAmount={setAmount}/>
+            <FormControl variant="standard">
+                <InputLabel>Payment method</InputLabel>
+                <Select 
+                    label="Payment method" 
+                    value={paymentMethod} 
+                    onChange={(event)=>{
+                        setPaymentMethod(event.target.value as string)
+                    }}
+                >
+                    <MenuItem value={0}>lorem</MenuItem>
+                    <MenuItem value={1}>ipsum</MenuItem>
+                    <MenuItem value={2}>solor</MenuItem>
+                </Select>
+            </FormControl>
+            <TextField 
+                label="Purpose" 
+                variant="standard"
+                value={purpose}
+                onInput={(event)=>{
+                    const target = event.target as HTMLInputElement
+                    setPurpose(target.value)
+                }}
+            />
+            
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+                <Typography fontWeight="light" fontSize="small">partial amount</Typography>
+                    <Switch size="small" onChange={handleSwitchAmounPercentage} color="default"/>
+                <Typography fontWeight="light" fontSize="small">percentage</Typography>
+            </Stack>
+            <List sx={{ width: '100%' }}>
+                {transactionUsers.map((user: TransactionUser) => {
+                    const labelId = `checkbox-list-label-${user}`
+                    const textfieldId = `textfield-${user}`
+
+                    return (
+                    <ListItem
+                        key={user.user.userId}
+                        secondaryAction={
+                        <IconButton edge="end" aria-label="comments">
+                        </IconButton>
+                        }
+                        disablePadding
+                    >
+                        <ListItemButton role={undefined} onClick={toggleCheckbox(user)} dense>
+                            <ListItemIcon>
+                                <Checkbox
+                                    edge="start"
+                                    checked={user.isChecked}
+                                    tabIndex={-1}
+                                    inputProps={{ 'aria-labelledby': labelId }}
+                                />
+                            </ListItemIcon>
+                            
+                            <ListItemText id={labelId} 
+                                primary={
+                                    <UserElement {...user.user}/>
+                                } 
+                            />
+                        </ListItemButton>
+                        <TextField 
+                                id={textfieldId}
                                 type="number" 
-                                label="Amount" 
+                                label={percentage ? "percentage" : "partial amount"}
                                 variant="standard"
-                                value={amount.toString()}
+                                value={roundToIntTo2Decimals(percentage ? (user.amount / amount)*100 : user.amount).toString()}
                                 InputProps={{
-                                    endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                                    endAdornment: <InputAdornment position="end" sx={{width:"10px"}}>{percentage ? "%" : "€"}</InputAdornment>,
                                 }}
+                                disabled={!user.isChecked}
                                 onInput={(event)=>{
+
                                     const target = event.target as HTMLInputElement
                                     try {
                                         const input = target.value
-                                        const amount = parseFloat(input)
-                                        if(((amount * 100 ) % 1) > 0) return;
-                                        if(isNaN(amount)) setAmount(0)
-                                        else setAmount(amount)
-                                    } catch (e) {}
-                                }}
-                            />
-                            <FormControl variant="standard">
-                                <InputLabel>Payment method</InputLabel>
-                                <Select 
-                                    label="Payment method" 
-                                    value={paymentMethod} 
-                                    onChange={(event)=>{
-                                        setPaymentMethod(event.target.value as string)
-                                    }}
-                                >
-                                    <MenuItem value={0}>lorem</MenuItem>
-                                    <MenuItem value={1}>ipsum</MenuItem>
-                                    <MenuItem value={2}>solor</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <TextField 
-                                label="Purpose" 
-                                variant="standard"
-                                value={purpose}
-                                onInput={(event)=>{
-                                    const target = event.target as HTMLInputElement
-                                    setPurpose(target.value)
-                                }}
-                            />
-                            
-                            <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
-                                <Typography fontWeight="light" fontSize="small">partial amount</Typography>
-                                    <Switch size="small" onChange={handleSwitchAmounPercentage} color="default"/>
-                                <Typography fontWeight="light" fontSize="small">percentage</Typography>
-                            </Stack>
-                            <List sx={{ width: '100%' }}>
-                                {transactionUsers.map((user: TransactionUser) => {
-                                    const labelId = `checkbox-list-label-${user}`
-                                    const textfieldId = `textfield-${user}`
 
-                                    return (
-                                    <ListItem
-                                        key={user.user.userId}
-                                        secondaryAction={
-                                        <IconButton edge="end" aria-label="comments">
-                                        </IconButton>
+                                        if(input.includes(".")) {
+                                            if(input.length - input.indexOf(".") > 3) return;
                                         }
-                                        disablePadding
-                                    >
-                                        <ListItemButton role={undefined} onClick={toggleCheckbox(user)} dense>
-                                            <ListItemIcon>
-                                                <Checkbox
-                                                    edge="start"
-                                                    checked={user.isChecked}
-                                                    tabIndex={-1}
-                                                    inputProps={{ 'aria-labelledby': labelId }}
-                                                />
-                                            </ListItemIcon>
-                                            
-                                            <ListItemText id={labelId} 
-                                                primary={
-                                                    <UserElement {...user.user}/>
-                                                } 
-                                            />
-                                        </ListItemButton>
-                                        <TextField 
-                                                id={textfieldId}
-                                                type="number" 
-                                                label={percentage ? "percentage" : "partial amount"}
-                                                variant="standard"
-                                                value={roundToIntTo2Decimals(percentage ? (user.amount / amount)*100 : user.amount).toString()}
-                                                InputProps={{
-                                                    endAdornment: <InputAdornment position="end" sx={{width:"10px"}}>{percentage ? "%" : "€"}</InputAdornment>,
-                                                }}
-                                                disabled={!user.isChecked}
-                                                onInput={(event)=>{
 
-                                                    const target = event.target as HTMLInputElement
-                                                    try {
-                                                        const input = target.value
+                                        if(input.includes(",")) {
+                                            if(input.length - input.indexOf(",") > 3) return;
+                                        }
 
-                                                        if(input.includes(".")) {
-                                                            if(input.length - input.indexOf(".") > 3) return;
-                                                        }
+                                        const inputAmount = parseFloat(input)
 
-                                                        if(input.includes(",")) {
-                                                            if(input.length - input.indexOf(",") > 3) return;
-                                                        }
-
-                                                        const inputAmount = parseFloat(input)
-
-                                                        if(isNaN(inputAmount)) {
-                                                            setInput(user, 0)
-                                                            return;
-                                                        }
-                                                        setInput(user, percentage ? ((inputAmount/100)*amount) : inputAmount)
-                                                        
-                                                    } catch (e) {}
-                                                }}
-                                        />
-                                    </ListItem>
-                                    );
-                                })}
-                            </List>
- 
-                            
-                            <DatePicker
-                                maxDate={new Date()}
-                                minDate={new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * 30))}
-                                value={date}
-                                renderInput={(params) => <TextField {...params}/>}
-                                onChange={(newValue:(Date | null))=>{
-                                    if(newValue == null) newValue = new Date();
-                                    setDate(newValue)
+                                        if(isNaN(inputAmount)) {
+                                            setInput(user, 0)
+                                            return;
+                                        }
+                                        setInput(user, percentage ? ((inputAmount/100)*amount) : inputAmount)
+                                        
+                                    } catch (e) {
+                                        setInput(user, 0)
+                                    }
                                 }}
-                                label="Date of payment"
-                                mask={"__.__.____"}
-                                views={['day']}
-                            />
-                            <Button startIcon={<Save/>} variant="contained" disabled={amount===0}>Save</Button>
-                        </Stack>
-                    </form>
-                </FormControl>
-            </Paper>
-        </ClickAwayListener>
-    )
-}
+                        />
+                    </ListItem>
+                    );
+                })}
+            </List>
 
-function UserElement({avatarUrl, username}:User) {
-    return (
-        <Box>
-            <Stack direction="row" spacing={2}>
-                <Avatar alt={username} src={avatarUrl ?? undefined}>{!avatarUrl && username[0]}</Avatar>
-                <Typography sx={{display: "flex", alignItems: "center"}}>{username}</Typography>
-            </Stack>
-        </Box>
+            <DateComponent 
+                label="Date of payment" 
+                date={date}
+                onChange={(newValue) => {
+                    if(newValue == null) newValue = new Date();
+                    setDate(newValue)
+                }}/>
+            <Button startIcon={<Save/>} variant="contained" disabled={amount===0}>Save</Button>
+        </UserInteractionWrapper>
     )
 }

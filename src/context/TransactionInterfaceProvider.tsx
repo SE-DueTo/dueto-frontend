@@ -8,9 +8,7 @@ type TransactionInterfaceContextType = {
 }
 
 const defaultValues:TransactionInterfaceContextType = {
-    addTransaction: (_:TransactionAddDTO) => {
-        return new Promise(res => res())
-    }
+    addTransaction: async () => {/*overwritten by provider*/}
 }
 
 export const TransactionInterfaceContext = createContext<TransactionInterfaceContextType>(defaultValues)
@@ -21,21 +19,17 @@ function TransactionInterfaceProvider({children}:ProviderType) {
 
     const url = process.env.REACT_APP_URL;
     
-    const addTransaction = (transaction:TransactionAddDTO):Promise<void> => {
-        return new Promise(async (res, rej) => {
-            const data = await fetch(`${url}/v1/transaction/add/`, {
-                headers: {
-                    Authorization: token || ""
-                },
-                method: "POST",
-                body: JSON.stringify(transaction)
-            })
-            if(data.status !== 200) {
-                rej()
-                return
-            }
-            res()
+    const addTransaction = async (transaction:TransactionAddDTO):Promise<void> => {
+        const data = await fetch(`${url}/v1/transaction/add/`, {
+            headers: {
+                Authorization: token || ""
+            },
+            method: "POST",
+            body: JSON.stringify(transaction)
         })
+        if(data.status !== 200) {
+            Promise.reject()
+        }
     }
 
 

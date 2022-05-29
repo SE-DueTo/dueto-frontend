@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 
-export const Main = ()=>{
+export function Main() {
     return (
         <Background>
             <Title/>
@@ -10,7 +10,7 @@ export const Main = ()=>{
     )
 }
 
-function Title():JSX.Element {
+function Title() {
     const [count, setCount] = useState(0);
 
     const increment = ()=>{        
@@ -39,9 +39,10 @@ type BackgroundProps = {
     children?: JSX.Element[] | JSX.Element
 }
 
-const Background:React.FC<BackgroundProps> = ({children}) => (
-    <Box sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-        {children}
-    </Box>
-    
-)
+function Background({children}:BackgroundProps) {
+    return (
+        <Box sx={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+            {children}
+        </Box>
+    )
+}

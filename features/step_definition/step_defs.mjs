@@ -6,7 +6,7 @@
  * https://github.com/cucumber/cucumber-js
  */
 
-import { Given, When, Then, After, Before, BeforeAll } from '@cucumber/cucumber'
+import { Given, Then, After, Before, BeforeAll } from '@cucumber/cucumber'
 import { strict as assert } from 'assert'
 import { By, Builder } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/edge.js'

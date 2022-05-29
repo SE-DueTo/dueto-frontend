@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Save } from "@mui/icons-material";
 import { Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, Switch, TextField, Typography } from "@mui/material";
-import { useState } from "react";
 import { ModalBackdrop } from "./utils";
 import { User } from './Types';
 import DateComponent from './components/DateComponent';
@@ -70,14 +69,17 @@ function Transaction({close, users}:TransactionModalProps) {
                 const notEditedUsers = users.filter( u1 => (u1.isChecked && !u1.wasEdited) || u1 === user)
                 
                 //accumulate their amount
-                let amount = 0
-                notEditedUsers.forEach(u1 => { amount += u1.amount })
+                let notEditedAmount = 0
+                notEditedUsers.forEach(u1 => { notEditedAmount += u1.amount })
 
                 //distribute this amount equally.
                 //the last user gets the difference of the amount and accumulated value to prevent cents from being lost
                 let acc = 0;
                 notEditedUsers.forEach((u1, index) => {
-                    const editAmount = index === (notEditedUsers.length - 1) ? amount - acc :  roundToIntTo2Decimals(amount / notEditedUsers.length)
+                    const editAmount = index === (notEditedUsers.length - 1) ? 
+                        notEditedAmount - acc 
+                        :  
+                        roundToIntTo2Decimals(notEditedAmount / notEditedUsers.length)
                     u1.amount = roundToIntTo2Decimals(editAmount)
                     acc += editAmount
                 })
@@ -162,15 +164,15 @@ function Transaction({close, users}:TransactionModalProps) {
             return users.map((u, index) => {
                 //amount to add to user
                 //0 if user is not checked in
-                let amount = u.isChecked ? parseToIntTo2Decimals(newAmount / amountChecked) : 0
+                let amountToAdd = u.isChecked ? parseToIntTo2Decimals(newAmount / amountChecked) : 0
                 if(index === users.length - 1) {
                     //if is last user -> use difference between real amount and accumulated value
                     //-> lost cents are prevented
-                    amount = parseToIntTo2Decimals(newAmount - acc)
+                    amountToAdd = parseToIntTo2Decimals(newAmount - acc)
                 }
                 //set user amount
-                u.amount = amount
-                acc += amount
+                u.amount = amountToAdd
+                acc += amountToAdd
 
                 //reset edited flag for all users
                 u.wasEdited = false
@@ -229,10 +231,10 @@ function Transaction({close, users}:TransactionModalProps) {
 
                 //try every user to subtract this from
                 const editAmount = roundToIntTo2Decimals(difference-acc)
-                for(let i = 0; i < uneditedUsers.length; i++) {
-                    if(uneditedUsers[i].amount+editAmount >= 0) {
-                        uneditedUsers[i].amount += editAmount;
-                        uneditedUsers[i].amount = roundToIntTo2Decimals(uneditedUsers[i].amount)
+                for(const loopUser of uneditedUsers) {
+                    if(loopUser.amount+editAmount >= 0) {
+                        loopUser.amount += editAmount;
+                        loopUser.amount = roundToIntTo2Decimals(loopUser.amount)
                         break;
                     }
                 }
@@ -254,11 +256,11 @@ function Transaction({close, users}:TransactionModalProps) {
      * @returns the sum of the array
      */
     const sum = (arr: number[]) : number => {
-        let amount = 0
+        let sum = 0
         for(const number of arr) {
-            amount += number
+            sum += number
         }
-        return amount;
+        return sum;
     }
 
 

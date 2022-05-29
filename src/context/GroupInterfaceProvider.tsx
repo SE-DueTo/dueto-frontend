@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import { url } from "../config/configuration";
 import { Debt, defaultDebt, defaultGroupInfo, defaultTransaction, GroupAddNormalDTO, GroupInfo, Transaction } from "../types/types";
 import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
@@ -26,8 +27,6 @@ export const GroupInterfaceContext = createContext<GroupInterfaceProviderType>(d
 function GroupInterfaceProvider({children}:ProviderType) {
 
     const { token } = useContext(LoginContext)
-
-    const url = process.env.REACT_APP_URL;
 
     const getGroupInfo = async (groupId:number):Promise<GroupInfo> => {
         const data = await fetch(`${url}/v1/group/${groupId}`, {

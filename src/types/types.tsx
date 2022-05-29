@@ -81,7 +81,7 @@ export type Transaction = {
     purpose: string,
     repeatingInterval: number,
     transactionId: number,
-    userAmountList: any
+    userAmountList: unknown
 }
 
 export type TransactionAddDTO = {
@@ -91,7 +91,7 @@ export type TransactionAddDTO = {
     paymentMethod: string,
     purpose: string,
     repeatingInterval: number,
-    userAmountList: any
+    userAmountList: unknown
 }
 
 export const defaultTransaction:Transaction= {

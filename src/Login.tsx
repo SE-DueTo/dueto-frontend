@@ -7,8 +7,6 @@ import { LoginContext } from "./context/LoginProvider";
 
 export default function Login() {
 
-    //TODO this has to be removed if functional code is used
-
     const loginContext = useContext(LoginContext)
 
     const [loginPossible, setLoginPossible] = useState(false)

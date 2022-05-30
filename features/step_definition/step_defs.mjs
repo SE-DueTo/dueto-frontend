@@ -31,7 +31,7 @@ Before(async ()=>{
 })
 
 Given("The website-url is {string}", async (url) => {
-    return await driver.get(rootURL + url)
+    return driver.get(rootURL + url)
 })
 
 Then("The website-url is now {string}", async (url) => {
@@ -45,7 +45,7 @@ Given("The user is logged in", async ()=>{
     const password = process.env.CUCUMBER_PASSWORD
 
     if(!username || !password) {
-        throw "Username or password not given"
+        throw new Error("Username or password not given")
     }
 
     await login(username, password)

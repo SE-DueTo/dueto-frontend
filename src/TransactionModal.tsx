@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Save } from "@mui/icons-material";
 import { Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, Switch, TextField, Typography } from "@mui/material";
-import { useState } from "react";
 import { ModalBackdrop } from "./utils";
 import { User } from './Types';
 import DateComponent from './components/DateComponent';
@@ -55,29 +54,32 @@ function Transaction({close, users}:TransactionModalProps) {
      * @param user The user to toggle the checkbox for
      */
     const toggleCheckbox = (user: TransactionUser) => ():void => {
-        setTransactionUsers((users):TransactionUser[] => {
+        setTransactionUsers(oldUsers => {
 
             //if user tries to disable the checkbox
             if(user.isChecked) {
                 //if no other user is checked in, this users checkout is disabled because no money could be distributed
-                const amountChecked = users.filter(u => u.isChecked && u !== user).length;
-                if(amountChecked === 0) return users;
+                const amountChecked = oldUsers.filter(u => u.isChecked && u !== user).length;
+                if(amountChecked === 0) return oldUsers;
             }
 
             //user is now checked in
             if(!user.isChecked) {
                 //list of users who are not yet edited to get money from to distribute equally
-                const notEditedUsers = users.filter( u1 => (u1.isChecked && !u1.wasEdited) || u1 === user)
+                const notEditedUsers = oldUsers.filter( u1 => (u1.isChecked && !u1.wasEdited) || u1 === user)
                 
                 //accumulate their amount
-                let amount = 0
-                notEditedUsers.forEach(u1 => { amount += u1.amount })
+                let notEditedAmount = 0
+                notEditedUsers.forEach(u1 => { notEditedAmount += u1.amount })
 
                 //distribute this amount equally.
                 //the last user gets the difference of the amount and accumulated value to prevent cents from being lost
                 let acc = 0;
                 notEditedUsers.forEach((u1, index) => {
-                    const editAmount = index === (notEditedUsers.length - 1) ? amount - acc :  roundToIntTo2Decimals(amount / notEditedUsers.length)
+                    const editAmount = index === (notEditedUsers.length - 1) ? 
+                        notEditedAmount - acc 
+                        :  
+                        roundToIntTo2Decimals(notEditedAmount / notEditedUsers.length)
                     u1.amount = roundToIntTo2Decimals(editAmount)
                     acc += editAmount
                 })
@@ -87,11 +89,11 @@ function Transaction({close, users}:TransactionModalProps) {
                 const userAmount = user.amount
 
                 //get list of not edited users to distribute to
-                let notEditedUsers = users.filter( u1 => u1.isChecked && !u1.wasEdited && u1 !== user)
+                let notEditedUsers = oldUsers.filter( u1 => u1.isChecked && !u1.wasEdited && u1 !== user)
 
                 //no not edited users -> distribute to everyone
                 if(notEditedUsers.length === 0) {
-                    notEditedUsers = users.filter(u1 => u1 !== user && u1.isChecked)
+                    notEditedUsers = oldUsers.filter(u1 => u1 !== user && u1.isChecked)
                 }
 
                 //give money to everyone in equal amounts
@@ -116,7 +118,7 @@ function Transaction({close, users}:TransactionModalProps) {
 
             //set new state
             //has to be converted to new object for react to aknowledge the change
-            return JSON.parse(JSON.stringify(users))
+            return JSON.parse(JSON.stringify(oldUsers))
         })
     }
 
@@ -153,24 +155,24 @@ function Transaction({close, users}:TransactionModalProps) {
     const setAmount = (newAmount : number) => {
 
         //set user amounts
-        setTransactionUsers((users) => {
+        setTransactionUsers(oldUsers => {
 
             //checked users
-            const amountChecked = users.filter(u => u.isChecked).length;
+            const amountChecked = oldUsers.filter(u => u.isChecked).length;
 
             let acc = 0;
-            return users.map((u, index) => {
+            return oldUsers.map((u, index) => {
                 //amount to add to user
                 //0 if user is not checked in
-                let amount = u.isChecked ? parseToIntTo2Decimals(newAmount / amountChecked) : 0
-                if(index === users.length - 1) {
+                let amountToAdd = u.isChecked ? parseToIntTo2Decimals(newAmount / amountChecked) : 0
+                if(index === oldUsers.length - 1) {
                     //if is last user -> use difference between real amount and accumulated value
                     //-> lost cents are prevented
-                    amount = parseToIntTo2Decimals(newAmount - acc)
+                    amountToAdd = parseToIntTo2Decimals(newAmount - acc)
                 }
                 //set user amount
-                u.amount = amount
-                acc += amount
+                u.amount = amountToAdd
+                acc += amountToAdd
 
                 //reset edited flag for all users
                 u.wasEdited = false
@@ -188,7 +190,7 @@ function Transaction({close, users}:TransactionModalProps) {
      * @param newAmount The new amount for this specific user
      */
     const setInput = (user: TransactionUser, newAmount: number) => {
-        setTransactionUsers((users):TransactionUser[] => {
+        setTransactionUsers(oldUsers => {
             //set amount between 0 and max amount
             newAmount = Math.max(0, Math.min(newAmount, amount))
 
@@ -196,15 +198,15 @@ function Transaction({close, users}:TransactionModalProps) {
             const difference = roundToIntTo2Decimals(user.amount - newAmount)
 
             //get all users who are not yet edited
-            let uneditedUsers = users.filter( u => !u.wasEdited && u.isChecked && u.user.userId!==user.user.userId)
+            let uneditedUsers = oldUsers.filter( u => !u.wasEdited && u.isChecked && u.user.userId!==user.user.userId)
 
             //get the amount of money these have
-            const unediteusersAmount = sum(uneditedUsers.map(u => u.amount))
+            const uneditedUsersAmount = sum(uneditedUsers.map(u => u.amount))
 
             //if there are no users or the amount is not enough to get the difference from 
             // -> use all users
-            if(uneditedUsers.length === 0 || unediteusersAmount < -difference) {
-                uneditedUsers = users.filter( u => u.user.userId!==user.user.userId)
+            if(uneditedUsers.length === 0 || uneditedUsersAmount < -difference) {
+                uneditedUsers = oldUsers.filter( u => u.user.userId!==user.user.userId)
             }
 
             let acc = 0
@@ -229,10 +231,10 @@ function Transaction({close, users}:TransactionModalProps) {
 
                 //try every user to subtract this from
                 const editAmount = roundToIntTo2Decimals(difference-acc)
-                for(let i = 0; i < uneditedUsers.length; i++) {
-                    if(uneditedUsers[i].amount+editAmount >= 0) {
-                        uneditedUsers[i].amount += editAmount;
-                        uneditedUsers[i].amount = roundToIntTo2Decimals(uneditedUsers[i].amount)
+                for(const loopUser of uneditedUsers) {
+                    if(loopUser.amount+editAmount >= 0) {
+                        loopUser.amount += editAmount;
+                        loopUser.amount = roundToIntTo2Decimals(loopUser.amount)
                         break;
                     }
                 }
@@ -244,7 +246,7 @@ function Transaction({close, users}:TransactionModalProps) {
 
             //set new state
             //has to be converted to new object for react to aknowledge the change
-            return JSON.parse(JSON.stringify(users))
+            return JSON.parse(JSON.stringify(oldUsers))
         })
     }
 
@@ -254,11 +256,11 @@ function Transaction({close, users}:TransactionModalProps) {
      * @returns the sum of the array
      */
     const sum = (arr: number[]) : number => {
-        let amount = 0
+        let accumulator = 0
         for(const number of arr) {
-            amount += number
+            accumulator += number
         }
-        return amount;
+        return accumulator;
     }
 
 

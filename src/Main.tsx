@@ -14,7 +14,7 @@ function Title() {
     const [count, setCount] = useState(0);
 
     const increment = ()=>{        
-        setCount((count) => ((count+1) % 20))
+        setCount(oldCount => (oldCount+1) % 20)
     }
 
     useEffect(()=>{

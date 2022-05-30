@@ -1,4 +1,5 @@
 import {createContext, useState} from "react";
+import { url } from "../config/configuration";
 
 type LoginProviderType = {
     children: JSX.Element,
@@ -21,9 +22,9 @@ export const LoginContext = createContext<LoginContextType>({
 function getCookie(key:string):(string|null) {
     const cookie = document.cookie.split("; ").map(e => {
         const split = e.split("=");
-        const key = split[0]
-        const value = e.substring(e.indexOf("=")+1)
-        return [key, value]
+        const cookieKey = split[0]
+        const cookieValue = e.substring(e.indexOf("=")+1)
+        return [cookieKey, cookieValue]
     }).filter(e=>(
         e[0] === key
     ))[0]
@@ -32,12 +33,12 @@ function getCookie(key:string):(string|null) {
 
 function LoginProvider({children}:LoginProviderType) {
 
-    const setTokenCookie = (token: (string|null)) => {
-        if(!token) {
+    const setTokenCookie = (newToken: (string|null)) => {
+        if(!newToken) {
             document.cookie = `login=; path=/; expires=Sun, 20 Aug 2000 12:00:00 UTC`
             return
         }
-        document.cookie = `login=${token}; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT`
+        document.cookie = `login=${newToken}; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT`
     }
 
     console.log(getCookie("login"));
@@ -46,12 +47,10 @@ function LoginProvider({children}:LoginProviderType) {
 
     console.log(token)
 
-    const setToken = (token: (string|null)) => {
-        sT(token)
-        setTokenCookie(token)
+    const setToken = (newToken: (string|null)) => {
+        sT(newToken)
+        setTokenCookie(newToken)
     }
-
-    const url = process.env.REACT_APP_URL;
 
     const login = (username:string, password:string):Promise<void> => {
         return new Promise((resolve, reject) => {

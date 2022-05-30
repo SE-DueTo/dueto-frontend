@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import { url } from "../config/configuration";
 import { TransactionAddDTO } from "../types/types";
 import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
@@ -16,8 +17,6 @@ export const TransactionInterfaceContext = createContext<TransactionInterfaceCon
 function TransactionInterfaceProvider({children}:ProviderType) {
 
     const { token } = useContext(LoginContext)
-
-    const url = process.env.REACT_APP_URL;
     
     const addTransaction = async (transaction:TransactionAddDTO):Promise<void> => {
         const data = await fetch(`${url}/v1/transaction/add/`, {

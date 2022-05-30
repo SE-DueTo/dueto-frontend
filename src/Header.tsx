@@ -1,5 +1,5 @@
 import { LocalAtm } from "@mui/icons-material"
-import { AppBar, Button, Theme, Toolbar, Typography, useTheme } from "@mui/material"
+import { AppBar, Button, Toolbar, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import React from "react"
 import { Link } from "react-router-dom"
@@ -9,13 +9,11 @@ type DefaultHeaderProps = {
 }
 export const DefaultHeader:React.FC<DefaultHeaderProps> = ({showLogin}) => {
 
-    const theme:Theme = useTheme()
-
     return (
         <AppBar position="static">
             <Toolbar variant="dense">
                 
-                <LocalAtm sx={{color: theme.palette.warning.main, fontSize: 40}} />
+                <LocalAtm sx={{color: "warning.main", fontSize: 40}} />
                 <Typography 
                     variant="h6" 
                     color="inherit" 
@@ -23,7 +21,7 @@ export const DefaultHeader:React.FC<DefaultHeaderProps> = ({showLogin}) => {
                     sx={{
                         marginLeft: ".3em",
                         '& a': {
-                            color: theme.palette.text.primary,
+                            color: "text.primary",
                             textDecoration: "none"
                         }
                     }}

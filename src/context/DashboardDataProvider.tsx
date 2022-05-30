@@ -49,8 +49,8 @@ function DashboardDataProvider({children}:ProviderType) {
     const loadMoreTransactions = async () => {
         const from = (transactions || []).length
         const t = await dashboard.getDashboardTransactions(from, DEFAULT_LIMIT);
-        setTransactions(transactions => {
-            const tempTransactions = (transactions || [])
+        setTransactions(oldTransactions => {
+            const tempTransactions = (oldTransactions || [])
             tempTransactions.push(...t);
             return tempTransactions;
         })
@@ -59,14 +59,12 @@ function DashboardDataProvider({children}:ProviderType) {
     const loadMoreDebts = async () => {
         const from = (debts || []).length
         const d = await dashboard.getDashboardDebts(from, DEFAULT_LIMIT);
-        setDebts(debts => {
-            const tempDebts = (debts || [])
+        setDebts(oldDebts => {
+            const tempDebts = (oldDebts || [])
             tempDebts.push(...d);
             return tempDebts;
         })
     }
-
-//const { groups, user, balance, update } = useContext(DashboardDataProviderContext)
 
     useEffect(() => {
         update()

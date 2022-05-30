@@ -1,10 +1,9 @@
 import { Add } from "@mui/icons-material";
-import { Button, Divider,  FormControl,  Paper,  Stack,  TextField, Typography } from "@mui/material";
-import { Box } from "@mui/material";
+import { Box, Button, Divider,  FormControl,  Paper,  Stack,  TextField, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import { ModalBackdrop } from "./utils";
 import ClickAwayListener from "@mui/base/ClickAwayListener";
-import TransactionModal from "./Transaction";
+import TransactionModal from "./TransactionModal";
 import TransactionTable from "./TransactionTable";
 import { DashboardDataContext, DEFAULT_LIMIT } from "./context/DashboardDataProvider";
 

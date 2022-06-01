@@ -9,7 +9,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import { Navigate, useLocation } from "react-router-dom";
 import TransactionTable from "./TransactionTable";
 import { Group } from "./types/types";
-import { DashboardDataContext } from "./context/DashboardDataProvider";
+import { DashboardDataContext, DEFAULT_LIMIT } from "./context/DashboardDataProvider";
 
 export default function GroupDashboard() {
 
@@ -17,7 +17,7 @@ export default function GroupDashboard() {
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     }
-    
+
     //TODO remove this code when functional elements are build
     const [isTransactionShown, setTransactionShown] = useState(false)
     const [isSettleDebtsShown, setSettleDebtsShown] = useState(false)
@@ -25,7 +25,9 @@ export default function GroupDashboard() {
 
     const groupUserdata = useContext(DashboardDataContext)
     const location = useLocation()
-
+    const arrayLength = (groupUserdata.transactions || []).length;
+    const arrayEmpty = arrayLength === 0;
+    const arrayFull = arrayLength % DEFAULT_LIMIT === 0;
 
     useEffect(()=>{
         const groupId = parseInt(location.pathname.substring(location.pathname.lastIndexOf("/")+1))
@@ -75,7 +77,8 @@ export default function GroupDashboard() {
                     <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Your and {groupname} transactions:</Typography> 
                     : 
                     <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Transactions in Group {groupname}: </Typography> }
-                <TransactionTable></TransactionTable>
+                <TransactionTable data={groupUserdata.transactions}/>
+                {(!arrayEmpty && arrayFull) && <Button onClick={()=>{groupUserdata.loadMoreTransactions()}}>Load more</Button>}
                 {isTransactionShown && <TransactionModal close={()=>{setTransactionShown(false)}} users={group.users}/>}
             </TabPanel>
             <TabPanel value="1">

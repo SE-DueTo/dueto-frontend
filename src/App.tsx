@@ -1,5 +1,9 @@
 import { Route, Routes } from 'react-router-dom'
-import { GroupDashboardSite, LoginSite, LogoutSite, MainSite, UserDashboardSite } from './Sites';
+import GroupDashboardSite from './GroupDashboardSite';
+import LoginSite from './LoginSite';
+import LogoutSite from './LogoutSite';
+import MainSite from './MainSite';
+import UserDashboardSite from './UserDashboardSite';
 
 
 

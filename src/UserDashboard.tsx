@@ -1,13 +1,11 @@
 import { Add } from "@mui/icons-material";
-import { Box, Button, Divider,  FormControl,  Paper,  Stack,  TextField, Typography } from "@mui/material";
+import { Box, Button, Divider,  Typography } from "@mui/material";
 import { useContext, useState } from "react";
-import { ModalBackdrop } from "./utils";
-import ClickAwayListener from "@mui/base/ClickAwayListener";
-import TransactionModal from "./TransactionModal";
 import TransactionTable from "./TransactionTable";
 import { DashboardDataContext, DEFAULT_LIMIT } from "./context/DashboardDataProvider";
+import SearchUserPopup from "./SearchUserPopup";
 
-export default function UserDashboard() {
+function UserDashboard() {
 
     const [isSearchOpen, setSearchOpen] = useState(false)
     const groupUserdata = useContext(DashboardDataContext)
@@ -39,39 +37,4 @@ export default function UserDashboard() {
     )
 }
 
-type SearchUserPopupProps = {
-    setSearchOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
-function SearchUserPopup({setSearchOpen}:SearchUserPopupProps) {
-
-    const handleClose = ()=>{
-        setSearchOpen(false)
-    }
-
-    
-    //TODO remove this code when functional elements are build
-    const [isTransactionShown, setTransactionShown] = useState(false)
-
-    return (
-        <ModalBackdrop>
-            <ClickAwayListener
-                onClickAway={handleClose}
-                mouseEvent="onMouseDown"
-                touchEvent="onTouchStart"
-            >
-                <Paper sx={{padding: "2em", width: "700px", maxWidth: "100%", overflow: "auto", maxHeight: "100vh"}}>
-                <Typography variant="h5">Search User</Typography>
-                    <FormControl sx={{width: "100%"}}>
-                        <form>
-                            <Stack spacing={2}>
-                                <TextField label="Username" variant="standard"/>
-                                <Button variant="contained" sx={{width: "100%"}} onClick={()=>{setTransactionShown(true)}}>New Transaction</Button>
-                                {isTransactionShown && <TransactionModal close={() => {setTransactionShown(false); } } users={[]}/>}
-                            </Stack>
-                        </form>
-                    </FormControl>
-                </Paper>
-            </ClickAwayListener>
-        </ModalBackdrop>
-    )
-}
+export default UserDashboard

@@ -1,7 +1,7 @@
 import { Login } from "@mui/icons-material";
 import { Button, FormControl, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { RegisterLoginWrapper } from "./utils";
+import RegisterLoginWrapper from "./RegisterLoginWrapper";
 
 export default function Register() {
 

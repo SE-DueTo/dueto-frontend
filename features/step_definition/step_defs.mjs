@@ -20,7 +20,6 @@ export let driver;
 
 BeforeAll(()=>{
     dotenv.config()
-    console.log(process.env)
 })
 
 Before(async ()=>{

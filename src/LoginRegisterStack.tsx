@@ -2,7 +2,7 @@ import { Stack, useMediaQuery } from "@mui/material"
 import Login from "./Login"
 import Register from "./Register"
 
-export default function LoginRegisterStack() {
+function LoginRegisterStack() {
 
     const isMobile = useMediaQuery('(max-width:800px)');
 
@@ -21,3 +21,5 @@ export default function LoginRegisterStack() {
         </Stack>
     )
 }
+
+export default LoginRegisterStack

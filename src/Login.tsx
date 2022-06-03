@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import { LoginContext } from "./context/LoginProvider";
 import RegisterLoginWrapper from "./RegisterLoginWrapper";
 
-export default function Login() {
+function Login() {
 
     const loginContext = useContext(LoginContext)
 
@@ -64,3 +64,5 @@ export default function Login() {
         </RegisterLoginWrapper>
     )
 }
+
+export default Login

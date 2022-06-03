@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 type DefaultHeaderProps = {
     showLogin: boolean
 }
-export function DefaultHeader({showLogin}:DefaultHeaderProps) {
+function Header({showLogin}:DefaultHeaderProps) {
 
     return (
         <AppBar position="static">
@@ -52,3 +52,5 @@ export function DefaultHeader({showLogin}:DefaultHeaderProps) {
         </AppBar>
     )
 }
+
+export default Header

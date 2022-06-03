@@ -6,7 +6,7 @@ import ClickAwayListener from "@mui/base/ClickAwayListener";
 import { Link, useLocation } from "react-router-dom";
 import { DashboardDataContext } from "./context/DashboardDataProvider";
 
-const OverviewElement:React.FC = () => {
+function OverviewElement() {
 
     const [isAddGroupShown, setAddGroupShown] = useState(false)
     const [url, setUrl] = useState("")
@@ -146,7 +146,7 @@ export default OverviewElement
 type AddGroupProps = {
     setAddGroupShown: React.Dispatch<React.SetStateAction<boolean>>
 }
-const AddGroup:React.FC<AddGroupProps> = ({setAddGroupShown}) => {
+function AddGroup({setAddGroupShown}:AddGroupProps) {
 
     const handleClose = ()=>{
         setAddGroupShown(false)

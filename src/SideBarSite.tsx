@@ -5,7 +5,7 @@ import OverviewElement from "./OverviewElement"
 type SideBarSiteProps = {
     children: JSX.Element
 }
-const SideBarSite:React.FC<SideBarSiteProps> = ({children}:SideBarSiteProps) => {
+function SideBarSite({children}:SideBarSiteProps) {
 
     return (
         <DashboardDataProvider>

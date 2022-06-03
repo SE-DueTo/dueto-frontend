@@ -1,10 +1,9 @@
-import React from 'react';
 import { Route, Routes } from 'react-router-dom'
 import { GroupDashboardSite, LoginSite, LogoutSite, MainSite, UserDashboardSite } from './Sites';
 
 
 
-const App:React.FC = () => {
+function App() {
     return (
         <Routes>
             <Route path="/" element={<MainSite/>}/>

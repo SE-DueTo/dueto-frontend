@@ -6,7 +6,7 @@ import { Main } from "./Main"
 import { Site } from "./utils"
 import SideBarSite from "./SideBarSite"
 
-export const LoginSite = () => {
+export function LoginSite() {
     return (
         <Site showLogin={true}>
             <LoginRegisterStack/>
@@ -14,7 +14,7 @@ export const LoginSite = () => {
     )
 }
 
-export const UserDashboardSite = () => {
+export function UserDashboardSite() {
     return (
         <Site showLogin={false}>
             <SideBarSite>
@@ -24,7 +24,7 @@ export const UserDashboardSite = () => {
     )
 }
 
-export const GroupDashboardSite = () => {
+export function GroupDashboardSite() {
     return (
         <Site showLogin={false}>
             <SideBarSite>
@@ -34,7 +34,7 @@ export const GroupDashboardSite = () => {
     )
 }
 
-export const MainSite = () => {
+export function MainSite() {
     return (
         <Site showLogin={true}>
             <Main/>
@@ -42,7 +42,7 @@ export const MainSite = () => {
     )
 }
 
-export const LogoutSite = () => {
+export function LogoutSite() {
     return (
         <Site showAppBar={false} showLogin={false}>
             <Logout/>

@@ -1,13 +1,12 @@
 import { LocalAtm } from "@mui/icons-material"
 import { AppBar, Button, Toolbar, Typography } from "@mui/material"
 import { Box } from "@mui/system"
-import React from "react"
 import { Link } from "react-router-dom"
 
 type DefaultHeaderProps = {
     showLogin: boolean
 }
-export const DefaultHeader:React.FC<DefaultHeaderProps> = ({showLogin}) => {
+export function DefaultHeader({showLogin}:DefaultHeaderProps) {
 
     return (
         <AppBar position="static">

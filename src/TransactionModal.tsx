@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Save } from "@mui/icons-material";
 import { Button, Checkbox, FormControl, IconButton, InputAdornment, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Select, Stack, Switch, TextField, Typography } from "@mui/material";
 import { ModalBackdrop } from "./utils";
@@ -14,7 +14,7 @@ type TransactionModalProps = {
     users: User[]
 }
 
-const TransactionModal:React.FC<TransactionModalProps> = ({close, users}) => {
+function TransactionModal({close, users}:TransactionModalProps) {
     return (
         <ModalBackdrop>
             <Transaction close={close} users={users}/>

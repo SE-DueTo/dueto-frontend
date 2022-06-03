@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { get } from "../config/config";
+import { url } from "../config/configuration";
 import { SettleDebtAddDTO } from "../types/types";
 import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
@@ -19,7 +19,7 @@ function SettleDebtInterfaceProvider({children}:ProviderType) {
     const { token } = useContext(LoginContext)
 
     const addDebt = async (settleDebtAddDTO: SettleDebtAddDTO) => {
-        const data = await fetch(`${get("url")}/v1/debt/add`, {
+        const data = await fetch(`${url}/v1/debt/add`, {
             headers: {
                 Authorization: token || ""
             },

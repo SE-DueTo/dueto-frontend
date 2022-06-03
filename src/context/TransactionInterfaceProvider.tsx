@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { get } from "../config/config";
+import { url } from "../config/configuration";
 import { TransactionAddDTO } from "../types/types";
 import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
@@ -9,9 +9,7 @@ type TransactionInterfaceContextType = {
 }
 
 const defaultValues:TransactionInterfaceContextType = {
-    addTransaction: (_:TransactionAddDTO) => {
-        return new Promise(res => res())
-    }
+    addTransaction: async () => {/*overwritten by provider*/}
 }
 
 export const TransactionInterfaceContext = createContext<TransactionInterfaceContextType>(defaultValues)
@@ -19,22 +17,18 @@ export const TransactionInterfaceContext = createContext<TransactionInterfaceCon
 function TransactionInterfaceProvider({children}:ProviderType) {
 
     const { token } = useContext(LoginContext)
-
-    const addTransaction = (transaction:TransactionAddDTO):Promise<void> => {
-        return new Promise(async (res, rej) => {
-            const data = await fetch(`${get("url")}/v1/transaction/add/`, {
-                headers: {
-                    Authorization: token || ""
-                },
-                method: "POST",
-                body: JSON.stringify(transaction)
-            })
-            if(data.status !== 200) {
-                rej()
-                return
-            }
-            res()
+    
+    const addTransaction = async (transaction:TransactionAddDTO):Promise<void> => {
+        const data = await fetch(`${url}/v1/transaction/add/`, {
+            headers: {
+                Authorization: token || ""
+            },
+            method: "POST",
+            body: JSON.stringify(transaction)
         })
+        if(data.status !== 200) {
+            Promise.reject()
+        }
     }
 
 

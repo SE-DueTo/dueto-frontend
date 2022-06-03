@@ -6,7 +6,7 @@
  * https://github.com/cucumber/cucumber-js
  */
 
-import { Given, When, Then, After, Before, BeforeAll } from '@cucumber/cucumber'
+import { Given, Then, After, Before, BeforeAll } from '@cucumber/cucumber'
 import { strict as assert } from 'assert'
 import { By, Builder } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/edge.js'
@@ -20,7 +20,6 @@ export let driver;
 
 BeforeAll(()=>{
     dotenv.config()
-    console.log(process.env)
 })
 
 Before(async ()=>{
@@ -31,7 +30,7 @@ Before(async ()=>{
 })
 
 Given("The website-url is {string}", async (url) => {
-    return await driver.get(rootURL + url)
+    return driver.get(rootURL + url)
 })
 
 Then("The website-url is now {string}", async (url) => {
@@ -45,7 +44,7 @@ Given("The user is logged in", async ()=>{
     const password = process.env.CUCUMBER_PASSWORD
 
     if(!username || !password) {
-        throw "Username or password not given"
+        throw new Error("Username or password not given")
     }
 
     await login(username, password)

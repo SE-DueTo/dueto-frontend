@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react"
-import { get } from "../config/config"
+import { url } from "../config/configuration"
 import { Dashboard, Debt, defaultDashboard, defaultDebt, defaultTransaction, Transaction } from "../types/types"
 import { ProviderType } from "./DataInterfaceProvider"
 import { LoginContext } from "./LoginProvider"
@@ -7,8 +7,8 @@ import { LoginContext } from "./LoginProvider"
 
 type DashboardInterfaceContextType = {
     getDashboard: () => Promise<Dashboard>,
-    getDashboardDebts: () => Promise<Debt[]>,
-    getDashboardTransactions: () => Promise<Transaction[]>
+    getDashboardDebts: (from: number, limit: number) => Promise<Debt[]>,
+    getDashboardTransactions: (from: number, limit: number) => Promise<Transaction[]>
 }
 
 const defaultValues:DashboardInterfaceContextType = {
@@ -24,36 +24,33 @@ function DashboardInterfaceProvider({children}:ProviderType) {
     const { token } = useContext(LoginContext)
 
     const getDashboard = async () => {
-        const data = await fetch(`${get("url")}/v1/dashboard/`, {
+        const data = await fetch(`${url}/v1/dashboard/`, {
             headers: {
                 Authorization: token || ""
             }
         })
         if(data.status !== 200) return Promise.reject()
-        const json = await data.json()
-        return json
+        return data.json()
     }
 
-    const getDashboardDebts = async () => {
-        const data = await fetch(`${get("url")}/v1/dashboard/debts`, {
+    const getDashboardDebts = async (from: number, limit: number) => {
+        const data = await fetch(`${url}/v1/dashboard/debts?from=${from}&limit=${limit}`, {
             headers: {
                 Authorization: token || ""
             }
         })
         if(data.status !== 200) return Promise.reject()
-        const json = await data.json()
-        return json
+        return data.json()
     }
 
-    const getDashboardTransactions = async () => {
-        const data = await fetch(`${get("url")}/v1/dashboard/transactions`, {
+    const getDashboardTransactions = async (from:number, limit:number) => {
+        const data = await fetch(`${url}/v1/dashboard/transactions?from=${from}&limit=${limit}`, {
             headers: {
                 Authorization: token || ""
             }
         })
         if(data.status !== 200) return Promise.reject()
-        const json = await data.json()
-        return json
+        return data.json()
     }
 
 

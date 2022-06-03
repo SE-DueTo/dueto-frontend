@@ -1,5 +1,5 @@
 import {createContext, useState} from "react";
-import { get } from "../config/config";
+import { url } from "../config/configuration";
 
 type LoginProviderType = {
     children: JSX.Element,
@@ -15,16 +15,16 @@ type LoginContextType = {
 export const LoginContext = createContext<LoginContextType>({
     isLoggedIn: false, 
     token: null, 
-    login: (_, __) => new Promise((_, rej) => rej()),
+    login: () => new Promise((_, rej) => rej()),
     logout: () => new Promise((_, rej) => rej()),
 })
 
 function getCookie(key:string):(string|null) {
     const cookie = document.cookie.split("; ").map(e => {
-        var split = e.split("=");
-        var key = split[0]
-        var value = e.substring(e.indexOf("=")+1)
-        return [key, value]
+        const split = e.split("=");
+        const cookieKey = split[0]
+        const cookieValue = e.substring(e.indexOf("=")+1)
+        return [cookieKey, cookieValue]
     }).filter(e=>(
         e[0] === key
     ))[0]
@@ -33,28 +33,24 @@ function getCookie(key:string):(string|null) {
 
 function LoginProvider({children}:LoginProviderType) {
 
-    const setTokenCookie = (token: (string|null)) => {
-        if(!token) {
+    const setTokenCookie = (newToken: (string|null)) => {
+        if(!newToken) {
             document.cookie = `login=; path=/; expires=Sun, 20 Aug 2000 12:00:00 UTC`
             return
         }
-        document.cookie = `login=${token}; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT`
+        document.cookie = `login=${newToken}; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT`
     }
-
-    console.log(getCookie("login"));
-    
+  
     const [token, sT] = useState<string|null>(getCookie("login"))
 
-    console.log(token)
-
-    const setToken = (token: (string|null)) => {
-        sT(token)
-        setTokenCookie(token)
+    const setToken = (newToken: (string|null)) => {
+        sT(newToken)
+        setTokenCookie(newToken)
     }
 
     const login = (username:string, password:string):Promise<void> => {
         return new Promise((resolve, reject) => {
-            fetch(`${get("url")}/login`, {
+            fetch(`${url}/login`, {
                 method: "POST",
                 body: JSON.stringify({username, password}),
             })
@@ -80,7 +76,7 @@ function LoginProvider({children}:LoginProviderType) {
                 return
             }
 
-            fetch(`${get("url")}/v1/user/logout`, {
+            fetch(`${url}/v1/user/logout`, {
                 headers: {
                     Authorization: token
                 },
@@ -100,10 +96,8 @@ function LoginProvider({children}:LoginProviderType) {
             })
         })
     }
-
     
     const loggedIn = !!token
-    console.log(loggedIn, token)
 
     return (
         <LoginContext.Provider value={{

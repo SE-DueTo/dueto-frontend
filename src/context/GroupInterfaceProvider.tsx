@@ -1,13 +1,13 @@
 import { createContext, useContext } from "react";
-import { get } from "../config/config";
+import { url } from "../config/configuration";
 import { Debt, defaultDebt, defaultGroupInfo, defaultTransaction, GroupAddNormalDTO, GroupInfo, Transaction } from "../types/types";
 import { ProviderType } from "./DataInterfaceProvider";
 import { LoginContext } from "./LoginProvider";
 
 type GroupInterfaceProviderType = {
     getGroupInfo: (groupId: number) => Promise<GroupInfo>,
-    getDebts: (groupId:number) => Promise<Debt[]>,
-    getTransactions: (groupId:number) => Promise<Transaction[]>,
+    getDebts: (groupId:number, from: number, limit: number) => Promise<Debt[]>,
+    getTransactions: (groupId:number, from: number, limit: number) => Promise<Transaction[]>,
     addNormalGroup: (groupAddDTO:GroupAddNormalDTO) => Promise<number>,
     removeSpontaneousGroup: (groupId:number) => Promise<boolean>,
     addSpontaneousGroup: (groupId:number) => Promise<number>,
@@ -29,7 +29,7 @@ function GroupInterfaceProvider({children}:ProviderType) {
     const { token } = useContext(LoginContext)
 
     const getGroupInfo = async (groupId:number):Promise<GroupInfo> => {
-        const data = await fetch(`${get("url")}/v1/group/${groupId}`, {
+        const data = await fetch(`${url}/v1/group/${groupId}`, {
             headers: {
                 Authorization: token || ""
             }
@@ -39,8 +39,8 @@ function GroupInterfaceProvider({children}:ProviderType) {
         return json
     }
 
-    const getDebts = async (groupId:number):Promise<Debt[]> => {
-        const data = await fetch(`${get("url")}/v1/group/${groupId}/debts`, {
+    const getDebts = async (groupId:number, from: number, limit: number):Promise<Debt[]> => {
+        const data = await fetch(`${url}/v1/group/${groupId}/debts?from=${from}&limit=${limit}`, {
             headers: {
                 Authorization: token || ""
             }
@@ -50,8 +50,8 @@ function GroupInterfaceProvider({children}:ProviderType) {
         return json
     }
 
-    const getTransactions = async (groupId:number):Promise<Transaction[]> => {
-        const data = await fetch(`${get("url")}/v1/group/${groupId}/transactions`, {
+    const getTransactions = async (groupId:number, from: number, limit: number):Promise<Transaction[]> => {
+        const data = await fetch(`${url}/v1/group/${groupId}/transactions?from=${from}&limit=${limit}`, {
             headers: {
                 Authorization: token || ""
             }
@@ -62,7 +62,7 @@ function GroupInterfaceProvider({children}:ProviderType) {
     }
 
     const addNormalGroup = async (groupAddDTO:GroupAddNormalDTO) => {
-        const data = await fetch(`${get("url")}/v1/group/normal/add`, {
+        const data = await fetch(`${url}/v1/group/normal/add`, {
             headers: {
                 Authorization: token || ""
             },
@@ -75,7 +75,7 @@ function GroupInterfaceProvider({children}:ProviderType) {
     }
 
     const removeSpontaneousGroup = async (groupId:number) => {
-        const data = await fetch(`${get("url")}/v1/group/normal/remove/${groupId}`, {
+        const data = await fetch(`${url}/v1/group/normal/remove/${groupId}`, {
             headers: {
                 Authorization: token || ""
             },
@@ -87,7 +87,7 @@ function GroupInterfaceProvider({children}:ProviderType) {
     }
 
     const addSpontaneousGroup = async (userId:number) => {
-        const data = await fetch(`${get("url")}/v1/group/spontaneous/add`, {
+        const data = await fetch(`${url}/v1/group/spontaneous/add`, {
             headers: {
                 Authorization: token || ""
             },

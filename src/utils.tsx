@@ -4,7 +4,7 @@ import { Backdrop, CssBaseline, Modal, Paper, useMediaQuery } from "@mui/materia
 import { Box } from "@mui/system"
 import { theme } from './theme'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DefaultHeader } from "./Header"
+import Header from "./Header"
 import { ReactFragment, ReactPortal, useContext } from "react"
 import { de } from "date-fns/locale"
 import LoginProvider, { LoginContext } from "./context/LoginProvider";
@@ -39,7 +39,7 @@ export function Site({children, showLogin, showAppBar=true}:SiteProps) {
                     <CheckSiteLogin check={!showLogin}>
                         <Box sx={{display: "grid", gridTemplateRows: "auto 1fr", height: "100vh"}}>
                             <HeightWrapper>
-                                {showAppBar && <DefaultHeader showLogin={showLogin}/>}
+                                {showAppBar && <Header showLogin={showLogin}/>}
                                 {children}
                             </HeightWrapper>
                         </Box>

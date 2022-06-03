@@ -11,7 +11,7 @@ import TransactionTable from "./TransactionTable";
 import { Group } from "./types/types";
 import { DashboardDataContext, DEFAULT_LIMIT } from "./context/DashboardDataProvider";
 
-export default function GroupDashboard() {
+function GroupDashboard() {
 
     const [value, setValue] = useState(0)
     const handleChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -95,3 +95,5 @@ export default function GroupDashboard() {
         </>
     )
 }
+
+export default GroupDashboard

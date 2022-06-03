@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router";
 import { LoginContext } from "./context/LoginProvider";
 
-export default function Logout() {
+function Logout() {
 
     const loginContext = useContext(LoginContext)
     const [isRedirect, setRedirect] = useState(false)
@@ -21,3 +21,5 @@ export default function Logout() {
         </Backdrop>
     )
 }
+
+export default Logout

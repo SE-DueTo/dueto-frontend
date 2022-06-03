@@ -2,14 +2,14 @@ import { TabContext, TabPanel } from "@mui/lab";
 import { Button, Tab, Tabs, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useState } from "react";
-import TransactionModal from "./TransactionModal";
+import TransactionModal from "../../TransactionModal";
 import AddIcon from '@mui/icons-material/Add';
-import SetleDebtsModal from "./SettleDebtsModal";
+import SetleDebtsModal from "../../SettleDebtsModal";
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Navigate, useLocation } from "react-router-dom";
-import TransactionTable from "./TransactionTable";
-import { Group } from "./types/types";
-import { DashboardDataContext, DEFAULT_LIMIT } from "./context/DashboardDataProvider";
+import TransactionTable from "../../TransactionTable";
+import { Group } from "../../types/types";
+import { DashboardDataContext, DEFAULT_LIMIT } from "../../context/DashboardDataProvider";
 
 function GroupDashboard() {
 

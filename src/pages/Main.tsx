@@ -1,5 +1,5 @@
-import Title from "./Title";
-import Background from "./Background";
+import Title from "../Title";
+import Background from "../Background";
 
 function Main() {
     return (

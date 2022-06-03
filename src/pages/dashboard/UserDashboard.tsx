@@ -1,9 +1,9 @@
 import { Add } from "@mui/icons-material";
 import { Box, Button, Divider,  Typography } from "@mui/material";
 import { useContext, useState } from "react";
-import TransactionTable from "./TransactionTable";
-import { DashboardDataContext, DEFAULT_LIMIT } from "./context/DashboardDataProvider";
-import SearchUserPopup from "./SearchUserPopup";
+import TransactionTable from "../../TransactionTable";
+import { DashboardDataContext, DEFAULT_LIMIT } from "../../context/DashboardDataProvider";
+import SearchUserPopup from "../../SearchUserPopup";
 
 function UserDashboard() {
 

@@ -1,7 +1,7 @@
 import { Backdrop, CircularProgress } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router";
-import { LoginContext } from "./context/LoginProvider";
+import { LoginContext } from "../../context/LoginProvider";
 
 function Logout() {
 

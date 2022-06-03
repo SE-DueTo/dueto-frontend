@@ -1,6 +1,7 @@
 import { Box } from "@mui/system"
-import DashboardDataProvider from "./context/DashboardDataProvider"
-import OverviewElement from "./OverviewElement"
+import DashboardDataProvider from "../../context/DashboardDataProvider"
+import DashboardSelector from "../navigation/DashboardSelector"
+
 
 type SideBarSiteProps = {
     children: JSX.Element
@@ -15,7 +16,7 @@ function SideBarSite({children}:SideBarSiteProps) {
                     gridTemplateColumns: "auto 1fr",
                 }}
             >
-                <OverviewElement/>
+                <DashboardSelector/>
                 <Box>
                     {children}
                 </Box>

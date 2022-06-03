@@ -1,12 +1,12 @@
 import { Save } from "@mui/icons-material"
 import { Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material"
 import { useState } from "react"
-import DateComponent from "./components/DateComponent"
-import MoneyTextField from "./components/MoneyTextField"
-import SetCreditorOrDebitor from "./components/SetCreditorOrDebitor"
-import UserElement from "./components/UserElement"
-import UserInteractionWrapper from "./components/UserInteractionWrapper"
-import { User } from "./types/types"
+import DateComponent from "../input/DateComponent"
+import MoneyTextField from "../input/MoneyTextField"
+import SetCreditorOrDebitor from "../input/SetCreditorOrDebitor"
+import UserElement from "../design/UserElement"
+import UserInteractionWrapper from "../UserInteractionWrapper"
+import { User } from "../../types/types"
 
 type SettleDebtsModalProps = {
     close: ()=>void,

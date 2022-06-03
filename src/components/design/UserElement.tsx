@@ -1,4 +1,4 @@
-import { User } from "../types/types";
+import { User } from "../../types/types";
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 
 function UserElement({avatarUrl, username}:User) {

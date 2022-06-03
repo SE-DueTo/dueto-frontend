@@ -1,6 +1,6 @@
 import { Stack, useMediaQuery } from "@mui/material"
-import Login from "../../Login"
-import Register from "../../Register"
+import Login from "../../components/login/Login"
+import Register from "../../components/register/Register";
 
 function LoginRegisterStack() {
 

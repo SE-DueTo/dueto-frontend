@@ -1,7 +1,7 @@
 import { Avatar, Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { useContext } from 'react';
-import { DashboardDataContext } from './context/DashboardDataProvider';
-import { Transaction } from './types/types';
+import { DashboardDataContext } from '../../context/DashboardDataProvider';
+import { Transaction } from '../../types/types';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

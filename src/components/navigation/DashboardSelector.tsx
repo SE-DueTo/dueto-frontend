@@ -2,10 +2,12 @@ import { AddCircleOutline } from "@mui/icons-material";
 import { Avatar, Box, Button, CircularProgress, Divider, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, Paper, Typography } from "@mui/material"
 import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { DashboardDataContext } from "./context/DashboardDataProvider";
-import AddGroup from "./AddGroup";
+import { DashboardDataContext } from "../../context/DashboardDataProvider";
+import AddGroup from "../modals/AddGroup";
 
-function OverviewElement() {
+
+
+function DashboardSelector() {
 
     const [isAddGroupShown, setAddGroupShown] = useState(false)
     const [url, setUrl] = useState("")
@@ -103,7 +105,6 @@ function OverviewElement() {
                 >
                     New Group
                 </Button>
-                
                 {isAddGroupShown && <AddGroup setAddGroupShown={setAddGroupShown}/>}
             </List>
         </List>
@@ -140,4 +141,4 @@ function OverviewElement() {
     )
 }
 
-export default OverviewElement
+export default DashboardSelector

@@ -1,6 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { User } from "../types/types";
-import UserElement from "./UserElement";
+import { User } from "../../types/types";
+import UserElement from "../design/UserElement";
 
 type SetCreditorOrDebitorType = {
     label: string,

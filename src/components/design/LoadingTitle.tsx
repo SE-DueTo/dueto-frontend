@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 
-function Title() {
+function LoadingTitle() {
     const [count, setCount] = useState(0);
 
     const increment = ()=>{        
@@ -27,4 +27,4 @@ function Title() {
     )
 }
 
-export default Title
+export default LoadingTitle

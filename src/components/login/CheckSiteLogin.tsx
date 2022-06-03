@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { Navigate } from "react-router-dom"
-import { LoginContext } from "./context/LoginProvider"
+import { LoginContext } from "../../context/LoginProvider"
 
 type CheckSiteLoginType = {
     children: JSX.Element,

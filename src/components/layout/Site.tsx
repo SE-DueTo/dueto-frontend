@@ -1,6 +1,6 @@
 import { Box } from "@mui/material"
 import Header from "./Header"
-import CheckSiteLogin from "./CheckSiteLogin"
+import CheckSiteLogin from "../login/CheckSiteLogin"
 import HeightWrapper from "./HeightWrapper"
 
 type SiteProps= {

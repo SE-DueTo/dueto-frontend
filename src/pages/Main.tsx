@@ -1,10 +1,11 @@
-import Title from "../Title";
-import Background from "../Background";
+import LoadingTitle from "../components/design/LoadingTitle";
+import Background from "../components/layout/Background";
+
 
 function Main() {
     return (
         <Background>
-            <Title/>
+            <LoadingTitle/>
         </Background>
     )
 }

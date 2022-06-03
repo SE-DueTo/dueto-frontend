@@ -2,8 +2,8 @@ import { Button, FormControl, Stack, TextField, Typography } from "@mui/material
 import Send from '@mui/icons-material/Send';
 import { Navigate } from "react-router";
 import { useContext, useState } from "react";
-import { LoginContext } from "./context/LoginProvider";
-import RegisterLoginWrapper from "./RegisterLoginWrapper";
+import { LoginContext } from "../../context/LoginProvider";
+import RegisterLoginWrapper from "../layout/RegisterLoginWrapper";
 
 function Login() {
 

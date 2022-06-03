@@ -2,14 +2,14 @@ import { TabContext, TabPanel } from "@mui/lab";
 import { Button, Tab, Tabs, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext, useEffect, useState } from "react";
-import TransactionModal from "../../TransactionModal";
 import AddIcon from '@mui/icons-material/Add';
-import SetleDebtsModal from "../../SettleDebtsModal";
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Navigate, useLocation } from "react-router-dom";
-import TransactionTable from "../../TransactionTable";
 import { Group } from "../../types/types";
 import { DashboardDataContext, DEFAULT_LIMIT } from "../../context/DashboardDataProvider";
+import TransactionTable from "../../components/layout/TransactionTable";
+import SettleDebts from "../../components/modals/SettleDebts";
+import Transaction from "../../components/modals/Transaction";
 
 function GroupDashboard() {
 
@@ -79,7 +79,7 @@ function GroupDashboard() {
                     <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Transactions in Group {groupname}: </Typography> }
                 <TransactionTable data={groupUserdata.transactions}/>
                 {(!arrayEmpty && arrayFull) && <Button onClick={()=>{groupUserdata.loadMoreTransactions()}}>Load more</Button>}
-                {isTransactionShown && <TransactionModal close={()=>{setTransactionShown(false)}} users={group.users}/>}
+                {isTransactionShown && <Transaction close={()=>{setTransactionShown(false)}} users={group.users}/>}
             </TabPanel>
             <TabPanel value="1">
             <Button 
@@ -89,7 +89,7 @@ function GroupDashboard() {
                 >
                     Settle Debts
                 </Button>
-                {isSettleDebtsShown && <SetleDebtsModal close={()=>setSettleDebtsShown(false)} users={group.users}/>}
+                {isSettleDebtsShown && <SettleDebts close={()=>setSettleDebtsShown(false)} users={group.users}/>}
             </TabPanel>
         </TabContext>
         </>

@@ -40,12 +40,8 @@ function LoginProvider({children}:LoginProviderType) {
         }
         document.cookie = `login=${newToken}; path=/; expires=Fri, 31 Dec 9999 23:59:59 GMT`
     }
-
-    console.log(getCookie("login"));
-    
+  
     const [token, sT] = useState<string|null>(getCookie("login"))
-
-    console.log(token)
 
     const setToken = (newToken: (string|null)) => {
         sT(newToken)
@@ -100,10 +96,8 @@ function LoginProvider({children}:LoginProviderType) {
             })
         })
     }
-
     
     const loggedIn = !!token
-    console.log(loggedIn, token)
 
     return (
         <LoginContext.Provider value={{

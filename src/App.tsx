@@ -1,19 +1,32 @@
-import React from 'react';
 import { Route, Routes } from 'react-router-dom'
-import { GroupDashboardSite, LoginSite, LogoutSite, MainSite, UserDashboardSite } from './Sites';
+import ConditionalWrapper from './components/ConditionalWrapper';
+import { pages } from './pages/pages';
+import SideBarSite from './components/layout/SideBarSite';
+import Site from './components/layout/Site';
+import SiteBaseline from './components/layout/SiteBaseline';
 
 
 
-const App:React.FC = () => {
+function App() {
     return (
-        <Routes>
-            <Route path="/" element={<MainSite/>}/>
-            <Route path="/login" element={<LoginSite/>}/>
-            <Route path="/register" element={<LoginSite/>}/>
-            <Route path="/dashboard" element={<UserDashboardSite/>}/>
-            <Route path="/group/*" element={<GroupDashboardSite/>}/>
-            <Route path="/logout" element={<LogoutSite/>}/>
-        </Routes>
+        <SiteBaseline>
+            <Routes>
+                {
+                    pages.map((page, i) => (
+                        <Route key={`site.${i}`} path={page.url} element={
+                            <Site showLogin={!page.loginRequired} showAppBar={page.decorate}>
+                                <ConditionalWrapper 
+                                    condition={page.loginRequired && page.decorate} 
+                                    wrapper={(c) => <SideBarSite>{c}</SideBarSite>}
+                                >
+                                    {page.component}
+                                </ConditionalWrapper>
+                            </Site>
+                        }/>
+                    ))
+                }
+            </Routes>
+        </SiteBaseline>
     )
 }
 

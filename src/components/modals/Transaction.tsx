@@ -8,6 +8,13 @@ import UserElement from "../design/UserElement"
 import UserInteractionWrapper from "../UserInteractionWrapper"
 import { User } from "../../types/types"
 
+export const paymentMethods = [
+    "Cash",
+    "Bank Transfer",
+    "PayPal",
+    "Other",
+]
+
 type TransactionModalProps = {
     close: ()=>void,
     users: User[]
@@ -273,9 +280,10 @@ function Transaction({close, users}:TransactionModalProps) {
                         setPaymentMethod(event.target.value as string)
                     }}
                 >
-                    <MenuItem value={0}>lorem</MenuItem>
-                    <MenuItem value={1}>ipsum</MenuItem>
-                    <MenuItem value={2}>solor</MenuItem>
+                    {
+                        paymentMethods.map((e, i) => 
+                        <MenuItem value={i} key={`pmmth.${i}`}>{e}</MenuItem>)
+                    }
                 </Select>
             </FormControl>
             <TextField 

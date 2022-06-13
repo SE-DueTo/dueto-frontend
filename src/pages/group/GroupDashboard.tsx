@@ -5,11 +5,12 @@ import React, { useContext, useEffect, useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import PaymentIcon from '@mui/icons-material/Payment';
 import { Navigate, useLocation } from "react-router-dom";
-import { Group } from "../../types/types";
+import { Group, TransactionAddDTO } from "../../types/types";
 import { DashboardDataContext, DEFAULT_LIMIT } from "../../context/DashboardDataProvider";
 import TransactionTable from "../../components/layout/TransactionTable";
 import SettleDebts from "../../components/modals/SettleDebts";
 import Transaction from "../../components/modals/Transaction";
+import { TransactionInterfaceContext } from "../../context/TransactionInterfaceProvider";
 
 function GroupDashboard() {
 
@@ -21,9 +22,10 @@ function GroupDashboard() {
     //TODO remove this code when functional elements are build
     const [isTransactionShown, setTransactionShown] = useState(false)
     const [isSettleDebtsShown, setSettleDebtsShown] = useState(false)
-    const [group, setGroup] = useState<Group | null>(null);
+    const [group, setGroup] = useState<Group | null | undefined>(undefined);
 
     const groupUserdata = useContext(DashboardDataContext)
+    const transactionContext = useContext(TransactionInterfaceContext)
     const location = useLocation()
     const arrayLength = (groupUserdata.transactions || []).length;
     const arrayEmpty = arrayLength === 0;
@@ -43,7 +45,14 @@ function GroupDashboard() {
         )
     }
 
-    
+    if(group === undefined) {
+        return <></>
+    }
+
+    const sendTransaction = async (transaction: TransactionAddDTO) => {
+        transaction.groupId = group.groupId;
+        transactionContext.addTransaction(transaction)
+    }
 
     const groupname = group.groupType === "NORMAL" ? 
         group.groupName 
@@ -79,7 +88,7 @@ function GroupDashboard() {
                     <Typography variant="h6" sx={{textAlign: "left", marginBottom: '1em'}}>Transactions in Group {groupname}: </Typography> }
                 <TransactionTable data={groupUserdata.transactions}/>
                 {(!arrayEmpty && arrayFull) && <Button onClick={()=>{groupUserdata.loadMoreTransactions()}}>Load more</Button>}
-                {isTransactionShown && <Transaction close={()=>{setTransactionShown(false)}} users={group.users}/>}
+                {isTransactionShown && <Transaction close={()=>{setTransactionShown(false)}} users={group.users} input={sendTransaction}/>}
             </TabPanel>
             <TabPanel value="1">
             <Button 

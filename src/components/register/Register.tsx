@@ -1,6 +1,7 @@
 import { Login } from "@mui/icons-material";
 import { Button, FormControl, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import { url } from "../../config/configuration";
 import RegisterLoginWrapper from "../layout/RegisterLoginWrapper";
 
 export default function Register() {
@@ -10,8 +11,6 @@ export default function Register() {
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
     const [registerPossible, setRegisterPossible] = useState(false)
-
-    const url = process.env.REACT_APP_URL;
 
     const [auxMsg, setAuxMsg] = useState({
         visible: false,

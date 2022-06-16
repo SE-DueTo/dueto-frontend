@@ -7,7 +7,7 @@ test('renders the correct content', () => {
   ReactDOM.render(<UserDashboard></UserDashboard>, root);
 
   expect(root.querySelector('h5')?.textContent).toBe('Hallo ');
-  expect(root.querySelector('h2')?.textContent).toBe('0€');
+  expect(root.querySelector('h2')?.textContent).toBe('0.00€');
   expect(root.querySelector('Button')?.textContent).toBe('New Transaction');
 });
 

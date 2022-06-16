@@ -56,11 +56,12 @@ function Transaction({close, users, input}:TransactionModalProps) {
 
         const userAmountList = new Map()
         for(const user of transactionUsers) {
-            userAmountList.set(user.user.userId, user.amount)
+            userAmountList.set(user.user.userId, user.amount * 100)
         }
 
         const transaction:TransactionAddDTO = {
-            amount: amount,
+            whoPaid: parseInt(whoPaid),
+            amount: amount * 100,
             userAmountList: Object.fromEntries(userAmountList),
             date: date.toISOString(),
             groupId: -1,

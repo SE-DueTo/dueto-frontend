@@ -49,7 +49,7 @@ function UserDashboard() {
     return (
         <Box sx={{textAlign: "center", mt: "20px"}}>
             <Typography variant="h5">Hallo {groupUserdata.user?.username}</Typography>
-            <Typography variant="h2">{groupUserdata.balance}€</Typography>
+            <Typography variant="h2">{(groupUserdata.balance / 100).toFixed(2)}€</Typography>
             <Box sx={{marginTop: "10px"}}>
                 <Button 
                     variant="outlined" 

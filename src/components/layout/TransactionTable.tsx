@@ -1,6 +1,4 @@
 import { Avatar, Box, Paper, styled, Table, TableBody, TableCell, tableCellClasses, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import { useContext } from 'react';
-import { DashboardDataContext } from '../../context/DashboardDataProvider';
 import { Transaction } from '../../types/types';
 
 
@@ -35,8 +33,6 @@ type TransactionTableProps ={
     data?: Transaction[] | null
 }
 function TransactionTable({data}:TransactionTableProps) {
-
-    const groupUserdata = useContext(DashboardDataContext)
     
     if(!data || data.length === 0) {
         return (
@@ -60,11 +56,11 @@ function TransactionTable({data}:TransactionTableProps) {
                     {data.map((row, i) => {
 
                         const isSpontaneous = row.group.groupType === "SPONTANEOUS"
-                        let otherUser;
                         let url;
-                        let groupName;
+                        let groupName = row.group.groupName;
                         if(isSpontaneous) {
-                            otherUser = row.group.users.filter(e => e.userId !== groupUserdata.user?.userId)[0]
+                            console.log(row)
+                            const otherUser = row.whoPaid
                             url = otherUser.avatarUrl
                             groupName = otherUser.username                
                         }
@@ -80,10 +76,10 @@ function TransactionTable({data}:TransactionTableProps) {
                                         gap: "10px",
                                     }}>
                                         <Avatar src={url ?? undefined}>{(groupName||"")[0]}</Avatar>
-                                        {groupName}
+                                        {row.whoPaid.username}
                                     </Box>
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{row.amount} €</StyledTableCell>
+                                <StyledTableCell align="right">{(row.amount / 100).toFixed(2)} €</StyledTableCell>
                                 <StyledTableCell align="right">{row.purpose}</StyledTableCell>
                                 <StyledTableCell align="right">{row.paymentMethod}</StyledTableCell>
                                 <StyledTableCell align="right">{dateToString(row.date)}</StyledTableCell>

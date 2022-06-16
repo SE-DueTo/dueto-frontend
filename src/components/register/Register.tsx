@@ -12,7 +12,13 @@ export default function Register() {
     const [password2, setPassword2] = useState("")
     const [registerPossible, setRegisterPossible] = useState(false)
 
-    const [auxMsg, setAuxMsg] = useState({
+    type AuxMsgType = {
+        visible: boolean,
+        color: string,
+        text: string | string[],
+    }
+
+    const [auxMsg, setAuxMsg] = useState<AuxMsgType>({
         visible: false,
         color: "red",
         text: "",
@@ -60,9 +66,30 @@ export default function Register() {
             if(e === null) return
 
             if(!e.successful) {
+                const errorMsgs = []
+                for(const error of e.errorMessage) {
+                    const code = error.code;
+                    let msg
+                    switch(code) {
+                        case "Size.userForm.username":
+                            msg = "Username length has to be between 2 and 32"
+                            break
+                        case "Duplicate.userForm.username":
+                            msg = "Username already taken"
+                            break
+                        case "Size.userForm.password":
+                            msg = "Password length has to be between 8 and 32"
+                            break
+                        default:
+                            msg = "Unknown error"
+                            break
+                    }
+                    errorMsgs.push(` - ${msg}`)
+                    
+                }
                 setAuxMsg({
                     visible: true,
-                    text: "Something went wrong.",
+                    text: ["Errors:", ...errorMsgs],
                     color: "red",
                 }); 
                 setRegisterPossible(false)
@@ -105,7 +132,16 @@ export default function Register() {
                             value={password2}
                             onChange={(e) => setPassword2(e.target.value)}  />
                         
-                        { auxMsg.visible && <Typography sx={{color: auxMsg.color}}>{auxMsg.text}</Typography>}
+                        { auxMsg.visible && 
+                            <Typography 
+                                sx={{color: auxMsg.color}}
+                            >
+                                {
+                                    (typeof auxMsg.text) === "string" ? 
+                                        auxMsg.text : 
+                                        (auxMsg.text as string[]).map((e, i) => <Typography key={`e.${i}`}>{e}</Typography>)
+                                }
+                            </Typography>}
 
                         <Button 
                             sx={{width: "100%"}} 

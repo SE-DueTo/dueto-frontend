@@ -21,7 +21,8 @@ function TransactionInterfaceProvider({children}:ProviderType) {
     const addTransaction = async (transaction:TransactionAddDTO):Promise<void> => {
         const data = await fetch(`${url}/v1/transaction/add/`, {
             headers: {
-                Authorization: token || ""
+                Authorization: token || "",
+                'Content-Type': 'application/json'
             },
             method: "POST",
             body: JSON.stringify(transaction)

@@ -42,8 +42,13 @@ function DashboardDataProvider({children}:ProviderType) {
         setUser(dashboardData.user)
         setBalance(dashboardData.balance)
 
-        await loadMoreDebts()
-        await loadMoreTransactions()
+        await loadDebts()
+        await loadTransactions()
+    }
+
+    const loadTransactions = async () => {
+        const t = await dashboard.getDashboardTransactions(0, DEFAULT_LIMIT);
+        setTransactions(t)
     }
 
     const loadMoreTransactions = async () => {
@@ -54,6 +59,11 @@ function DashboardDataProvider({children}:ProviderType) {
             tempTransactions.push(...t);
             return tempTransactions;
         })
+    }
+
+    const loadDebts = async () => {
+        const d = await dashboard.getDashboardDebts(0, DEFAULT_LIMIT);
+        setDebts(d)
     }
 
     const loadMoreDebts = async () => {

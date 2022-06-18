@@ -74,6 +74,7 @@ export type SettleDebtAddDTO = {
 }
 
 export type Transaction = {
+    whoPaid: User,
     amount: number,
     date: string,
     group: Group,
@@ -85,6 +86,7 @@ export type Transaction = {
 }
 
 export type TransactionAddDTO = {
+    whoPaid: number,
     amount: number,
     date: string,
     groupId: number,
@@ -95,6 +97,7 @@ export type TransactionAddDTO = {
 }
 
 export const defaultTransaction:Transaction= {
+    whoPaid: defaultUser,
     amount: 0,
     date: "",
     group: defaultGroup,

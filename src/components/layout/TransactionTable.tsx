@@ -59,7 +59,6 @@ function TransactionTable({data}:TransactionTableProps) {
                         let url;
                         let groupName = row.group.groupName;
                         if(isSpontaneous) {
-                            console.log(row)
                             const otherUser = row.whoPaid
                             url = otherUser.avatarUrl
                             groupName = otherUser.username                

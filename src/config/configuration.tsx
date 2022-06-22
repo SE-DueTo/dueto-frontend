@@ -1,7 +1,7 @@
 const config = {
     url: {
         dev: "http://localhost:8080",
-        prod: "https://api.dueto.it.dh-karlsruhe.de/",
+        prod: "https://api.dueto.it.dh-karlsruhe.de",
     }
 }
 

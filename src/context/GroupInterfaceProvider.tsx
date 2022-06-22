@@ -64,7 +64,8 @@ function GroupInterfaceProvider({children}:ProviderType) {
     const addNormalGroup = async (groupAddDTO:GroupAddNormalDTO) => {
         const data = await fetch(`${url}/v1/group/normal/add`, {
             headers: {
-                Authorization: token || ""
+                Authorization: token || "",
+                'Content-Type': 'application/json'
             },
             method: "POST",
             body: JSON.stringify(groupAddDTO)
@@ -89,10 +90,11 @@ function GroupInterfaceProvider({children}:ProviderType) {
     const addSpontaneousGroup = async (userId:number) => {
         const data = await fetch(`${url}/v1/group/spontaneous/add`, {
             headers: {
-                Authorization: token || ""
+                Authorization: token || "",
+                'Content-Type': 'application/json'
             },
             method: "POST",
-            body: `${userId}`
+            body: JSON.stringify({userId})
         })
         if(data.status !== 200) return Promise.reject()
         const text = await data.text()

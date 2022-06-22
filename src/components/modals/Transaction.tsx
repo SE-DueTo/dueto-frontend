@@ -6,11 +6,19 @@ import MoneyTextField from "../input/MoneyTextField"
 import SetCreditorOrDebitor from "../input/SetCreditorOrDebitor"
 import UserElement from "../design/UserElement"
 import UserInteractionWrapper from "../UserInteractionWrapper"
-import { User } from "../../types/types"
+import { TransactionAddDTO, User } from "../../types/types"
+
+export const paymentMethods = [
+    "Cash",
+    "Bank Transfer",
+    "PayPal",
+    "Other",
+]
 
 type TransactionModalProps = {
     close: ()=>void,
-    users: User[]
+    users: User[],
+    input: (transaction: TransactionAddDTO) => void
 }
 
 type TransactionUser= {
@@ -20,11 +28,11 @@ type TransactionUser= {
     isChecked: boolean
 }
 
-function Transaction({close, users}:TransactionModalProps) {
+function Transaction({close, users, input}:TransactionModalProps) {
 
-    const [whoPaid, setWhoPaid] = useState<string>("")
+    const [whoPaid, setWhoPaid] = useState<string>(users[0].userId.toString())
     const [amount, setNewAmount] = useState<number>(0)
-    const [paymentMethod, setPaymentMethod] = useState<string>('')
+    const [paymentMethod, setPaymentMethod] = useState<string>("")
     const [purpose, setPurpose] = useState("")
     const [date, setDate] = useState(new Date())
     const [percentage, setPercentage] = useState(false)
@@ -35,6 +43,35 @@ function Transaction({close, users}:TransactionModalProps) {
         wasEdited: false,
         isChecked: true
     })))
+
+    const checkInput = () => {
+        return (
+            amount > 0 
+                && parseInt(paymentMethod)>=0
+                && !!purpose
+        )
+    }
+    
+    const sendTransaction = () => {
+
+        const userAmountList = new Map()
+        for(const user of transactionUsers) {
+            userAmountList.set(user.user.userId, user.amount * 100)
+        }
+
+        const transaction:TransactionAddDTO = {
+            whoPaid: parseInt(whoPaid),
+            amount: amount * 100,
+            userAmountList: Object.fromEntries(userAmountList),
+            date: date.toISOString(),
+            groupId: -1,
+            paymentMethod: paymentMethods[parseInt(paymentMethod)],
+            purpose: purpose,
+            repeatingInterval: -1
+        }
+        input(transaction);
+        close();
+    }
 
     /**
      * Toggles the checkbox for a specific user and redistributes their amount to all other users
@@ -273,9 +310,10 @@ function Transaction({close, users}:TransactionModalProps) {
                         setPaymentMethod(event.target.value as string)
                     }}
                 >
-                    <MenuItem value={0}>lorem</MenuItem>
-                    <MenuItem value={1}>ipsum</MenuItem>
-                    <MenuItem value={2}>solor</MenuItem>
+                    {
+                        paymentMethods.map((e, i) => 
+                        <MenuItem value={i} key={`pmmth.${i}`}>{e}</MenuItem>)
+                    }
                 </Select>
             </FormControl>
             <TextField 
@@ -372,7 +410,14 @@ function Transaction({close, users}:TransactionModalProps) {
                     if(newValue == null) newValue = new Date();
                     setDate(newValue)
                 }}/>
-            <Button startIcon={<Save/>} variant="contained" disabled={amount===0}>Save</Button>
+            <Button 
+                startIcon={<Save/>} 
+                variant="contained" 
+                disabled={!checkInput()}
+                onClick={sendTransaction}
+            >
+                Save
+            </Button>
         </UserInteractionWrapper>
     )
 }

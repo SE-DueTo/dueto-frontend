@@ -21,7 +21,8 @@ function SettleDebtInterfaceProvider({children}:ProviderType) {
     const addDebt = async (settleDebtAddDTO: SettleDebtAddDTO) => {
         const data = await fetch(`${url}/v1/debt/add`, {
             headers: {
-                Authorization: token || ""
+                Authorization: token || "",
+                'Content-Type': 'application/json'
             },
             method: "POST",
             body: JSON.stringify(settleDebtAddDTO)

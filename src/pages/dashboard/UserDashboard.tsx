@@ -43,7 +43,7 @@ function UserDashboard() {
     }
 
     const arraysEqual = (array1: User[], array2: User[]) => {
-        return array1.filter(user => array2.includes(user)).length === 0
+        return array1.filter(user => !array2.includes(user)).length === 0
     }
 
     return (

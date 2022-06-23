@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { Debt, Group, GroupInfo, Transaction, User } from "../types/types";
 import { GroupInterfaceContext } from "./GroupInterfaceProvider";
 
@@ -37,7 +36,6 @@ export const DEFAULT_LIMIT = 10;
 function GroupDataProvider({children, groupId}:GroupDataProviderType) {
     
     const groupInterfaceContext = useContext(GroupInterfaceContext)
-    const location = useLocation()
     const [groupInfo, setGroupInfo] = useState<GroupInfo | null>(null)
     const [group, setGroup] = useState<Group | null | undefined>(null)
     const [users, setUsers] = useState<User[] | null | undefined>(null)

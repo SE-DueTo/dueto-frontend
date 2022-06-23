@@ -43,18 +43,22 @@ function UserDashboard() {
     }
 
     const arraysEqual = (array1: User[], array2: User[]) => {
+        const copyArray:User[] = []
+        array2.forEach(a2 => {
+            copyArray.push(a2)
+        })
         array1.forEach(a1 => {
-            array2.forEach(a2 => {
+            copyArray.forEach(a2 => {
             if(a1.userId === a2.userId) {
-                const index = array2.indexOf(a2)
+                const index = copyArray.indexOf(a2)
                 if(index > -1){
-                    array2.splice(index, 1);
+                    copyArray.splice(index, 1);
                 }
             }
             })
             
         });
-        return array2.length === 0
+        return copyArray.length === 0
     }
 
     return (

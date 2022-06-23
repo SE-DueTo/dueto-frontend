@@ -38,7 +38,7 @@ function GroupDashboard() {
         setGroupId(groupId)
         const g = groupUserdata?.groups?.filter(e => e.groupId === groupId)[0] || null
         setGroup(g)
-        console.log(g, groupId)
+    
 
     }, [location])
 
@@ -67,7 +67,6 @@ function GroupDashboard() {
         <GroupDataContext.Consumer> 
             {(groupContext) =>
         <>
-        {console.log(groupId)}
         <Box sx={{textAlign: "center", mt: "20px", mb: "5px"}}>
             <Typography variant="h5" >{groupname}</Typography>
             <Typography variant="h5">{((groupContext.groupInfo?.sum || 0) / 100).toFixed(2)}€</Typography>

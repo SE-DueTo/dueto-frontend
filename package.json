@@ -60,7 +60,7 @@
     "@types/react-dom": "^18.0.3",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
-    "@typescript-eslint/parser": "^5.27.1",
+    "@typescript-eslint/parser": "^5.48.2",
     "cucumber": "^7.0.0-rc.0",
     "eslint": "^8.17.0",
     "eslint-plugin-react": "^7.30.0"
